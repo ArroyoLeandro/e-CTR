@@ -26,6 +26,6 @@
 /**
  * Procedimiento de desinstalación personalizada
  */
-function xmldbexperiments_webrtc_uninstall() {
+function xmldb_ectr_webrtc_uninstall() {
     return true;
 }

@@ -28,7 +28,7 @@
  *
  * @see upgrade_plugins_modules()
  */
-function xmldb_webrtcexperiments_install() {
+function xmldb_ectr_install() {
 }
 
 /**
@@ -36,5 +36,5 @@ function xmldb_webrtcexperiments_install() {
  *
  * @see upgrade_plugins_modules()
  */
-function xmldb_webrtcexperiments_install_recovery() {
+function xmldb_ectr_install_recovery() {
 }

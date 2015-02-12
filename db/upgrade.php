@@ -36,7 +36,7 @@ defined('MOODLE_INTERNAL') || die();
  * @param int $oldversion
  * @return bool
  */
-function xmldb_webrtcexperiments_upgrade($oldversion) {
+function xmldb_ectr_upgrade($oldversion) {
 
     return true;
 }
