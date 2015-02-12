@@ -54,7 +54,7 @@ function ectr_supports($feature) {
 }
 
 /**
- * Guarda una nueva instancia de los ectr en la base de datos
+ * Guarda una nueva instancia de e-CTR en la base de datos
  *
  * Dado un objeto que contiene todos los datos necesarios,
  * (Definida por la forma en mod_form.php) esta función creará una nueva instancia, 
@@ -62,7 +62,7 @@ function ectr_supports($feature) {
  *
  * @param object $webrtc An object from the form in mod_form.php
  * @param mod_ectr_mod_form $mform
- * @return int The id of the newly inserted ectr record
+ * @return int el id del registro e-CTR recien guardado
  */
 function ectr_add_instance(stdClass $webrtc, mod_ectr_mod_form $mform = null) {
     global $DB;
@@ -79,9 +79,9 @@ function ectr_add_instance(stdClass $webrtc, mod_ectr_mod_form $mform = null) {
  * (definida por la forma en mod_form.php) esta función actualizará,
  * una instancia existente con datos nuevos.
  *
- * @param object $webrtc Un objeto del form en mod_form.php
+ * @param objeto $webrtc Un objeto del form en mod_form.php
  * @param mod_ectr_mod_form $mform
- * @return boolean Success/Fail
+ * @return boolean Exito/Falla
  */
 function ectr_update_instance(stdClass $webrtc, mod_ectr_mod_form $mform = null) {
     global $DB;
@@ -99,7 +99,7 @@ function ectr_update_instance(stdClass $webrtc, mod_ectr_mod_form $mform = null)
  * esta función eliminará permanentemente la instancia y cualquier dato que depende de él.
  *
  * @param int $id Id de la instancia de módulo
- * @return boolean Success/Failure
+ * @return boolean Exito/Falla
  */
 function ectr_delete_instance($id) {
     global $DB;
@@ -144,38 +144,38 @@ function ectr_user_complete($course, $user, $mod, $webrtc) {
 }
 
 /**
- * Dado un curso y un tiempo, este módulo debe encontrar actividad reciente,
- * que se ha producido en las actividades ECTR e imprimirlo.
- * Devuelce true si no había salida, o false si es que no había ninguno.
+ * Dado un curso y un tiempo, este módulo debe encontrar la actividad reciente,
+ * que se ha producido en las actividades e-CTR e imprimirlo.
+ * Devuelve true si no hay salida, o false si es que no había ninguno.
  * 
  * @return boolean
  */
 function ectr_print_recent_activity($course, $viewfullnames, $timestart) {
-    return false;  // True si nada se imprimió, de lo contrario false.
+    return false;  // True si nada se imprimió, false si sucede lo contrario.
 }
 
 /**
  * Prepara los datos para recent activity
  *  
  * Esta función devuelve, para rellenar la matriz pasada con "registros de actividad" personalizados. Estos registros se prestan a través de HTML
- * This callback function is supposed to populate the passed array with
- * custom activity records. These records are then rendered into HTML via
+ * Esta función devuelve la llamada que es popular en la matriz pasada con
+ * registros de actividad personalizada. Estos registros se muestran a través de HTML
  * {@link ectr_print_recent_mod_activity()}.
  *
- * @param array $activities sequentially indexed array of objects with the 'cmid' property
- * @param int $index the index in the $activities to use for the next record
- * @param int $timestart append activity since this time
- * @param int $courseid the id of the course we produce the report for
+ * @param array $activities matriz secuencial indexada de objetos con la propiedad 'CMID'
+ * @param int $index el index en las $activities a utilizar para el siguiente registro
+ * @param int $timestart anexar actividad desde este momento
+ * @param int $courseid el id del curso que se requiere en el informe de
  * @param int $cmid course module id
- * @param int $userid check for a particular user's activity only, defaults to 0 (all users)
- * @param int $groupid check for a particular group's activity only, defaults to 0 (all groups)
- * @return void adds items into $activities and increases $index
+ * @param int $userid comprobar si la actividad de un usuario en particular o solo, por defecto es 0 (todos los usuarios)
+ * @param int $groupid comprobar la actividad de un grupo particular o solo, por defecto es 0 (todos los grupos)
+ * @return void añade elementos en $activities y aumenta $index
  */
 function ectr_get_recent_mod_activity(&$activities, &$index, $timestart, $courseid, $cmid, $userid=0, $groupid=0) {
 }
 
 /**
- * Prints single activity item prepared by {@see ectr_get_recent_mod_activity()}
+ * Imprime solo las actividades separada por {@see ectr_get_recent_mod_activity()}
  *
  * @return void
  */
@@ -183,19 +183,19 @@ function ectr_print_recent_mod_activity($activity, $courseid, $detail, $modnames
 }
 
 /**
- * Function to be run periodically according to the moodle cron
- * This function searches for things that need to be done, such
- * as sending out mail, toggling flags etc ...
+* Función para ejecutarse periódicamente según el cron moodle
+  * Esta función busca de cosas que hay que hacer, por ejemplo
+  * Como el envío de correo electrónico, alternar banderas, etc ...
  *
  * @return boolean
- * @todo Finish documenting this function
+ * @todo Fin de la documetacion de esta funcion
  **/
 function ectr_cron () {
     return true;
 }
 
 /**
- * Returns all other caps used in the module
+ * Devuelve todas las demás tapas usadas en el módulo
  *
  * @example return array('moodle/site:accessallgroups');
  * @return array
@@ -209,15 +209,15 @@ function ectr_get_extra_capabilities() {
  */
 
 /**
- * Is a given scale used by the instance of webrtc?
+ * Es una escala dada utilizado por la instancia de WebRTC?
  *
- * This function returns if a scale is being used by one webrtc
- * if it has support for grading and scales. Commented code should be
- * modified if necessary. See forum, glossary or journal modules
- * as reference.
+ * Esta función devuelve si la escala está siendo utilizado por una WebRTC
+ * Si tiene soporte para la clasificación y escalas. Código comentado debe ser
+ * Modificado si es necesario. Ver módulos foro, glosario o revistas
+ * Como referencia.
  *
- * @param int $webrtcid ID of an instance of this module
- * @return bool true if the scale is used by the given webrtc instance
+ * @param int $webrtcid ID de una instancia de este modulo
+ * @return bool true si la escala es utilizada por la instancia WebRTC
  */
 function ectr_scale_used($webrtcid, $scaleid) {
     global $DB;
@@ -230,12 +230,12 @@ function ectr_scale_used($webrtcid, $scaleid) {
 }
 
 /**
- * Checks if scale is being used by any instance of webrtc.
+ * Comprueba si la escala está siendo utilizado por cualquier instancia de WebRTC.
  *
- * This is used to find out if scale used anywhere.
+ * Esto se utiliza para averiguar si la escala utilizada en cualquier lugar.
  *
  * @param $scaleid int
- * @return boolean true if the scale is used by any webrtc instance
+ * @return boolean true si la escala es utilizada por cualquier instancia WebRTC.
  */
 function ectr_scale_used_anywhere($scaleid) {
     global $DB;
@@ -248,12 +248,12 @@ function ectr_scale_used_anywhere($scaleid) {
 }
 
 /**
- * Creates or updates grade item for the give webrtc instance
+ * Crea o actualiza los elementos de grado para la instancia que dará WebRTC.
  *
- * Needed by grade_update_mod_grades() in lib/gradelib.php
+ * Necesaria por grade_update_mod_grades() in lib/gradelib.php
  *
- * @param stdClass $webrtc instance object with extra cmidnumber and modname property
- * @param mixed optional array/object of grade(s); 'reset' means reset grades in gradebook
+ * @param stdClass $webrtc instancia con objeto extra cmidnumber y modname como propiedad
+ * @param mixed opcional array/object de grado(s); 'reset' significa grados de restablecimiento en libro de calificaciones
  * @return void
  */
 function ectr_grade_item_update(stdClass $webrtc, $grades=null) {
@@ -270,31 +270,31 @@ function ectr_grade_item_update(stdClass $webrtc, $grades=null) {
 }
 
 /**
- * Update webrtc grades in the gradebook
+ * Actualización grados WebRTC en el libro de calificaciones
  *
- * Needed by grade_update_mod_grades() in lib/gradelib.php
+ * Necesario por grade_update_mod_grades() in lib/gradelib.php
  *
- * @param stdClass $webrtc instance object with extra cmidnumber and modname property
- * @param int $userid update grade of specific user only, 0 means all participants
+ * @param stdClass $webrtc instancia del objeto extra con cmidnumber y modname como propiedad
+ * @param int $userid actualización grado de usuario específico sólo, 0 significa que todos los participantes
  * @return void
  */
 function ectr_update_grades(stdClass $webrtc, $userid = 0) {
     global $CFG, $DB;
     require_once($CFG->libdir.'/gradelib.php');
 
-    $grades = array(); // Populate array of grade objects indexed by userid.
+    $grades = array(); // Rellenar la matriz de objetos de grados indexados por userid.
 
     grade_update('mod/ectr', $webrtc->course, 'mod', 'ectr', $webrtc->id, 0, $grades);
 }
 
 /**
- * File API                                                                   //
+ * Archivo API                                                                   //
  */
 
 /**
- * Returns the lists of all browsable file areas within the given module context
+ * Devuelve la lista de todas las áreas de archivos navegables dentro del contexto determinado módulo.
  *
- * The file area 'intro' for the activity introduction field is added automatically
+ * El area del archivo 'intro' para el campo de actividad de introducción se añade automáticamente.
  * by {@link file_browser::get_file_info_context_module()}
  *
  * @param stdClass $course
@@ -307,7 +307,7 @@ function ectr_get_file_areas($course, $cm, $context) {
 }
 
 /**
- * File browsing support for webrtc file areas
+ * Apoyo para la consulta de archivos para las áreas de archivos WebRTC
  *
  * @package mod_webrtc
  * @category files
@@ -321,25 +321,25 @@ function ectr_get_file_areas($course, $cm, $context) {
  * @param int $itemid
  * @param string $filepath
  * @param string $filename
- * @return file_info instance or null if not found
+ * @return file_info si no se encuentra la instalacia o nula
  */
 function ectr_get_file_info($browser, $areas, $course, $cm, $context, $filearea, $itemid, $filepath, $filename) {
     return null;
 }
 
 /**
- * Serves the files from the webrtc file areas
+ * Sirve a los archivos de las áreas de archivos WebRTC
  *
  * @package mod_webrtc
- * @category files
+ * @category archivos
  *
- * @param stdClass $course the course object
- * @param stdClass $cm the course module object
- * @param stdClass $context the webrtc's context
- * @param string $filearea the name of the file area
- * @param array $args extra arguments (itemid, path)
- * @param bool $forcedownload whether or not force download
- * @param array $options additional options affecting the file serving
+ * @param stdClass $course el objeto del curso
+ * @param stdClass $cm el objeto módulo del curso
+ * @param stdClass $context contexto de la WebRTC
+ * @param string $filearea el nombre de la zona de archivos
+ * @param array $args argumentos extra (itemid, path)
+ * @param bool $forcedownload si o no forzar la descarga
+ * @param array $options opciones adicionales que afectan el servicio de archivos
  */
 function ectr_pluginfile($course, $cm, $context, $filearea, array $args, $forcedownload, array $options=array()) {
     global $DB, $CFG;
@@ -354,15 +354,15 @@ function ectr_pluginfile($course, $cm, $context, $filearea, array $args, $forced
 }
 
 /**
- * Navigation API                                                             //
+ * Navegacion API                                                             //
  */
 
 /**
- * Extends the global navigation tree by adding webrtc nodes if there is a relevant content
+ * Extiende el árbol de navegación global añadiendo nodos WebRTC si hay un contenido relevante.
  *
- * This can be called by an AJAX request so do not rely on $PAGE as it might not be set up properly.
+ * Esto puede ser llamado por una petición AJAX así que no confíe en $PAGE ya que no podría estar configurado correctamente..
  *
- * @param navigation_node $navref An object representing the navigation tree node of the webrtc module instance
+ * @param navigation_node $navref Un objeto que representa el nodo del árbol de navegación de la instancia de módulo WebRTC
  * @param stdClass $course
  * @param stdClass $module
  * @param cm_info $cm
@@ -371,10 +371,10 @@ function ectr_extend_navigation(navigation_node $navref, stdclass $course, stdcl
 }
 
 /**
- * Extends the settings navigation with the webrtc settings
+ * Extiende la navegación ajustes con los ajustes WebRTC
  *
- * This function is called when the context for the page is a webrtc module. This is not called by AJAX
- * so it is safe to rely on the $PAGE.
+ * Esta función se llama cuando el contexto de la página es un módulo WebRTC. Esto no es llamado por AJAX
+ * Lo que es muy seguro para confiar en $PAGE.
  *
  * @param settings_navigation $settingsnav {@link settings_navigation}
  * @param navigation_node $webrtcnode {@link navigation_node}
