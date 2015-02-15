@@ -26,20 +26,19 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
     'mod/ectr:view' => array(
-
-        'captype'       => 'read',
-        'contextlevel'  => CONTEXT_MODULE,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_MODULE,
         'archetypes' => array(
-            'guest'             => CAP_ALLOW,
-            'student'           => CAP_ALLOW,
-            'teacher'           => CAP_ALLOW,
-            'editingteacher'    => CAP_ALLOW,
-            'manager'           => CAP_ALLOW
+            'guest' => CAP_ALLOW,
+            'student' => CAP_ALLOW,
+            'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
         )
     ),
 
+    // Posibilidad de añadir una nueva instancia e-CTR para el curso.
     'mod/ectr:addinstance' => array(
-
         'riskbitmask'   => RISK_XSS,
 
         'captype'       => 'write',

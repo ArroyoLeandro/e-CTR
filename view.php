@@ -26,7 +26,7 @@ require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once(dirname(__FILE__).'/lib.php');
 
 $id = optional_param('id', 0, PARAM_INT); // Course_module ID, or
-$n  = optional_param('n', 0, PARAM_INT);  // ... e-CTR instancia ID - debe ser nombrado como el primer carácter del módulo.
+$n  = optional_param('n', 0, PARAM_INT);  // ... e-CTR instancia ID
 
 if ($id) {
     $cm         = get_coursemodule_from_id('ectr', $id, 0, false, MUST_EXIST);
@@ -69,7 +69,6 @@ if ($webrtc->intro) {
 
 echo '<section class="experiment">
           <h2 class="header" id="feedback">Seleccione "sessionType" y "Dirección de-Flow!"</h2>
-          
           <section>
               <select id="session" title="Session">
                   <option>audio+video+data+screen</option>
