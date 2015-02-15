@@ -1,5 +1,6 @@
 <?php
 // This file is part of Moodle - http://moodle.org/
+//
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -14,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Defines the view event.
+ * Listas de instancias del evento mod_ectr.
  *
  * @package    mod_ectr
  * @copyright  2015 Manuel Fernando & Daniel Felipe
@@ -22,14 +23,15 @@
  */
 
 namespace mod_ectr\event;
+
 defined('MOODLE_INTERNAL') || die();
 
-class course_module_viewed extends \core\event\course_module_viewed {
-    /**
-     * Inicialice un evento
-     */
-    protected function init() {
-        $this->data['objecttable'] = 'ectr';
-        parent::init();
-    }
+/**
+ * La lista de la clase de eventos de instancias mod_ectr vistos.
+ *
+ * @package    mod_ectr
+ * @copyright  2015 Manuel Fernando & Daniel Felipe
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class course_module_instance_list_viewed extends \core\event\course_module_instance_list_viewed {
 }
