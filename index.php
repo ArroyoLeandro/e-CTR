@@ -43,6 +43,7 @@ $PAGE->set_context($coursecontext);
 
 echo $OUTPUT->header();
 
+//Obtener todos los datos correspondientes.
 if (! $webrtcs = get_all_instances_in_course('ectr', $course)) {
     notice(get_string('nowebrtcs', 'ectr'), new moodle_url('/course/view.php', array('id' => $course->id)));
 }
@@ -80,4 +81,5 @@ foreach ($webrtcs as $webrtc) {
 
 echo $OUTPUT->heading(get_string('modulenameplural', 'ectr'), 2);
 echo html_writer::table($table);
+// Fin de la pagina
 echo $OUTPUT->footer();
