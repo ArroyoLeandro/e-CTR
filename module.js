@@ -146,7 +146,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
             session[splittedSession[i]] = true;
         }
 
-        var maxParticipantsAllowed = 256;
+        var maxParticipantsAllowed = 256; //Maximo de participantes
 
         if (direction == 'one-to-one') maxParticipantsAllowed = 1;
         if (direction == 'one-to-many') session.broadcast = true;
@@ -237,6 +237,18 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     document.getElementById('file').onchange = function() {
         connection.send(this.files[0]);
     };
+
+    channelToTest = location.hash.substr(1) || 'another-channel';
+
+new Firebase('https://chat.firebaseIO.com/' + channelToTest).once('value', function (data) {
+    var isChannelPresent = data.val() != null;
+
+    // if no channel present; open new session
+    if (!isChannelPresent) connection.open('a-session-id');
+
+    // else join existing session
+    else connection.connect('a-session-id');
+});
 
     var chatInput = document.getElementById('chat-input');
     chatInput.onkeypress = function(e) {
