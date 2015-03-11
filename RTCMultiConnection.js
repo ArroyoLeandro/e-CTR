@@ -129,7 +129,7 @@
 
             // connect with signaling channel
             initSignalingHandler(function() {
-                log('Signaling channel is ready.');
+                log('El Canal de señalización está listo.');
             });
 
             return this;
@@ -151,7 +151,7 @@
 
             // send file/data or /text
             if (!data) {
-                throw 'No file, data or text message to share.';
+                throw 'No hay archivo, datos o mensajes de texto para compartir.';
             }
 
             // connection.send([file1, file2, file3])
@@ -238,10 +238,10 @@
             }
 
             if (!signalingHandler) {
-                log('Signaling channel is not ready. Connecting...');
+                log('Canal de señalización no está listo. Conectando...');
                 // connect with signaling channel
                 initSignalingHandler(function() {
-                    log('Signaling channel is connected. Joining the session again...');
+                    log('Canal de señalización está conectado. Unirse a la sesión de nuevo...');
                     setTimeout(function() {
                         joinSession(session, joinAs);
                     }, 1000);

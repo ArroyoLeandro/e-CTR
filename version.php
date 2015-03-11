@@ -28,7 +28,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2015021100;	// La version actual del Plugin (Fecha: YYYYMMDDXX).
-$plugin->requires  = 2015010200;	// Requires this Moodle version.
+$plugin->requires  = 2014051200;	// Requires this Moodle version.
 $plugin->cron      = 0;				// Periodo del cron para comprobar este plugin (secs).
 $plugin->component = 'mod_ectr'; 	// Full name of the plugin (used for diagnostics).
 $plugin->maturity  = MATURITY_RC;
