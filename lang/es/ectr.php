@@ -22,7 +22,7 @@
  * if you like, and it can span multiple lines.
  *
  * @package    mod_ectr
- * @copyright  2015 Manuel Fernando & Daniel Felipe
+ * @copyright  2015 Manuel Fernando
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -35,6 +35,7 @@ $string['webrtc'] = 'e-CTR';
 $string['pluginadministration'] = 'Administración e-CTR';
 $string['pluginname'] = 'e-CTR';
 $string['signalingserver'] = 'Servidor de señalización';
+$string['serversignaling'] = 'ws://servidor-nodejs-ectr-194738.sae1.nitrousbox.com:4000';
 $string['signalingserver_help'] = "Esta es la dirección ip y el puerto del servidor de señalización.";
 $string['ectrname'] = 'Nombre';
 $string['ectrname_help'] = 'Nombre de la actividad que aparecerá en la página del curso.';

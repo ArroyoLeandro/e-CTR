@@ -1,6 +1,6 @@
 // Ultima actualizacion del plugin, agosto 19, 2014, 14:46:23
 
-// Adaptado a Moodle por Manuel Fernando & Daniel Felipe
+// Adaptado a Moodle por Manuel Fernando
 // Basado en el proyecto WebRTC Experiments By Muaz Khan 
 // Muaz Khan     - www.MuazKhan.com
 // MIT License   - www.WebRTC-Experiment.com/licence

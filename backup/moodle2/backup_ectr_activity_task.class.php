@@ -19,7 +19,7 @@
  *
  * @package   mod_ectr
  * @category  backup
- * @copyright 2015 Manuel Fernando & Daniel Felipe
+ * @copyright 2015 Manuel Fernando
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -32,7 +32,7 @@ require_once($CFG->dirroot . '/mod/ectr/backup/moodle2/backup_ectr_stepslib.php'
  *
  * @package   mod_ectr
  * @category  backup
- * @copyright 2015 Manuel Fernando & Daniel Felipe
+ * @copyright 2015 Manuel Fernando
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_ectr_activity_task extends backup_activity_task {

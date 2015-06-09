@@ -18,7 +18,7 @@
  * Listas de instancias del evento mod_ectr.
  *
  * @package    mod_ectr
- * @copyright  2015 Manuel Fernando & Daniel Felipe
+ * @copyright  2015 Manuel Fernando
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -30,7 +30,7 @@ defined('MOODLE_INTERNAL') || die();
  * La lista de la clase de eventos de instancias mod_ectr vistos.
  *
  * @package    mod_ectr
- * @copyright  2015 Manuel Fernando & Daniel Felipe
+ * @copyright  2015 Manuel Fernando
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class course_module_instance_list_viewed extends \core\event\course_module_instance_list_viewed {

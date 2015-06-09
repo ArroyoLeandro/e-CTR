@@ -19,7 +19,7 @@
  *
  * @package   mod_ectr
  * @category  backup
- * @copyright 2015 Manuel Fernando & Daniel Felipe
+ * @copyright 2015 Manuel Fernando
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -32,7 +32,7 @@ require_once($CFG->dirroot . '/mod/ectr/backup/moodle2/restore_ectr_stepslib.php
  *
  * @package   mod_ectr
  * @category  backup
- * @copyright 2015 Manuel Fernando & Daniel Felipe
+ * @copyright 2015 Manuel Fernando
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_ectr_activity_task extends restore_activity_task {

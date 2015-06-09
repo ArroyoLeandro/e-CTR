@@ -19,12 +19,12 @@ video {
 
 .chat li.left .chat-body
 {
-    margin-left: 60px;
+    margin-left: 3px;
 }
 
 .chat li.right .chat-body
 {
-    margin-right: 60px;
+    margin-right: 3px;
 }
 
 
@@ -54,7 +54,8 @@ video {
 
 .imgchat {
     position: relative;
-    max-width: 50px;
+    width: 40px;
+    height: 50px;
     float: left;
     margin-right: 15px;
 }
@@ -103,11 +104,6 @@ a {
     max-width: 50px;
     float: left;
     margin-right: 15px;
-}
-
-.listaul li:first-child {
-    font-size: 1.125em;
-    font-weight: 300;
 }
 
 .listaul li {

@@ -24,7 +24,7 @@
  * todo serán la base de datos neutro, utilizando las funciones definidas en librerías DLL.
  *
  * @package    mod_ectr
- * @copyright  2015 Manuel Fernando & Daniel Felipe
+ * @copyright  2015 Manuel Fernando
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
