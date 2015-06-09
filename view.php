@@ -18,7 +18,7 @@
  * Imprime la vista de la instancia e-CTR
  *
  * @package    mod_ectr
- * @copyright  2015 Manuel Fernando & Daniel Felipe
+ * @copyright  2015 Manuel Fernando
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -75,7 +75,7 @@ echo '<div class="row">
             <div class="panel panel-default">
               <!-- Default panel contents -->
         <div class="panel-heading">
-          <span class="glyphicon glyphicon-user"></span> Usuarios
+          <span class="glyphicon glyphicon-user"></span> Usuarios Online
           <div class="btn-group pull-right">
                         <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
                             <span class="glyphicon glyphicon-chevron-down"></span>
@@ -86,7 +86,7 @@ echo '<div class="row">
                             <li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-earphone">
                             </span>Llamada de audio</a></li>
                             <li class="divider"></li>
-                            <li><a href="javascript:document.location.reload()"><span class="glyphicon glyphicon-refresh"></span>Refrescar</a></li>
+                            <li><a href="javascript:document.location.reload()"><span class="glyphicon glyphicon-refresh"></span>Actualizar estado</a></li>
                             <li><a href="javascript:history.back()"><span class="glyphicon glyphicon-off"></span>Cerrar Sesión</a></li>
                         </ul>
                     </div> <!-- btn-group pull-right-->
@@ -94,19 +94,19 @@ echo '<div class="row">
         <div class="panel-body-user">
           <ul class="listaul user-list">
             <li class="list-group-item media">
-              <img src="http://bootdey.com/img/Content/user_1.jpg" alt="">
+              <img src="pix/manuel.jpg" alt="" class="imgchat">
                         <a href="#" class="user-link">Manuel Fernando Marulanda</a>
-                        <span><h6>Estudiante <span class="label label-success">online</span></h6></span>
+                        <span class="user-link"><h6>Estudiante <span class="label label-success">online</span></h6></span>
             </li>
             <li class="list-group-item media">
-              <img src="http://bootdey.com/img/Content/user_3.jpg" alt="">
+              <img src="pix/foto-perfil.jpg" alt="" class="imgchat">
                         <a href="#" class="user-link">Carlos Andres Marin</a>
-                        <span><h6>Tutor <span class="label label-default">offline</span></h6></span>
+                        <span class="user-link"><h6>Tutor <span class="label label-default">offline</span></h6></span>
             </li>
             <li class="list-group-item media">
-              <img src="http://bootdey.com/img/Content/user_2.jpg" alt="">
+              <img src="pix/foto.jpg" alt="" class="imgchat">
                         <a href="#" class="user-link">Andrea Carolina</a>
-                        <span><h6>Estudiante <span class="label label-danger">inactive</span></h6></span>
+                        <span class="user-link"><h6 >Estudiante <span class="label label-danger">inactive</span></h6></span>
             </li>
           </ul> <!-- END listaul user-list-->
         </div> <!-- END panel-body-->
@@ -123,9 +123,11 @@ echo '<div class="row">
                     <span class="glyphicon glyphicon-comment"></span> Chat
                 </div> <!-- END panel-heading-->
                 <div class="panel-body">
+                <div id="chat-output"></div> <!-- chat-->
+                <div id="file-progress"></div> <!-- archivos p2p-->
                     <ul class="chat">
                         <li class="left clearfix"><span class="chat-img pull-left">
-                            <img src="http://bootdey.com/img/Content/user_1.jpg" alt="User Avatar" class="img-circle imgchat" />
+                            <img src="pix/manuel.jpg" alt="User Avatar" class="imgchat" />
                         </span>
                             <div class="chat-body clearfix">
                                 <div class="header">
@@ -138,22 +140,9 @@ echo '<div class="row">
                                 </p>
                             </div> <!-- END hat-body clearfix-->
                         </li>
-                        <li class="right clearfix"><span class="chat-img pull-right">
-                            <img src="http://bootdey.com/img/Content/user_2.jpg" alt="User Avatar" class="img-circle imgchat" />
-                        </span>
-                            <div class="chat-body clearfix">
-                                <div class="header">
-                                    <small class=" text-muted"><span class="glyphicon glyphicon-time"></span>13 mins ago</small>
-                                    <strong class="pull-right primary-font">Carlos Andres Marin</strong>
-                                </div>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                    dolor, quis ullamcorper ligula sodales.
-                                </p>
-                            </div> <!-- END chat-body clearfix-->
-                        </li>
+                        
                         <li class="left clearfix"><span class="chat-img pull-left">
-                            <img src="http://bootdey.com/img/Content/user_3.jpg" alt="User Avatar" class="img-circle imgchat" />
+                            <img src="pix/foto.jpg" alt="User Avatar" class="imgchat" />
                         </span>
                             <div class="chat-body clearfix">
                                 <div class="header">
@@ -166,19 +155,37 @@ echo '<div class="row">
                                 </p>
                             </div>
                         </li>
-                        <li class="right clearfix"><span class="chat-img pull-right">
-                            <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
+                        <li class="left clearfix"><span class="chat-img pull-left">
+                            <img src="pix/foto-perfil.jpg" alt="User Avatar" class="imgchat" />
                         </span>
                             <div class="chat-body clearfix">
                                 <div class="header">
-                                    <small class=" text-muted"><span class="glyphicon glyphicon-time"></span>15 mins ago</small>
-                                    <strong class="pull-right primary-font">Bhaumik Patel</strong>
+                                    <strong class="primary-font">Carlos Andres Marin</strong> <small class="pull-right text-muted">
+                                        <span class="glyphicon glyphicon-time"></span>14 mins ago</small>
                                 </div> <!-- END header-->
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
                                     dolor, quis ullamcorper ligula sodales.
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                    dolor, quis ullamcorper ligula sodales. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                    dolor, quis ullamcorper ligula sodales.
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                    dolor, quis ullamcorper ligula sodales.
                                 </p>
-                            </div> <!-- END cat-body clearfix-->
+                            </div>
+                        </li>
+                        <li class="left clearfix"><span class="chat-img pull-left">
+                            <img src="pix/manuel.jpg" alt="User Avatar" class="imgchat" />
+                        </span>
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <strong class="primary-font">Manuel Fernando Marulanda</strong> <small class="pull-right text-muted">
+                                        <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
+                                </div>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                </p>
+                            </div> <!-- END hat-body clearfix-->
                         </li>
                     </ul>
                 </div> <!-- END panel-body-->
@@ -195,6 +202,7 @@ echo '<div class="row">
                         </span>
                     </div>
                 </div> <!-- END panel-footer-->
+
             </div> <!-- END panel panel-primary-->
         </div> <!-- col-sm-12 col-md-7-->
     </div> <!-- END row-->';
@@ -240,14 +248,11 @@ echo '<section class="experiment">
                   <td>
                       <h2 style="display: block; font-size: 1em; text-align: center;">Texto del chat</h2>
 
-                      <div id="chat-output"></div>
                       <input type="text" id="chat-input" style="font-size: 1.2em;" placeholder="chat message" disabled>
                   </td>
                   <td style="background: white;">
                       <h2 style="display: block; font-size: 1em; text-align: center;">Compartir archivos</h2>
                       <input type="file" id="file" disabled>
-
-                      <div id="file-progress"></div>
                   </td>
               </tr>
           </table>

@@ -19,7 +19,7 @@
  *
  * @package   mod_ectr
  * @category  backup
- * @copyright 2015 Manuel Fernando & Daniel Felipe
+ * @copyright 2015 Manuel Fernando
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -30,7 +30,7 @@ defined('MOODLE_INTERNAL') || die;
  *
  * @package   mod_ectr
  * @category  backup
- * @copyright 2015 Manuel Fernando & Daniel Felipe
+ * @copyright 2015 Manuel Fernando
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_ectr_activity_structure_step extends backup_activity_structure_step {

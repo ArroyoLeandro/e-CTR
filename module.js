@@ -1,8 +1,7 @@
-// Adaptado a Moodle por Manuel Fernando & Daniel Felipe
+// Adaptado a Moodle por Manuel Fernando
 // Basado en el proyecto WebRTC Experiments By Muaz Khan 
 // Muaz Khan     - www.MuazKhan.com
 // MIT License   - www.WebRTC-Experiment.com/licence
-// Documentación - www.RTCMultiConnection.org
 
 M.mod_ectr = {};
 
@@ -171,7 +170,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     };
 
     connection.onclose = function(e) {
-        appendDIV('La conexión de datos de ha cerrado entre usted y ' + e.userid);
+        appendDIV('La conexión de datos se ha cerrado entre usted y ' + e.userid);
     };
 
     connection.onleave = function(e) {

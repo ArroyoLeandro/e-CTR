@@ -14,22 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Se define la version de e-CTR
- *
- * Este fragmento de código es llamado moodle_needs_upgrading () y
- * /admin/index.php
- *
- * @package    mod_ectr
- * @copyright  2015 Manuel Fernando
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
+defined('MOODLE_INTERNAL') || die;
 
-defined('MOODLE_INTERNAL') || die();
+if ($ADMIN->fulltree) {
 
-$plugin->version   = 2015021100;	// La version actual del Plugin (Fecha: YYYYMMDDXX).
-$plugin->requires  = 2014051200;	// Requires this Moodle version.
-$plugin->cron      = 0;				// Periodo del cron para comprobar este plugin (secs).
-$plugin->component = 'mod_ectr'; 	// Full name of the plugin (used for diagnostics).
-$plugin->maturity  = MATURITY_RC;
-$plugin->release   = '0.1';
+   $settings->add(new admin_setting_configtext('ectr_old_ping', 'Parametros de configuracion' ));
+
+}
+
+

@@ -19,7 +19,7 @@
  * lib.php/modulename_install() post installation hook and partially defaults.php
  *
  * @package    mod_ectr
- * @copyright  2015 Manuel Fernando & Daniel Felipe
+ * @copyright  2015 Manuel Fernando
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

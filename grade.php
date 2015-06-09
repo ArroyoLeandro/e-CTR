@@ -20,7 +20,7 @@
  *
  * @package   mod_ectr
  * @category  grade
- * @copyright 2015 Manuel Fernando & Daniel Felipe
+ * @copyright 2015 Manuel Fernando
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

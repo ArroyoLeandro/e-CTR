@@ -19,7 +19,7 @@
  *
  * @package   mod_ectr
  * @category  backup
- * @copyright 2015 Manuel Fernando & Daniel Felipe
+ * @copyright 2015 Manuel Fernando
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -28,7 +28,7 @@
  *
  * @package   mod_ectr
  * @category  backup
- * @copyright 2015 Manuel Fernando & Daniel Felipe
+ * @copyright 2015 Manuel Fernando
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_ectr_activity_structure_step extends restore_activity_structure_step {
