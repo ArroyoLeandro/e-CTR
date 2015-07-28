@@ -31,107 +31,152 @@ $n  = optional_param('n', 0, PARAM_INT);  // ... e-CTR instancia ID
 if ($id) {
     $cm         = get_coursemodule_from_id('ectr', $id, 0, false, MUST_EXIST);
     $course     = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-    $webrtc  = $DB->get_record('ectr', array('id' => $cm->instance), '*', MUST_EXIST);
+    $webrtc     = $DB->get_record('ectr', array('id' => $cm->instance), '*', MUST_EXIST);
 } else if ($n) {
-    $webrtc  = $DB->get_record('ectr', array('id' => $n), '*', MUST_EXIST);
+    $webrtc     = $DB->get_record('ectr', array('id' => $n), '*', MUST_EXIST);
     $course     = $DB->get_record('course', array('id' => $webrtc->course), '*', MUST_EXIST);
     $cm         = get_coursemodule_from_instance('ectr', $webrtc->id, $course->id, false, MUST_EXIST);
 } else {
-    error('Debe de especificar un ID course_module o un ID de la instancia');
+    error('Debe de especificar un ID course_module o ID de la instancia');
 }
 
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
+
+// Muestro algo de informacion para los invitados.
+if (isguestuser()) {
+    $PAGE->set_title($ectr->name);
+    echo $OUTPUT->header();
+    echo $OUTPUT->confirm('<p>'.get_string('noguests', 'ectr').'</p>'.get_string('liketologin'),
+            get_login_url(), $CFG->wwwroot.'/course/view.php?id='.$course->id);
+
+    echo $OUTPUT->footer();
+    exit;
+}
 
 $event = mod_ectr\event\course_module_viewed::create(array(
     'objectid' => $PAGE->cm->instance,
     'context' => $PAGE->context,
 ));
 $event->add_record_snapshot('course', $PAGE->course);
-// En la siguiente línea se puede utilizar $PAGE-> activityrecord si la ha establecido, o se salta esta línea si usted no tiene un registro.
+// En la siguiente línea se puede utilizar $PAGE-> activityrecord si se ha establecido, o se salta esta línea si no se tiene un registro.
 $event->add_record_snapshot($PAGE->cm->modname, $webrtc);
 $event->trigger();
 
-// Imprimir el encabezado de la página.
+// Inicializo $PAGE  página.
 $PAGE->set_url('/mod/ectr/view.php', array('id' => $cm->id));
 $PAGE->set_title(format_string($webrtc->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
-$PAGE->requires->css('/mod/ectr/styles.css');
-$PAGE->requires->css('/mod/ectr/bootstrap/css/bootstrap.min.css');
-$PAGE->requires->js('/mod/ectr/bootstrap/js/bootstrap.js');
+// Otras opciones que se pueden configurar - o eliminar si es necesario
+//$PAGE->set_cacheable(false); // Cache por parte del cliente, por default es true
+//$PAGE->set_focuscontrol('some-html-id');
 
-// Imprimir el encabezado de pagina
+$PAGE->requires->css('/mod/ectr/css/styles.css');
+$PAGE->requires->css('/mod/ectr/bootstrap/css/bootstrap.min.css');
+//$PAGE->requires->js('/mod/ectr/bootstrap/js/bootstrap.js');
+//$PAGE->requires->js('/mod/ectr/js/jquery-2.1.4.min.js');
+//$PAGE->requires->js('/mod/ectr/module.js',true);
+//$PAGE->requires->js('/mod/ectr/js/RTCMultiConnection.js',true);
+//$PAGE->requires->js('/mod/ectr/js/socket.io.js',true);
+//$PAGE->requires->js('/mod/ectr/js/DataChannel.js',true);
+
+// Imprimo el encabezado de pagina
 echo $OUTPUT->header();
+
+// Compruebo si los grupos se están utilizando aquí.
+$groupmode = groups_get_activity_groupmode($cm);
+$currentgroup = groups_get_activity_group($cm, true);
+
+// Parametros de URL
+$params = array();
+if ($currentgroup) {
+    $groupselect = " AND groupid = '$currentgroup'";
+    $groupparam = "_group{$currentgroup}";
+    $params['groupid'] = $currentgroup;
+} else {
+    $groupselect = "";
+    $groupparam = "";
+}
 
 // Condiciones que deben mostrar la intro, se cambia o se ajusta con parametros propios.
 if ($webrtc->intro) {
     echo $OUTPUT->box(format_module_intro('ectr', $webrtc, $cm->id), 'generalbox mod_introbox', 'ebrtcintro');
 }
 
-echo '';
-echo '<div class="row">
+// Mostrar grupos
+//groups_print_activity_menu($cm, $CFG->wwwroot . "/mod/ectr/view.php?id=$cm->id");
+
+//$grupo = 'grupo';
+//$link = '<a href="'.$CFG->wwwroot."/mod/ectr/view.php?id=$cm->id".'&grupo='.$currentgroup.'">'.$grupo.'</a>';
+//echo $link;
+
+// href del grupo del usuario
+$groupid = optional_param('groupid', 0, PARAM_INT); // Solo para profesores.
+
+/*echo "<script>
+  var hash = window.location.hash.replace('#grupo=', '');
+  if (!hash.length) {
+      location.href = location.href + '#grupo=' + '".$currentgroup."';
+      location.reload();
+  }
+</script>";*/
+
+echo '<script src="js/socket.io.js"></script>';
+echo '<script src="js/RTCMultiConnection.js"></script>';
+echo '<script src="js/module.js"></script>';
+
+echo " <script>
+            document.createElement('article');
+            document.createElement('footer');
+        </script>";
+/*echo '<script>
+            document.createElement("article");
+            document.createElement("footer");
+        </script>
+<div class="row">
         <div class="col-sm-12 col-md-5 sidebar-offcanvas">
-            <div class="panel panel-default">
-              <!-- Default panel contents -->
-        <div class="panel-heading">
-          <span class="glyphicon glyphicon-user"></span> Usuarios Online
-          <div class="btn-group pull-right">
-                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                            <span class="glyphicon glyphicon-chevron-down"></span>
-                        </button>
-                        <ul class="dropdown-menu slidedown">
-                            <li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-facetime-video">
-                            </span>Video llamada</a></li>
-                            <li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-earphone">
-                            </span>Llamada de audio</a></li>
-                            <li class="divider"></li>
-                            <li><a href="javascript:document.location.reload()"><span class="glyphicon glyphicon-refresh"></span>Actualizar estado</a></li>
-                            <li><a href="javascript:history.back()"><span class="glyphicon glyphicon-off"></span>Cerrar Sesión</a></li>
-                        </ul>
-                    </div> <!-- btn-group pull-right-->
-        </div> <!-- END panel-heading-->
-        <div class="panel-body-user">
-          <ul class="listaul user-list">
-            <li class="list-group-item media">
-              <img src="pix/manuel.jpg" alt="" class="imgchat">
-                        <a href="#" class="user-link">Manuel Fernando Marulanda</a>
-                        <span class="user-link"><h6>Estudiante <span class="label label-success">online</span></h6></span>
-            </li>
-            <li class="list-group-item media">
-              <img src="pix/foto-perfil.jpg" alt="" class="imgchat">
-                        <a href="#" class="user-link">Carlos Andres Marin</a>
-                        <span class="user-link"><h6>Tutor <span class="label label-default">offline</span></h6></span>
-            </li>
-            <li class="list-group-item media">
-              <img src="pix/foto.jpg" alt="" class="imgchat">
-                        <a href="#" class="user-link">Andrea Carolina</a>
-                        <span class="user-link"><h6 >Estudiante <span class="label label-danger">inactive</span></h6></span>
-            </li>
-          </ul> <!-- END listaul user-list-->
-        </div> <!-- END panel-body-->
-            </div> <!-- END panel panel-defaul -->
+        <div class="panel panel-primary">
+  <div class="panel-heading">
+    <span class="glyphicon glyphicon-user"></span>Usuarios Conectados - Grupo: '.$currentgroup.'
+  </div>
+  <ul class="list-group">
+      <li class="list-group-item" ng-repeat="peer in peers">
+          <div class="btn-group btn-group-xs pull-right">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+              Acción <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="javascript:void(0)" ng-click="setMessageTarget(peer.user)">Mensaje directo</a></li>
+              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Video llamada</a></li>
+              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Llamada de audio</a></li>
+            </ul>
+          </div>
+         <img src="pix/manuel.jpg" alt="" class="imgchat">
+            <a href="" class="user-perfil">Manuel Fernando Marulanda Aguirre</a>
+            <span class="user-perfil"><h6>Estudiante <span class="label label-success">online</span></h6></span>
+      </li>
+  </ul>
+</div> 
         </div> <!-- END col-sm-10 col-md-5 sidebar-offcanvas-->
         <div class="col-sm-12 col-md-7">
-            <div class="panel panel-default">
+            <div class="panel panel-primary">
             <!-- local/remote contenedor del video -->
           <div id="videos-container"></div>
                </div>
                 
-            <div class="panel panel-default">
+            <div class="panel panel-primary">
                 <div class="panel-heading">
                     <span class="glyphicon glyphicon-comment"></span> Chat
                 </div> <!-- END panel-heading-->
-                <div class="panel-body">
-                <div id="chat-output"></div> <!-- chat-->
-                <div id="file-progress"></div> <!-- archivos p2p-->
+                <div class="panel-body">               
                     <ul class="chat">
                         <li class="left clearfix"><span class="chat-img pull-left">
                             <img src="pix/manuel.jpg" alt="User Avatar" class="imgchat" />
                         </span>
                             <div class="chat-body clearfix">
                                 <div class="header">
-                                    <strong class="primary-font">Manuel Fernando Marulanda</strong> <small class="pull-right text-muted">
+                                    <strong class="primary-font">Manuel Fernando Marulanda Aguirre</strong> <small class="pull-right text-muted">
                                         <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
                                 </div>
                                 <p>
@@ -156,30 +201,11 @@ echo '<div class="row">
                             </div>
                         </li>
                         <li class="left clearfix"><span class="chat-img pull-left">
-                            <img src="pix/foto-perfil.jpg" alt="User Avatar" class="imgchat" />
-                        </span>
-                            <div class="chat-body clearfix">
-                                <div class="header">
-                                    <strong class="primary-font">Carlos Andres Marin</strong> <small class="pull-right text-muted">
-                                        <span class="glyphicon glyphicon-time"></span>14 mins ago</small>
-                                </div> <!-- END header-->
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                    dolor, quis ullamcorper ligula sodales.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                    dolor, quis ullamcorper ligula sodales. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                    dolor, quis ullamcorper ligula sodales.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                    dolor, quis ullamcorper ligula sodales.
-                                </p>
-                            </div>
-                        </li>
-                        <li class="left clearfix"><span class="chat-img pull-left">
                             <img src="pix/manuel.jpg" alt="User Avatar" class="imgchat" />
                         </span>
                             <div class="chat-body clearfix">
                                 <div class="header">
-                                    <strong class="primary-font">Manuel Fernando Marulanda</strong> <small class="pull-right text-muted">
+                                    <strong class="primary-font">Manuel Fernando Marulanda Aguirre</strong> <small class="pull-right text-muted">
                                         <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
                                 </div>
                                 <p>
@@ -191,11 +217,11 @@ echo '<div class="row">
                 </div> <!-- END panel-body-->
                 <div class="panel-footer">
                     <div class="input-group">
-                        <input id="btn-input chat-input" type="text" class="form-control input-sm form-control-m" placeholder="Escriba su mensaje aquí..." style="height: 65px"></input>
+                        <textarea id="btn-input chat-input" type="text" class="form-control input-sm form-control-m" placeholder="Escriba su mensaje aquí..." ></textarea>
                         <span class="input-group-btn btn-enviar-chat">
-                            <span>
+                            <!-- <span>
                                 <button type="button" class="btn btn-success btn-sm" id="btn-chat" value="Enviar">Enviar</button></br>
-                            </span>
+                            </span> -->
                             <span>
                                 <img class="img-adjuntar" src="pix/adjuntar.png" alt="Enviar Archivo" title="Enviar Archivo">
                             </span>
@@ -205,38 +231,8 @@ echo '<div class="row">
 
             </div> <!-- END panel panel-primary-->
         </div> <!-- col-sm-12 col-md-7-->
-    </div> <!-- END row-->';
-echo '<section class="experiment">
-          <h2 class="header" id="feedback">Seleccione "sessionType" y "Dirección de-Flow!"</h2>
-          <section>
-              <select id="session" title="Session">
-                  <option>audio+video+data+screen</option>
-                  <option selected>audio+video+data</option>
-                  <option>audio+video+screen</option>
-                  <option>audio+data+screen</option>
-                  <option>audio+video</option>
-                  <option>audio+screen</option>
-                  <option>video+screen</option>
-                  <option>data+screen</option>
-                  <option>audio+data</option>
-                  <option>video+data</option>
-                  <option>audio</option>
-                  <option>video</option>
-                  <option>data</option>
-                  <option>screen</option>
-              </select>
-              <select id="direction" title="Direction">
-                  <option>many-to-many</option>
-                  <option>one-to-one</option>
-                  <option>one-to-many</option>
-                  <option>one-way</option>
-              </select>
-              <button id="setup-new-session" class="setup">Nueva Sesion</button>
-          </section>
-          
-          <!-- Lista de todas las salas disponibles -->
-          <table style="width: 100%;" id="rooms-list"></table>
-          
+</div> <!-- END row-->';
+echo '<section class="experiment">          
           <!-- local/remote contenedor del video -->
           <div id="videos-container"></div>
       </section>
@@ -247,21 +243,43 @@ echo '<section class="experiment">
               <tr>
                   <td>
                       <h2 style="display: block; font-size: 1em; text-align: center;">Texto del chat</h2>
-
+                      <div id="chat-output"></div> <!-- chat-->
+                      <input type="text" id="user-id" style="font-size: 1.2em; margin-right: 0; width: 5em;" placeholder="all" disabled="" title="Enter user-id to send direct messages.">
                       <input type="text" id="chat-input" style="font-size: 1.2em;" placeholder="chat message" disabled>
                   </td>
                   <td style="background: white;">
                       <h2 style="display: block; font-size: 1em; text-align: center;">Compartir archivos</h2>
                       <input type="file" id="file" disabled>
+                      <div id="file-progress"></div> <!-- archivos p2p-->
                   </td>
               </tr>
           </table>
       </section>';
+*/
+echo '<table style="border-left: 1px solid black; width: 100%;">
+                <tr>
+                    <td>
+                        <h2 style="display: block; font-size: 1em; text-align: center;">Text Chat</h2>
 
-$PAGE->requires->js('/mod/ectr/getMediaElement.js');
-$PAGE->requires->js('/mod/ectr/RTCMultiConnection.js');
-//$PAGE->requires->js('/mod/ectr/module2.js');
-$PAGE->requires->js_init_call('M.mod_ectr.init_meeting', array($webrtc->signalingserver, fullname($USER)));
+                        <div id="chat-output"></div>
+
+                        <input type="text" id="user-id" style="font-size: 1.2em; margin-right: 0; width: 5em;" placeholder="all"
+                               title="Enter user-id to send direct messages." disabled>
+                        <input type="text" id="chat-input" style="font-size: 1.2em; margin-left: -.5em; width: 18em;"
+                               placeholder="chat message" disabled>
+                    </td>
+                    <td style="background: white; border-left: 1px solid black;">
+                        <h2 style="display: block; font-size: 1em; text-align: center;">Share Files</h2>
+                        <input type="file" id="file" disabled>
+
+                        <div id="file-progress"></div>
+                    </td>
+                </tr>
+            </table>';
+echo '<script src="js/mod.js"></script>';
+//$PAGE->requires->js('/mod/ectr/js/getMediaElement.js');
+//$PAGE->requires->js('/mod/ectr/module.js');
+//$PAGE->requires->js_init_call('M.mod_ectr.init_meeting', array($webrtc->signalingserver, fullname($USER)));
 
 // Termina la pagina.
 echo $OUTPUT->footer();

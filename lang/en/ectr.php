@@ -40,3 +40,4 @@ $string['signalingserver_help'] = "This is the address and port of signaling ser
 $string['ectrname'] = 'Name';
 $string['ectrname_help'] = 'Name of the activity that will appear on course page.';
 $string['loadinglistmessage'] = 'Loading list. If this message does not disappear in a few seconds, there is no meetings happening. You can always start new one.';
+$string['noguests'] = 'The chat is not open to guests';

@@ -1,11 +1,12 @@
-// Adaptado a Moodle por Manuel Fernando
-// Basado en el proyecto WebRTC Experiments By Muaz Khan 
+// Adapted to Moodle by Daniel Neis
+// Original work:
 // Muaz Khan     - www.MuazKhan.com
 // MIT License   - www.WebRTC-Experiment.com/licence
+// Documentation - www.RTCMultiConnection.org
 
-M.mod_ectr = {};
+M.mod_webrtcexperiments = {};
 
-M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
+M.mod_webrtcexperiments.init_meeting = function(Y, signalingserver, username) {
 
     var connection = new RTCMultiConnection();
     connection.firebase = false;
@@ -58,8 +59,8 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         sessions[session.sessionid] = session;
 
         var tr = document.createElement('tr');
-        tr.innerHTML = '<td>Hay una sesión activa.</td>' +
-            '<td><button class="join">Unirme</button></td>';
+        tr.innerHTML = '<td>There is an active session.</td>' +
+            '<td><button class="join">Join</button></td>';
         roomsList.insertBefore(tr, roomsList.firstChild);
 
         tr.querySelector('.join').setAttribute('data-sessionid', session.sessionid);
@@ -67,7 +68,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
             this.disabled = true;
 
             session = sessions[this.getAttribute('data-sessionid')];
-            if (!session) alert('No hay sala para unirse.');
+            if (!session) alert('No room to join.');
 
             connection.join(session);
         };
@@ -98,14 +99,14 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
                 });
             },
             onRecordingStarted: function(type) {
-                // Documentacion plugin RTCMultiConnection.org/docs/startRecording/
+                // www.RTCMultiConnection.org/docs/startRecording/
                 connection.streams[e.streamid].startRecording({
                     audio: type == 'audio',
                     video: type == 'video'
                 });
             },
             onRecordingStopped: function(type) {
-                // Documentacion plugin RTCMultiConnection.org/docs/stopRecording/
+                // www.RTCMultiConnection.org/docs/stopRecording/
                 connection.streams[e.streamid].stopRecording(function(blob) {
                     if (blob.audio) connection.saveToDisk(blob.audio);
                     else if (blob.video) connection.saveToDisk(blob.video);
@@ -145,7 +146,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
             session[splittedSession[i]] = true;
         }
 
-        var maxParticipantsAllowed = 256; //Maximo de participantes
+        var maxParticipantsAllowed = 256;
 
         if (direction == 'one-to-one') maxParticipantsAllowed = 1;
         if (direction == 'one-to-many') session.broadcast = true;
@@ -170,11 +171,11 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     };
 
     connection.onclose = function(e) {
-        appendDIV('La conexión de datos se ha cerrado entre usted y ' + e.userid);
+        appendDIV('Data connection is closed between you and ' + e.userid);
     };
 
     connection.onleave = function(e) {
-        appendDIV(e.userid + ' salio de la sesión');
+        appendDIV(e.userid + ' left the session.');
     };
 
     // on data connection gets open
@@ -237,18 +238,6 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         connection.send(this.files[0]);
     };
 
-    channelToTest = location.hash.substr(1) || 'another-channel';
-
-new Firebase('https://chat.firebaseIO.com/' + channelToTest).once('value', function (data) {
-    var isChannelPresent = data.val() != null;
-
-    // if no channel present; open new session
-    if (!isChannelPresent) connection.open('a-session-id');
-
-    // else join existing session
-    else connection.connect('a-session-id');
-});
-
     var chatInput = document.getElementById('chat-input');
     chatInput.onkeypress = function(e) {
         if (e.keyCode !== 13 || !this.value) return;
@@ -256,7 +245,7 @@ new Firebase('https://chat.firebaseIO.com/' + channelToTest).once('value', funct
         var text = current_user + ':' + this.value;
         appendDIV(text);
 
-        // enviando el mensaje de texto
+        // sending text message
         connection.send(text);
 
         this.value = '';
