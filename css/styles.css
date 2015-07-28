@@ -89,9 +89,9 @@ video {
     font-size: 0.875em;
     font-style: italic;
 }
-.user-link {
+.user-perfil {
     display: block;
-    font-size: 1.25em;
+    /*font-size: 1.25em;*/
     padding-top: 3px;
     margin-left: 60px;
 }
@@ -125,4 +125,8 @@ a {
 
 .btn-enviar-chat {
 	padding:3px;
+}
+
+.list-group {
+    margin-left: 0px;
 }

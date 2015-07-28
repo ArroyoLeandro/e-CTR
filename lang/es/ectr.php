@@ -40,3 +40,4 @@ $string['signalingserver_help'] = "Esta es la dirección ip y el puerto del serv
 $string['ectrname'] = 'Nombre';
 $string['ectrname_help'] = 'Nombre de la actividad que aparecerá en la página del curso.';
 $string['loadinglistmessage'] = 'Cargando lista. Si este mensaje no desaparece en unos pocos segundos, no hay reuniones en este momento. Siempre se puede empezar una nueva.';
+$string['noguests'] = 'El sistema de mensajería instantánea no está abierto a invitados';
