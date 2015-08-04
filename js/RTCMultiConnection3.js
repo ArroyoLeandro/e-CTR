@@ -132,8 +132,8 @@
                     connectCallback(socket);
                     return;
                 }
-
-                socket = io.connect((connection.socketURL || '/') + '?userid=' + connection.userid + '&msgEvent=' + connection.socketMessageEvent);
+                socket = io.connect('http://rtcmulticonnection-v3-manueltato11.c9.io/?userid=' + connection.userid);
+                //socket = io.connect((connection.socketURL || '/') + '?userid=' + connection.userid + '&msgEvent=' + connection.socketMessageEvent);
 
                 socket.on('extra-data-updated', function(remoteUserId, extra) {
                     if (!connection.peers[remoteUserId]) return;

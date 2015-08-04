@@ -77,8 +77,8 @@ $PAGE->requires->css('/mod/ectr/bootstrap/css/bootstrap.min.css');
 //$PAGE->requires->js('/mod/ectr/bootstrap/js/bootstrap.js');
 //$PAGE->requires->js('/mod/ectr/js/jquery-2.1.4.min.js');
 //$PAGE->requires->js('/mod/ectr/module.js',true);
-//$PAGE->requires->js('/mod/ectr/js/RTCMultiConnection.js',true);
-//$PAGE->requires->js('/mod/ectr/js/socket.io.js',true);
+//$PAGE->requires->js('/mod/ectr/js/RTCMultiConnection.js');
+//$PAGE->requires->js('/mod/ectr/js/socket.io.js');
 //$PAGE->requires->js('/mod/ectr/js/DataChannel.js',true);
 
 // Imprimo el encabezado de pagina
@@ -122,14 +122,6 @@ $groupid = optional_param('groupid', 0, PARAM_INT); // Solo para profesores.
   }
 </script>";*/
 
-echo '<script src="js/socket.io.js"></script>';
-echo '<script src="js/RTCMultiConnection.js"></script>';
-echo '<script src="js/module.js"></script>';
-
-echo " <script>
-            document.createElement('article');
-            document.createElement('footer');
-        </script>";
 /*echo '<script>
             document.createElement("article");
             document.createElement("footer");
@@ -256,7 +248,7 @@ echo '<section class="experiment">
           </table>
       </section>';
 */
-echo '<table style="border-left: 1px solid black; width: 100%;">
+/*echo '<table style="border-left: 1px solid black; width: 100%;">
                 <tr>
                     <td>
                         <h2 style="display: block; font-size: 1em; text-align: center;">Text Chat</h2>
@@ -275,11 +267,67 @@ echo '<table style="border-left: 1px solid black; width: 100%;">
                         <div id="file-progress"></div>
                     </td>
                 </tr>
-            </table>';
-echo '<script src="js/mod.js"></script>';
-//$PAGE->requires->js('/mod/ectr/js/getMediaElement.js');
-//$PAGE->requires->js('/mod/ectr/module.js');
-//$PAGE->requires->js_init_call('M.mod_ectr.init_meeting', array($webrtc->signalingserver, fullname($USER)));
+            </table>';*/
+echo '<section class="experiment">
+          <h2 class="header" id="feedback">
+              Select SessionType and Direction-of-Flow!
+          </h2>
+          
+          <section>
+              <select id="session" title="Session">
+                  <option>audio+video+data+screen</option>
+                  <option selected>audio+video+data</option>
+                  <option>audio+video+screen</option>
+                  <option>audio+data+screen</option>
+                  <option>audio+video</option>
+                  <option>audio+screen</option>
+                  <option>video+screen</option>
+                  <option>data+screen</option>
+                  <option>audio+data</option>
+                  <option>video+data</option>
+                  <option>audio</option>
+                  <option>video</option>
+                  <option>data</option>
+                  <option>screen</option>
+              </select>
+              <select id="direction" title="Direction">
+                  <option>many-to-many</option>
+                  <option>one-to-one</option>
+                  <option>one-to-many</option>
+                  <option>one-way</option>
+              </select>
+              <button id="setup-new-session" class="setup">New Session</button>
+          </section>
+          
+          <!-- list of all available broadcasting rooms -->
+          <table style="width: 100%;" id="rooms-list"></table>
+          
+          <!-- local/remote videos container -->
+          <div id="videos-container"></div>
+      </section>
+                  
+      <section class="experiment data-box">
+          <h2 class="header" style="border-bottom: 0;">WebRTC DataChannel</h2>
+          <table style="width: 100%;">
+              <tr>
+                  <td>
+                      <h2 style="display: block; font-size: 1em; text-align: center;">Text Chat</h2>
+                      <div id="chat-output"></div>
+                      <input type="text" id="chat-input" style="font-size: 1.2em;" placeholder="chat message" disabled>
+                  </td>
+                  <td style="background: white;">
+                      <h2 style="display: block; font-size: 1em; text-align: center;">Share Files</h2>
+                      <input type="file" id="file" disabled>
+                      <div id="file-progress"></div>
+                  </td>
+              </tr>
+          </table>
+      </section>';
+
+echo '';
+$PAGE->requires->js('/mod/ectr/js/getMediaElement.js');
+$PAGE->requires->js('/mod/ectr/RTCMultiConnection.js');
+$PAGE->requires->js_init_call('M.mod_ectr.init_meeting', array($webrtc->signalingserver, fullname($USER)));
 
 // Termina la pagina.
 echo $OUTPUT->footer();
