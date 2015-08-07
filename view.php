@@ -72,8 +72,8 @@ $PAGE->set_context($context);
 //$PAGE->set_cacheable(false); // Cache por parte del cliente, por default es true
 //$PAGE->set_focuscontrol('some-html-id');
 
-$PAGE->requires->css('/mod/ectr/css/styles.css');
 $PAGE->requires->css('/mod/ectr/bootstrap/css/bootstrap.min.css');
+$PAGE->requires->css('/mod/ectr/css/styles.css');
 //$PAGE->requires->js('/mod/ectr/bootstrap/js/bootstrap.js');
 //$PAGE->requires->js('/mod/ectr/js/jquery-2.1.4.min.js');
 //$PAGE->requires->js('/mod/ectr/module.js',true);
@@ -122,10 +122,7 @@ $groupid = optional_param('groupid', 0, PARAM_INT); // Solo para profesores.
   }
 </script>";*/
 
-/*echo '<script>
-            document.createElement("article");
-            document.createElement("footer");
-        </script>
+echo '
 <div class="row">
         <div class="col-sm-12 col-md-5 sidebar-offcanvas">
         <div class="panel panel-primary">
@@ -247,7 +244,6 @@ echo '<section class="experiment">
               </tr>
           </table>
       </section>';
-*/
 /*echo '<table style="border-left: 1px solid black; width: 100%;">
                 <tr>
                     <td>
