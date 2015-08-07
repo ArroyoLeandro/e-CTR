@@ -72,11 +72,11 @@ $PAGE->set_context($context);
 //$PAGE->set_cacheable(false); // Cache por parte del cliente, por default es true
 //$PAGE->set_focuscontrol('some-html-id');
 
+$PAGE->requires->js('/mod/ectr/js/jquery-2.1.4.min.js');
 $PAGE->requires->css('/mod/ectr/bootstrap/css/bootstrap.min.css');
 $PAGE->requires->css('/mod/ectr/css/font-awesome.css');
 $PAGE->requires->css('/mod/ectr/css/styles.css');
 //$PAGE->requires->js('/mod/ectr/bootstrap/js/bootstrap.js');
-//$PAGE->requires->js('/mod/ectr/js/jquery-2.1.4.min.js');
 //$PAGE->requires->js('/mod/ectr/module.js',true);
 //$PAGE->requires->js('/mod/ectr/js/RTCMultiConnection.js');
 //$PAGE->requires->js('/mod/ectr/js/socket.io.js');
@@ -139,7 +139,7 @@ echo '
             <ul class="dropdown-menu" role="menu">
               <li><a href="javascript:void(0)" ng-click="setMessageTarget(peer.user)">Mensaje directo</a></li>
               <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Video llamada</a></li>
-              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Llamada de audio</a></li>
+              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Llamada de voz</a></li>
             </ul>
           </div>
          <img src="pix/manuel.jpg" alt="" class="imgchat" />
@@ -154,10 +154,10 @@ echo '
             <ul class="dropdown-menu" role="menu">
               <li><a href="javascript:void(0)" ng-click="setMessageTarget(peer.user)">Mensaje directo</a></li>
               <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Video llamada</a></li>
-              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Llamada de audio</a></li>
+              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Llamada de voz</a></li>
             </ul>
           </div>
-         <img src="pix/manuel.jpg" alt="" class="imgchat">
+         <img src="pix/foto.jpg" alt="" class="imgchat">
             <a href="#" class="user-perfil">Shirly Robayo Montenegro</a>
             <span class="user-perfil"><h6><span class="label label-warning">inactivo</span></h6></span>
       </li>
@@ -197,7 +197,7 @@ echo '
                         </span>
                             <div class="chat-body clearfix">
                                 <div class="header">
-                                    <strong class="primary-font">Andrea Carolina</strong> <small class="pull-right text-muted">
+                                    <strong class="primary-font">Shirly Robayo Montenegro</strong> <small class="pull-right text-muted">
                                         <span class="glyphicon glyphicon-time"></span>10:40 pm</small>
                                 </div> <!-- END header-->
                                 <p>
