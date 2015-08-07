@@ -234,7 +234,7 @@ echo '
             </div> <!-- END panel panel-primary-->
         </div> <!-- col-sm-12 col-md-7-->
 </div> <!-- END row-->';
-echo '<section class="experiment">          
+/*echo '<section class="experiment">          
           <!-- local/remote contenedor del video -->
           <div id="videos-container"></div>
       </section>
@@ -256,7 +256,7 @@ echo '<section class="experiment">
                   </td>
               </tr>
           </table>
-      </section>';
+      </section>';*
 /*echo '<table style="border-left: 1px solid black; width: 100%;">
                 <tr>
                     <td>
@@ -277,7 +277,7 @@ echo '<section class="experiment">
                     </td>
                 </tr>
             </table>';*/
-echo '<section class="experiment">
+/*echo '<section class="experiment">
           <h2 class="header" id="feedback">
               Select SessionType and Direction-of-Flow!
           </h2>
@@ -331,7 +331,7 @@ echo '<section class="experiment">
                   </td>
               </tr>
           </table>
-      </section>';
+      </section>';*/
 
 echo '';
 $PAGE->requires->js('/mod/ectr/js/getMediaElement.js');
