@@ -225,6 +225,7 @@ echo '
                   <div class="input-group">
             <div class="input-wrapper">
               <input type="text" value="" placeholder="Escriba su mensaje...">
+              <span class="fa fa-camera"></span>
               <span class="fa fa-paperclip"></span>
               <span class="fa fa-smile-o"></span>
             </div>

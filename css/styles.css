@@ -145,7 +145,7 @@ a {
 }*/
 .input-group .input-wrapper input{
     height: 30px;
-    width: 90%;
+    width: 80%;
     line-height: 30px;
     border: 0;
     margin: 0;
@@ -167,6 +167,9 @@ a {
 }
 .input-group .input-wrapper span.fa-paperclip:hover {
     color: #6EA0FF;
+}
+.input-group .input-wrapper span.fa-camera:hover {
+    color: #6E6E6E;
 }
 .input-group > input{
     background: #a0b4c0;
