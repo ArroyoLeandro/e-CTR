@@ -1,0 +1,134 @@
+/*Style panel chat*/
+.chat
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.chat li
+{
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dotted #B3A9A9;
+}
+
+.chat li.left .chat-body
+{
+    margin-left: 3px;
+}
+
+.chat li.right .chat-body
+{
+    margin-right: 3px;
+}
+
+
+.chat li .chat-body p
+{
+    margin: 0;
+    color: #777777;
+}
+
+.panel .slidedown .glyphicon, .chat .glyphicon
+{
+    margin-right: 5px;
+}
+
+.panel-body
+{
+    overflow-y: scroll;
+    height: 300px;
+}
+
+.panel-body-user
+{
+    height: auto;
+    overflow-y: hidden;
+    padding: 10px;
+}
+
+.imgchat {
+    position: relative;
+    width: 40px;
+    height: 50px;
+    float: left;
+    margin-right: 15px;
+}
+
+::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar
+{
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #555;
+}
+
+/*Style usuario online*/
+
+.label {
+    border-radius: 3px;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+.user-subhead {
+    font-size: 0.875em;
+    font-style: italic;
+}
+.user-perfil {
+    display: block;
+    /*font-size: 1.25em;*/
+    padding-top: 3px;
+    margin-left: 60px;
+}
+a {
+    color: #3498db;
+    outline: none!important;
+}
+.user-list li>img {
+    position: relative;
+    max-width: 50px;
+    float: left;
+    margin-right: 15px;
+}
+
+.listaul li {
+    font-size: 0.875em;
+    vertical-align: middle;
+    border-top: 1px solid #e7ebee;
+    padding: 12px 8px;
+}
+
+.listaul {
+	margin-left: 0px;
+}
+
+.img-adjuntar {
+	width: 33px;
+	height: 33px;
+	padding: 2px;
+}
+
+.btn-enviar-chat {
+	padding:3px;
+}
+
+.list-group {
+    margin-left: 0px;
+}
+
+.list-group-item {
+    padding: 5px 5px;
+}
+
+

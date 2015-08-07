@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<title>Propuesta</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+	<link rel="stylesheet" type="text/css" href="propuesta.css">
+	<javascript src="bootstrap/js/bootstrap.js"></javascript>
+
+</head>
+<body>
+	<div class="row">
+        <div class="col-sm-12 col-md-5 sidebar-offcanvas">
+        <div class="panel panel-primary">
+  <div class="panel-heading">
+    <span class="fa fa-users"></span> Usuarios Conectados
+  </div>
+  <ul class="list-group">
+      <li class="list-group-item" ng-repeat="peer in peers">
+          <div class="btn-group btn-group-xs pull-right">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+              Acción <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="javascript:void(0)" ng-click="setMessageTarget(peer.user)">Mensaje directo</a></li>
+              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Video llamada</a></li>
+              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Llamada de audio</a></li>
+            </ul>
+          </div>
+         <img src="pix/manuel.jpg" alt="" class="imgchat">
+            <a href="" class="user-perfil">Manuel Fernando Marulanda Aguirre</a>
+            <span class="user-perfil"><h6><span class="label label-success">online</span></h6></span>
+      </li>
+      <li class="list-group-item" ng-repeat="peer in peers">
+          <div class="btn-group btn-group-xs pull-right">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+              Acción <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="javascript:void(0)" ng-click="setMessageTarget(peer.user)">Mensaje directo</a></li>
+              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Video llamada</a></li>
+              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Llamada de audio</a></li>
+            </ul>
+          </div>
+         <img src="pix/manuel.jpg" alt="" class="imgchat">
+            <a href="" class="user-perfil">Manuel Fernando Marulanda Aguirre</a>
+            <span class="user-perfil"><h6><span class="label label-success">online</span></h6></span>
+      </li>
+  </ul>
+</div> 
+        </div> <!-- END col-sm-10 col-md-5 sidebar-offcanvas-->
+        <div class="col-sm-12 col-md-7">
+            <div class="panel panel-primary">
+            <!-- local/remote contenedor del video -->
+          <div id="videos-container"></div>
+               </div>
+                
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-comment"></span> Conversación
+                </div> <!-- END panel-heading-->
+                <div class="panel-body">               
+                    <ul class="chat">
+                        <li class="left clearfix"><span class="chat-img pull-left">
+                            <img src="pix/manuel.jpg" alt="User Avatar" class="imgchat" />
+                        </span>
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <strong class="primary-font">Manuel Fernando Marulanda Aguirre</strong> <small class="pull-right text-muted">
+                                        <span class="glyphicon glyphicon-time"></span>10:45 pm</small>
+                                </div>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                    dolor, quis ullamcorper ligula sodales.
+                                </p>
+                            </div> <!-- END hat-body clearfix-->
+                        </li>
+                        
+                        <li class="left clearfix"><span class="chat-img pull-left">
+                            <img src="pix/foto.jpg" alt="User Avatar" class="imgchat" />
+                        </span>
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <strong class="primary-font">Andrea Carolina</strong> <small class="pull-right text-muted">
+                                        <span class="glyphicon glyphicon-time"></span>10:40 pm</small>
+                                </div> <!-- END header-->
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                    dolor, quis ullamcorper ligula sodales.
+                                </p>
+                            </div>
+                        </li>
+                        <li class="left clearfix"><span class="chat-img pull-left">
+                            <img src="pix/manuel.jpg" alt="User Avatar" class="imgchat" />
+                        </span>
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <strong class="primary-font">Manuel Fernando Marulanda Aguirre</strong> <small class="pull-right text-muted">
+                                        <span class="glyphicon glyphicon-time"></span>10:39 pm</small>
+                                </div>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                </p>
+                            </div> <!-- END hat-body clearfix-->
+                        </li>
+                    </ul>
+                </div> <!-- END panel-body-->
+                <div class="panel-footer">
+                    <div class="input-group">
+                        <textarea id="btn-input chat-input" type="text" class="form-control input-sm form-control-m" placeholder="Escriba su mensaje aquí..." ></textarea>
+                        <span class="input-group-btn btn-enviar-chat">
+                            <!-- <span>
+                                <button type="button" class="btn btn-success btn-sm" id="btn-chat" value="Enviar">Enviar</button></br>
+                            </span> -->
+                            <span>
+                                <img class="img-adjuntar" src="pix/adjuntar.png" alt="Enviar Archivo" title="Enviar Archivo">
+                            </span>
+                        </span>
+                    </div>
+                </div> <!-- END panel-footer-->
+
+            </div> <!-- END panel panel-primary-->
+        </div> <!-- col-sm-12 col-md-7-->
+</div> <!-- END row-->
+</body>
+</html>
