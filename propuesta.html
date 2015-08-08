@@ -8,6 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="propuesta.css">
 	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" src="propuesta.js"></script>
 
 </head>
 <body>
@@ -61,17 +62,14 @@
                 <div class="panel-heading">
                     <span class="fa fa-comment"></span> Conversación <span class="fa fa-cog"></span>
                 </div> <!-- END panel-heading-->
-                <div class="panel-body">               
-                    <ul class="chat">
-                        <li class="left clearfix"><span class="chat-img pull-left">
-                            <img src="pix/manuel.jpg" alt="User Avatar" class="imgchat img-rounded" />
-                        </span>
+                <div class="panel-body content">               
+                    <ul id="chat-list" class="chat">
+                        <li class="left clearfix">
+                            <img src="pix/manuel.jpg" alt="User Avatar" class="imgchat img-rounded chat-img pull-left" />
                             <div class="chat-body clearfix">
-                                <div class="header">
-                                    <strong class="primary-font">Manuel Fernando Marulanda Aguirre</strong> <small class="pull-right text-muted">
-                                        <span class="glyphicon glyphicon-time"></span>10:45 pm</small>
-                                </div>
-                                <p>
+                                <strong class="primary-font">Manuel Fernando Marulanda Aguirre</strong>
+                                <small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>10:45 pm</small>
+                                <p class="content">
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
                                     dolor, quis ullamcorper ligula sodales. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
                                     dolor, quis ullamcorper ligula sodales.
@@ -79,28 +77,22 @@
                             </div> <!-- END hat-body clearfix-->
                         </li>
                         
-                        <li class="left clearfix"><span class="chat-img pull-left">
-                            <img src="pix/foto.jpg" alt="User Avatar" class="imgchat img-rounded" />
-                        </span>
+                        <li class="left clearfix">
+                            <img src="pix/foto.jpg" alt="User Avatar" class="imgchat img-rounded chat-img pull-left" />
                             <div class="chat-body clearfix">
-                                <div class="header">
-                                    <strong class="primary-font">Shirly Robayo Montenegro</strong> <small class="pull-right text-muted">
-                                        <span class="glyphicon glyphicon-time"></span>10:40 pm</small>
-                                </div> <!-- END header-->
+                                <strong class="primary-font">Shirly Robayo Montenegro</strong>
+                                <small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>10:40 pm</small>
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
                                     dolor, quis ullamcorper ligula sodales.
                                 </p>
                             </div>
                         </li>
-                        <li class="left clearfix"><span class="chat-img pull-left">
-                            <img src="pix/manuel.jpg" alt="User Avatar" class="imgchat img-rounded" />
-                        </span>
+                        <li class="left clearfix">
+                            <img src="pix/manuel.jpg" alt="User Avatar" class="imgchat img-rounded chat-img pull-left" />
                             <div class="chat-body clearfix">
-                                <div class="header">
-                                    <strong class="primary-font">Manuel Fernando Marulanda Aguirre</strong> <small class="pull-right text-muted">
-                                        <span class="glyphicon glyphicon-time"></span>10:39 pm</small>
-                                </div>
+                                <strong class="primary-font">Manuel Fernando Marulanda Aguirre</strong>
+                                <small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>10:39 pm</small>
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                                 </p>
@@ -111,7 +103,7 @@
                 <div class="panel-footer">
 	                <div class="input-group">
 						<div class="input-wrapper">
-							<input type="text" value="" placeholder="Escriba su mensaje...">
+							<input id="text" type="text" value="" placeholder="Escriba su mensaje...">
 							<span class="fa fa-camera"></span>
 							<span class="fa fa-paperclip"></span>
 							<span class="fa fa-smile-o"></span>
