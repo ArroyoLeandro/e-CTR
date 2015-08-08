@@ -185,3 +185,8 @@ a {
     font-family: 'Open Sans', Arial, sans-serif;
     outline: none;
 }
+.conf{
+    float: right;
+    font-size: 18px;
+    cursor: pointer;
+}
