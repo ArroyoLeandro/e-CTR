@@ -125,43 +125,43 @@ $groupid = optional_param('groupid', 0, PARAM_INT); // Solo para profesores.
 
 echo '
 <div class="row">
-        <div class="col-sm-12 col-md-5 sidebar-offcanvas">
-        <div class="panel panel-primary">
-  <div class="panel-heading">
-    <span class="fa fa-users"></span> Usuarios Conectados
-  </div>
-  <ul class="list-group">
-      <li class="list-group-item" ng-repeat="peer in peers">
-          <div class="btn-group btn-group-xs pull-right">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-              Acción <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="javascript:void(0)" ng-click="setMessageTarget(peer.user)">Mensaje directo</a></li>
-              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Video llamada</a></li>
-              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Llamada de voz</a></li>
-            </ul>
-          </div>
-         <img src="pix/manuel.jpg" alt="" class="imgchat" />
-            <a href="#" class="user-perfil">Manuel Fernando Marulanda Aguirre</a>
-            <span class="user-perfil"><h6><span class="label label-success">online</span></h6></span>
-      </li>
-      <li class="list-group-item" ng-repeat="peer in peers">
-          <div class="btn-group btn-group-xs pull-right">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-              Acción <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="javascript:void(0)" ng-click="setMessageTarget(peer.user)">Mensaje directo</a></li>
-              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Video llamada</a></li>
-              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Llamada de voz</a></li>
-            </ul>
-          </div>
-         <img src="pix/foto.jpg" alt="" class="imgchat">
-            <a href="#" class="user-perfil">Shirly Robayo Montenegro</a>
-            <span class="user-perfil"><h6><span class="label label-warning">inactivo</span></h6></span>
-      </li>
-  </ul>
+  <div class="col-sm-12 col-md-5 sidebar-offcanvas">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <span class="fa fa-users"></span> Usuarios Conectados
+    </div>
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat="peer in peers">
+            <div class="btn-group btn-group-xs pull-right">
+              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                Acción <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="javascript:void(0)" ng-click="setMessageTarget(peer.user)">Mensaje directo</a></li>
+                <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Video llamada</a></li>
+                <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Llamada de voz</a></li>
+              </ul>
+            </div>
+           <img src="pix/manuel.jpg" alt="" class="imgchat img-circle" />
+              <a href="#" class="user-perfil">Manuel Fernando Marulanda Aguirre</a>
+              <span class="user-perfil"><h6><span class="label label-success">online</span></h6></span>
+        </li>
+        <li class="list-group-item" ng-repeat="peer in peers">
+            <div class="btn-group btn-group-xs pull-right">
+              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                Acción <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="javascript:void(0)" ng-click="setMessageTarget(peer.user)">Mensaje directo</a></li>
+                <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Video llamada</a></li>
+                <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Llamada de voz</a></li>
+              </ul>
+            </div>
+           <img src="pix/foto.jpg" alt="" class="imgchat img-circle">
+              <a href="#" class="user-perfil">Shirly Robayo Montenegro</a>
+              <span class="user-perfil"><h6><span class="label label-warning">inactivo</span></h6></span>
+        </li>
+    </ul>
 </div> 
         </div> <!-- END col-sm-10 col-md-5 sidebar-offcanvas-->
         <div class="col-sm-12 col-md-7">
@@ -174,17 +174,14 @@ echo '
                 <div class="panel-heading">
                     <span class="fa fa-comment"></span> Conversación <span class="fa fa-cog" style="float: right; font-size: 18px; cursor: pointer;"></span>
                 </div> <!-- END panel-heading-->
-                <div class="panel-body">               
-                    <ul class="chat">
-                        <li class="left clearfix"><span class="chat-img pull-left">
-                            <img src="pix/manuel.jpg" alt="User Avatar" class="imgchat" />
-                        </span>
+                <div class="panel-body content">               
+                    <ul id="chat-list" class="chat">
+                        <li class="left clearfix">
+                            <img src="pix/manuel.jpg" alt="User Avatar" class="imgchat img-rounded chat-img pull-left" />
                             <div class="chat-body clearfix">
-                                <div class="header">
-                                    <strong class="primary-font">Manuel Fernando Marulanda Aguirre</strong> <small class="pull-right text-muted">
-                                        <span class="glyphicon glyphicon-time"></span>10:45 pm</small>
-                                </div>
-                                <p>
+                                <strong class="primary-font">Manuel Fernando Marulanda Aguirre</strong>
+                                <small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>10:45 pm</small>
+                                <p class="content">
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
                                     dolor, quis ullamcorper ligula sodales. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
                                     dolor, quis ullamcorper ligula sodales.
@@ -192,28 +189,22 @@ echo '
                             </div> <!-- END hat-body clearfix-->
                         </li>
                         
-                        <li class="left clearfix"><span class="chat-img pull-left">
-                            <img src="pix/foto.jpg" alt="User Avatar" class="imgchat" />
-                        </span>
+                        <li class="left clearfix">
+                            <img src="pix/foto.jpg" alt="User Avatar" class="imgchat img-rounded chat-img pull-left" />
                             <div class="chat-body clearfix">
-                                <div class="header">
-                                    <strong class="primary-font">Shirly Robayo Montenegro</strong> <small class="pull-right text-muted">
-                                        <span class="glyphicon glyphicon-time"></span>10:40 pm</small>
-                                </div> <!-- END header-->
+                                <strong class="primary-font">Shirly Robayo Montenegro</strong>
+                                <small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>10:40 pm</small>
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
                                     dolor, quis ullamcorper ligula sodales.
                                 </p>
                             </div>
                         </li>
-                        <li class="left clearfix"><span class="chat-img pull-left">
-                            <img src="pix/manuel.jpg" alt="User Avatar" class="imgchat" />
-                        </span>
+                        <li class="left clearfix">
+                            <img src="pix/manuel.jpg" alt="User Avatar" class="imgchat img-rounded chat-img pull-left" />
                             <div class="chat-body clearfix">
-                                <div class="header">
-                                    <strong class="primary-font">Manuel Fernando Marulanda Aguirre</strong> <small class="pull-right text-muted">
-                                        <span class="glyphicon glyphicon-time"></span>10:39 pm</small>
-                                </div>
+                                <strong class="primary-font">Manuel Fernando Marulanda Aguirre</strong>
+                                <small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>10:39 pm</small>
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                                 </p>
@@ -224,7 +215,7 @@ echo '
                 <div class="panel-footer">
                   <div class="input-group">
             <div class="input-wrapper">
-              <input type="text" value="" placeholder="Escriba su mensaje...">
+              <input id="text" type="text" value="" placeholder="Escriba su mensaje...">
               <span class="fa fa-camera"></span>
               <span class="fa fa-paperclip"></span>
               <span class="fa fa-smile-o"></span>
@@ -257,7 +248,7 @@ echo '
                   </td>
               </tr>
           </table>
-      </section>';*
+      </section>';*/
 /*echo '<table style="border-left: 1px solid black; width: 100%;">
                 <tr>
                     <td>
@@ -278,7 +269,7 @@ echo '
                     </td>
                 </tr>
             </table>';*/
-/*echo '<section class="experiment">
+echo '<section class="experiment">
           <h2 class="header" id="feedback">
               Select SessionType and Direction-of-Flow!
           </h2>
@@ -332,7 +323,7 @@ echo '
                   </td>
               </tr>
           </table>
-      </section>';*/
+      </section>';
 
 echo '';
 $PAGE->requires->js('/mod/ectr/js/getMediaElement.js');

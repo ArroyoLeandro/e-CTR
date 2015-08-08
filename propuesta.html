@@ -13,43 +13,43 @@
 </head>
 <body>
 	<div class="row">
-        <div class="col-sm-12 col-md-5 sidebar-offcanvas">
-        <div class="panel panel-primary">
-  <div class="panel-heading">
-    <span class="fa fa-users"></span> Usuarios Conectados
-  </div>
-  <ul class="list-group">
-      <li class="list-group-item" ng-repeat="peer in peers">
-          <div class="btn-group btn-group-xs pull-right">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-              Acción <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="javascript:void(0)" ng-click="setMessageTarget(peer.user)">Mensaje directo</a></li>
-              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Video llamada</a></li>
-              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Llamada de voz</a></li>
-            </ul>
-          </div>
-         <img src="pix/manuel.jpg" alt="" class="imgchat img-circle" />
-            <a href="#" class="user-perfil">Manuel Fernando Marulanda Aguirre</a>
-            <span class="user-perfil"><h6><span class="label label-success">online</span></h6></span>
-      </li>
-      <li class="list-group-item" ng-repeat="peer in peers">
-          <div class="btn-group btn-group-xs pull-right">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-              Acción <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="javascript:void(0)" ng-click="setMessageTarget(peer.user)">Mensaje directo</a></li>
-              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Video llamada</a></li>
-              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Llamada de voz</a></li>
-            </ul>
-          </div>
-         <img src="pix/foto.jpg" alt="" class="imgchat img-circle">
-            <a href="#" class="user-perfil">Shirly Robayo Montenegro</a>
-            <span class="user-perfil"><h6><span class="label label-warning">inactivo</span></h6></span>
-      </li>
-  </ul>
+	<div class="col-sm-12 col-md-5 sidebar-offcanvas">
+	<div class="panel panel-primary">
+	  <div class="panel-heading">
+	    <span class="fa fa-users"></span> Usuarios Conectados
+	  </div>
+	  <ul class="list-group">
+	      <li class="list-group-item" ng-repeat="peer in peers">
+	          <div class="btn-group btn-group-xs pull-right">
+	            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+	              Acción <span class="caret"></span>
+	            </button>
+	            <ul class="dropdown-menu" role="menu">
+	              <li><a href="javascript:void(0)" ng-click="setMessageTarget(peer.user)">Mensaje directo</a></li>
+	              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Video llamada</a></li>
+	              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Llamada de voz</a></li>
+	            </ul>
+	          </div>
+	         <img src="pix/manuel.jpg" alt="" class="imgchat img-circle" />
+	            <a href="#" class="user-perfil">Manuel Fernando Marulanda Aguirre</a>
+	            <span class="user-perfil"><h6><span class="label label-success">online</span></h6></span>
+	      </li>
+	      <li class="list-group-item" ng-repeat="peer in peers">
+	          <div class="btn-group btn-group-xs pull-right">
+	            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+	              Acción <span class="caret"></span>
+	            </button>
+	            <ul class="dropdown-menu" role="menu">
+	              <li><a href="javascript:void(0)" ng-click="setMessageTarget(peer.user)">Mensaje directo</a></li>
+	              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Video llamada</a></li>
+	              <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Llamada de voz</a></li>
+	            </ul>
+	          </div>
+	         <img src="pix/foto.jpg" alt="" class="imgchat img-circle">
+	            <a href="#" class="user-perfil">Shirly Robayo Montenegro</a>
+	            <span class="user-perfil"><h6><span class="label label-warning">inactivo</span></h6></span>
+	      </li>
+	  </ul>
 </div> 
         </div> <!-- END col-sm-10 col-md-5 sidebar-offcanvas-->
         <div class="col-sm-12 col-md-7">
@@ -60,7 +60,7 @@
                 
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <span class="fa fa-comment"></span> Conversación <span class="fa fa-cog"></span>
+                    <span class="fa fa-comment"></span> Conversación <span class="fa fa-cog" style="float: right; font-size: 18px; cursor: pointer;"></span>
                 </div> <!-- END panel-heading-->
                 <div class="panel-body content">               
                     <ul id="chat-list" class="chat">
