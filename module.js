@@ -100,8 +100,8 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     // Configuracion del tipo de coneccion de medios
     connection.session = {
         data: true,
-        audio: true,
-        video: true
+        audio: false,
+        video: false
     };
     var current_user = username;
     // some booleans to override defaults
