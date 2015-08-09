@@ -59,7 +59,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         return websocket;
     };
 
-    // use "channel" as sessionid or use custom sessionid!
+    // use "channel" como sessionid para usar sessionid personalizado!
     var roomid = connection.channel;
     var channel = location.href.replace(/\/|:|#|%|\.|\[|\]/g, '');
     var websocket = new WebSocket(signalingserver);
@@ -93,8 +93,8 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         sessions[session.sessionid] = session;
 
         var tr = document.createElement('tr');
-        tr.innerHTML = '<td>There is an active session.</td>' +
-            '<td><button class="join">Join</button></td>';
+        tr.innerHTML = '<td>Hay una sesión activa.</td>' +
+            '<td><button class="join">Unirse</button></td>';
         roomsList.insertBefore(tr, roomsList.firstChild);
 
         tr.querySelector('.join').setAttribute('data-sessionid', session.sessionid);
@@ -102,7 +102,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
             this.disabled = true;
 
             session = sessions[this.getAttribute('data-sessionid')];
-            if (!session) alert('No room to join.');
+            if (!session) alert('No hay una sala para unirse.');
 
             connection.join(session);
         };
@@ -205,11 +205,11 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     };
 
     connection.onclose = function(e) {
-        appendDIV('Data connection is closed between you and ' + e.userid);
+        appendDIV('La conexión de datos se ha cerrado entre usted y ' + e.userid);
     };
 
     connection.onleave = function(e) {
-        appendDIV(e.userid + ' left the session.');
+        appendDIV(e.userid + ' ha cerrado la sesión.');
     };
 
     // on data connection gets open
@@ -222,12 +222,13 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     var progressHelper = { };
     // Autoguardar en el disco duro
     connection.autoSaveToDisk = false;
-
+    // www.RTCMultiConnection.org/docs/onFileProgress/
     connection.onFileProgress = function(chunk) {
         var helper = progressHelper[chunk.uuid];
         helper.progress.value = chunk.currentPosition || chunk.maxChunks || helper.progress.max;
         updateLabel(helper.progress, helper.label);
     };
+    // RTCMultiConnection.org/docs/onFileStart/
     connection.onFileStart = function(file) {
         var div = document.createElement('div');
         div.title = file.name;
@@ -240,7 +241,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         };
         progressHelper[file.uuid].progress.max = file.maxChunks;
     };
-
+    // www.RTCMultiConnection.org/docs/onFileEnd/
     connection.onFileEnd = function(file) {
                 var helper = progressHelper[file.uuid];
                 if (!helper) {
@@ -262,7 +263,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
                     div.innerHTML = '<a href="' + file.url + '" download="' + file.name + '"><strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> <br /><iframe src="' + file.url + '" title="Clic para Descargar: ' + file.name + '" style="width: 100%;border: 0;height: inherit;margin-top:1em;" class="img-rounded"></iframe></a>';
                 }
 
-                // for backward compatibility
+                // para la compatibilidad con versiones anteriores
                 if (connection.onFileSent || connection.onFileReceived) {
                     if (connection.onFileSent) {
                         connection.onFileSent(file, file.uuid);

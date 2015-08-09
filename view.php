@@ -174,8 +174,8 @@ echo '
                 <div class="panel-heading">
                     <span class="fa fa-comment"></span> Conversación <span class="fa fa-cog" style="float: right; font-size: 18px; cursor: pointer;"></span>
                 </div> <!-- END panel-heading-->
-                <div class="panel-body content">
-                <div id="file-progress"></div>               
+                <div class="panel-body content" id="file-progress">
+                <div ></div>               
                     <ul id="chat-list" class="chat">
                         <li class="left clearfix">
                             <img src="pix/manuel.jpg" alt="User Avatar" class="imgchat img-rounded chat-img pull-left" />
