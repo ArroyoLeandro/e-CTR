@@ -8,92 +8,7 @@ M.mod_ectr = {};
 
 M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
 
-    var user = {
-    screen_name: 'maxmustermann'};
-    function $(q){
-      res = document.getElementById(q);
-      return res;
-    }
-
-    function addZero(i) {
-        if (i < 10) {
-            i = "0" + i;
-        }
-        return i;
-    }
-
-        var d = new Date();
-        var h = addZero(d.getHours());
-        var m = addZero(d.getMinutes());
-
-        if (h > 12) {
-          var H = "pm";
-        } else{
-          var H = "am";
-        };
-
-      setTimeout(new Date(),1000) 
-
-    function sendMessage(msg){
-      updateUI(msg);
-    }
-
-    function updateUI(data){
-      var wrap = document.createElement('li');
-      wrap.className = "left clearfix";
-      var avatar = document.createElement('img');
-      avatar.className = "imgchat img-rounded";
-      var div = document.createElement('div');
-      div.className = "chat-body clearfix";
-      var nombre = document.createElement('strong');
-      nombre.className = "primary-font";
-      var small = document.createElement('small');
-      small.className = "pull-right text-muted";
-      var span = document.createElement('span');
-      span.className = "glyphicon glyphicon-time";
-      var hora = document.createTextNode(h + ":" + m + H);
-      var content = document.createElement('p');
-      content.className = "content";
-
-      nombre.innerHTML = data.user.screen_name + " ";
-      avatar.src = data.user.avatar;
-      content.innerHTML = data.text;
-      content.className = "content";
-      avatar.className = "imgchat img-rounded";
-      wrap.appendChild(avatar);
-      wrap.appendChild(div);
-      div.appendChild(nombre);
-      div.appendChild(small);
-      small.appendChild(span);
-      span.appendChild(hora);
-      div.appendChild(content);
-      $('chat-list').appendChild(wrap);
-      $('text').value="";
-    }
-
-    function onEnter(){
-      var txt = $('text').value;
-      var msg = {
-        user: {
-          screen_name: 'Max Mustermann',
-          avatar: 'http://diggwithme.files.wordpress.com/2012/09/new-default-twitter-avatar.jpg'
-        },
-        text: txt
-      };
-      console.log(msg);
-      sendMessage(msg);
-      $('chat-list').scrollTo(0, $('chat-list').innerHeight);
-    }
-
-    window.onload = function(){ 
-        var inp = $('text');
-    inp.onkeydown = function(e) {
-        if (e.keyCode == 13){
-           onEnter();
-        }
-    };
-    };
-    // Inicializando el constructor
+        // Inicializando el constructor
     var connection = new RTCMultiConnection();
     // conexion por firebase
     connection.firebase = false;
@@ -305,7 +220,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     };
 
     var progressHelper = { };
-
+    // Autoguardar en el disco duro
     connection.autoSaveToDisk = false;
 
     connection.onFileProgress = function(chunk) {
@@ -327,8 +242,37 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     };
 
     connection.onFileEnd = function(file) {
-        progressHelper[file.uuid].div.innerHTML = '<a href="' + file.url + '" target="_blank" download="' + file.name + '">' + file.name + '</a>';
-    };
+                var helper = progressHelper[file.uuid];
+                if (!helper) {
+                    console.error('No existe tal elemento del asistente de progreso.', file);
+                    return;
+                }
+
+                if (file.remoteUserId) {
+                    helper = progressHelper[file.uuid][file.remoteUserId];
+                    if (!helper) {
+                        return;
+                    }
+                }
+
+                var div = helper.div;
+                if (file.type.indexOf('image') != -1) {
+                    div.innerHTML = '<a href="' + file.url + '" download="' + file.name + '"><strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> <br /><img src="' + file.url + '" title="Clic para Descargar: ' + file.name + '" style="max-width: 100%;" class="img-rounded"></a>';
+                } else {
+                    div.innerHTML = '<a href="' + file.url + '" download="' + file.name + '"><strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> <br /><iframe src="' + file.url + '" title="Clic para Descargar: ' + file.name + '" style="width: 100%;border: 0;height: inherit;margin-top:1em;" class="img-rounded"></iframe></a>';
+                }
+
+                // for backward compatibility
+                if (connection.onFileSent || connection.onFileReceived) {
+                    if (connection.onFileSent) {
+                        connection.onFileSent(file, file.uuid);
+                    }
+
+                    if (connection.onFileReceived) {
+                        connection.onFileReceived(file.name, file);
+                    }
+                }
+            };
 
     function updateLabel(progress, label) {
         if (progress.position == -1) return;
@@ -371,5 +315,93 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     };
 
     connection.connect();
+ 
+    // Chat
+    var user = {
+    screen_name: 'maxmustermann'};
+    function $(q){
+      res = document.getElementById(q);
+      return res;
+    }
+
+    function addZero(i) {
+        if (i < 10) {
+            i = "0" + i;
+        }
+        return i;
+    }
+
+        var d = new Date();
+        var h = addZero(d.getHours());
+        var m = addZero(d.getMinutes());
+
+        if (h > 12) {
+          var H = "pm";
+        } else{
+          var H = "am";
+        };
+
+      setTimeout(new Date(),1000) 
+
+    function sendMessage(msg){
+      updateUI(msg);
+    }
+
+    function updateUI(data){
+      var wrap = document.createElement('li');
+      wrap.className = "left clearfix";
+      var avatar = document.createElement('img');
+      avatar.className = "imgchat img-rounded";
+      var div = document.createElement('div');
+      div.className = "chat-body clearfix";
+      var nombre = document.createElement('strong');
+      nombre.className = "primary-font";
+      var small = document.createElement('small');
+      small.className = "pull-right text-muted";
+      var span = document.createElement('span');
+      span.className = "glyphicon glyphicon-time";
+      var hora = document.createTextNode(h + ":" + m + H);
+      var content = document.createElement('p');
+      content.className = "content";
+
+      nombre.innerHTML = data.user.screen_name + " ";
+      avatar.src = data.user.avatar;
+      content.innerHTML = data.text;
+      content.className = "content";
+      avatar.className = "imgchat img-rounded";
+      wrap.appendChild(avatar);
+      wrap.appendChild(div);
+      div.appendChild(nombre);
+      div.appendChild(small);
+      small.appendChild(span);
+      span.appendChild(hora);
+      div.appendChild(content);
+      $('chat-list').appendChild(wrap);
+      $('text').value="";
+    }
+
+    function onEnter(){
+      var txt = $('text').value;
+      var msg = {
+        user: {
+          screen_name: 'Max Mustermann',
+          avatar: 'http://diggwithme.files.wordpress.com/2012/09/new-default-twitter-avatar.jpg'
+        },
+        text: txt
+      };
+      console.log(msg);
+      sendMessage(msg);
+      $('chat-list').scrollTo(0, $('chat-list').innerHeight);
+    }
+
+    window.onload = function(){ 
+        var inp = $('text');
+    inp.onkeydown = function(e) {
+        if (e.keyCode == 13){
+           onEnter();
+        }
+    };
+    };
+    // End Chat
 
 }

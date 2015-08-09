@@ -174,7 +174,8 @@ echo '
                 <div class="panel-heading">
                     <span class="fa fa-comment"></span> Conversación <span class="fa fa-cog" style="float: right; font-size: 18px; cursor: pointer;"></span>
                 </div> <!-- END panel-heading-->
-                <div class="panel-body content">               
+                <div class="panel-body content">
+                <div id="file-progress"></div>               
                     <ul id="chat-list" class="chat">
                         <li class="left clearfix">
                             <img src="pix/manuel.jpg" alt="User Avatar" class="imgchat img-rounded chat-img pull-left" />
@@ -252,8 +253,39 @@ echo '
           </table>
       </section>';*/
 echo '<section class="experiment">
-                    
-                 
+          <h2 class="header" id="feedback">
+              Select SessionType and Direction-of-Flow!
+          </h2>
+          
+          <section>
+              <select id="session" title="Session">
+                  <option>audio+video+data+screen</option>
+                  <option selected>audio+video+data</option>
+                  <option>audio+video+screen</option>
+                  <option>audio+data+screen</option>
+                  <option>audio+video</option>
+                  <option>audio+screen</option>
+                  <option>video+screen</option>
+                  <option>data+screen</option>
+                  <option>audio+data</option>
+                  <option>video+data</option>
+                  <option>audio</option>
+                  <option>video</option>
+                  <option>data</option>
+                  <option>screen</option>
+              </select>
+              <select id="direction" title="Direction">
+                  <option>many-to-many</option>
+                  <option>one-to-one</option>
+                  <option>one-to-many</option>
+                  <option>one-way</option>
+              </select>
+              <button id="setup-new-session" class="setup">New Session</button>
+          </section>
+          
+          <!-- list of all available broadcasting rooms -->
+          <table style="width: 100%;" id="rooms-list"></table>
+          
           <!-- local/remote videos container -->
           <div id="videos-container"></div>
       </section>
@@ -269,8 +301,6 @@ echo '<section class="experiment">
                   </td>
                   <td style="background: white;">
                       <h2 style="display: block; font-size: 1em; text-align: center;">Share Files</h2>
-                      <input type="file" id="file" disabled>
-                      <div id="file-progress"></div>
                   </td>
               </tr>
           </table>
