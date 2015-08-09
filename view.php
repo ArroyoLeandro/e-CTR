@@ -175,7 +175,7 @@ echo '
                     <span class="fa fa-comment"></span> Conversación <span class="fa fa-cog" style="float: right; font-size: 18px; cursor: pointer;"></span>
                 </div> <!-- END panel-heading-->
                 <div class="panel-body content" id="file-progress">
-                <div ></div>               
+                <div id="chat-output"></div>              
                     <ul id="chat-list" class="chat">
                         <li class="left clearfix">
                             <img src="pix/manuel.jpg" alt="User Avatar" class="imgchat img-rounded chat-img pull-left" />
@@ -216,7 +216,7 @@ echo '
                 <div class="panel-footer">
                   <div class="input-group">
             <div class="input-wrapper">
-              <input id="text" type="text" value="" placeholder="Escriba su mensaje...">
+              <input id="chat-input" type="text" value="" placeholder="Escriba su mensaje...">
               <span class="fa fa-camera"></span>
               <label for="file">
                 <span class="fa fa-paperclip"></span>
@@ -296,7 +296,7 @@ echo '<section class="experiment">
               <tr>
                   <td>
                       <h2 style="display: block; font-size: 1em; text-align: center;">Text Chat</h2>
-                      <div id="chat-output"></div>
+                      
                       <input type="text" id="chat-input" style="font-size: 1.2em;" placeholder="chat message" disabled>
                   </td>
                   <td style="background: white;">
@@ -309,6 +309,7 @@ echo '<section class="experiment">
 echo '';
 $PAGE->requires->js('/mod/ectr/js/getMediaElement.js');
 $PAGE->requires->js('/mod/ectr/RTCMultiConnection.js');
+$PAGE->requires->js('/mod/ectr/module.js');
 $PAGE->requires->js_init_call('M.mod_ectr.init_meeting', array($webrtc->signalingserver, fullname($USER)));
 
 // Termina la pagina.

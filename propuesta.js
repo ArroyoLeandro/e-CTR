@@ -5,24 +5,27 @@ function $(q){
   return res;
 }
 
-function addZero(i) {
-    if (i < 10) {
-        i = "0" + i;
-    }
-    return i;
-}
-
     var d = new Date();
-    var h = addZero(d.getHours());
-    var m = addZero(d.getMinutes());
+    var h = d.getHours();
+    var m = d.getMinutes();
+
+    if (d.getHours() < 10) {
+      gH = "0";
+    } else {
+      gH = "";
+    }
+
+    if (d.getMinutes() < 10) {
+      gM = "0";
+    } else {
+      gM = "";
+    }
 
     if (h > 12) {
-      var H = "pm";
+    var H = "pm";
     } else{
       var H = "am";
     };
-
-  setTimeout(new Date(),1000) 
 
 function sendMessage(msg){
   updateUI(msg);
@@ -41,7 +44,7 @@ function updateUI(data){
   small.className = "pull-right text-muted";
   var span = document.createElement('span');
   span.className = "glyphicon glyphicon-time";
-  var hora = document.createTextNode(h + ":" + m + H);
+  var hora = document.createTextNode(gH + new Date().getHours() + ":"+ gM + new Date().getMinutes() + " " + H);
   var content = document.createElement('p');
   content.className = "content";
 
@@ -55,7 +58,7 @@ function updateUI(data){
   div.appendChild(nombre);
   div.appendChild(small);
   small.appendChild(span);
-  span.appendChild(hora);
+  small.appendChild(hora);
   div.appendChild(content);
   $('chat-list').appendChild(wrap);
   $('text').value="";
