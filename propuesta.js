@@ -21,10 +21,10 @@ function $(q){
       gM = "";
     }
 
-    if (h > 12) {
-    var H = "pm";
+    if (h <= 12) {
+    var H = "am";
     } else{
-      var H = "am";
+      var H = "pm";
     };
 
 function sendMessage(msg){
