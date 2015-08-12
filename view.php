@@ -176,40 +176,7 @@ echo '
                 </div> <!-- END panel-heading-->
                 <div class="panel-body content" id="file-progress">
                     <ul id="chat-output" class="chat">
-                        <li class="left clearfix">
-                            <img src="pix/manuel.jpg" alt="User Avatar" class="imgchat img-rounded chat-img pull-left" />
-                            <div class="chat-body clearfix">
-                                <strong class="primary-font">Manuel Fernando Marulanda Aguirre</strong>
-                                <small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>10:45 pm</small>
-                                <p class="content">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                    dolor, quis ullamcorper ligula sodales. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                    dolor, quis ullamcorper ligula sodales.
-                                </p>
-                            </div> <!-- END hat-body clearfix-->
-                        </li>
                         
-                        <li class="left clearfix">
-                            <img src="pix/foto.jpg" alt="User Avatar" class="imgchat img-rounded chat-img pull-left" />
-                            <div class="chat-body clearfix">
-                                <strong class="primary-font">Shirly Robayo Montenegro</strong>
-                                <small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>10:40 pm</small>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                    dolor, quis ullamcorper ligula sodales.
-                                </p>
-                            </div>
-                        </li>
-                        <li class="left clearfix">
-                            <img src="pix/manuel.jpg" alt="User Avatar" class="imgchat img-rounded chat-img pull-left" />
-                            <div class="chat-body clearfix">
-                                <strong class="primary-font">Manuel Fernando Marulanda Aguirre</strong>
-                                <small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>10:39 pm</small>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                </p>
-                            </div> <!-- END hat-body clearfix-->
-                        </li>
                     </ul>
                 </div> <!-- END panel-body-->
                 <div class="panel-footer">
