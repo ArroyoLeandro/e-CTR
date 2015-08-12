@@ -287,12 +287,11 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
             var content = div;
             var div = document.createElement('li');
             div.className = "left clearfix";
-
             div.innerHTML = content;
         }
 
-        if (!parent) chatOutput.insertBefore(div, chatOutput.firstChild);
-        else fileProgress.insertBefore(div, fileProgress.firstChild);
+        if (!parent) chatOutput.appendChild(div, chatOutput.firstChild);
+        else fileProgress.appendChild(div, fileProgress.firstChild);
 
         // div.tabIndex = 0;
         div.focus();
@@ -305,7 +304,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         connection.send(this.files[0]);
     };
 
-    // conversion de hora a hora 10:45 pm
+    // conversor de hora a hora 10:45 pm
     var d = new Date();
     var h = d.getHours();
     var m = d.getMinutes();
@@ -346,17 +345,5 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     };
 
     connection.connect();
- 
-    // Template Chat
-
-    window.onload = function(){ 
-        var inp = $('text');
-    inp.onkeydown = function(e) {
-        if (e.keyCode == 13){
-           onEnter();
-        }
-    };
-    };
-    // End Chat
 
 }
