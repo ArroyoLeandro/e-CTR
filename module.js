@@ -18,6 +18,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         audio: false,
         video: false
     };
+    // Capturo el usuario de la sesion
     var current_user = username;
     // some booleans to override defaults
     connection.preventSSLAutoAllowed = false;
@@ -284,7 +285,9 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     function appendDIV(div, parent) {
         if (typeof div === 'string') {
             var content = div;
-            div = document.createElement('div');
+            var div = document.createElement('li');
+            div.className = "left clearfix";
+
             div.innerHTML = content;
         }
 
@@ -302,14 +305,41 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         connection.send(this.files[0]);
     };
 
+    // conversion de hora a hora 10:45 pm
+    var d = new Date();
+    var h = d.getHours();
+    var m = d.getMinutes();
+
+    if (d.getHours() < 10) {
+      gH = "0";
+    } else {
+      gH = "";
+    }
+
+    if (d.getMinutes() < 10) {
+      gM = "0";
+    } else {
+      gM = "";
+    }
+
+    if (h <= 12) {
+    var H = "am";
+    } else{
+      var H = "pm";
+    };
+
     var chatInput = document.getElementById('chat-input');
     chatInput.onkeypress = function(e) {
         if (e.keyCode !== 13 || !this.value) return;
 
-        var text = current_user + ':' + this.value;
+        var avatar = '<img src="http://diggwithme.files.wordpress.com/2012/09/new-default-twitter-avatar.jpg" class="imgchat img-rounded chat-img pull-left" />';
+        var chatBody = '<div class="chat-body clearfix">';
+        var nombre ='<strong class="primary-font">'+ current_user +'</strong>'; 
+        var hora = '<small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>'+ gH + new Date().getHours() + ":"+ gM + new Date().getMinutes() + " " + H + '</small>';
+        var text = avatar + chatBody + nombre + hora + '<p class="content">' + this.value + '</p></div> <!-- END hat-body clearfix-->';
         appendDIV(text);
 
-        // sending text message
+        // enviando los datos del mensaje
         connection.send(text);
 
         this.value = '';
@@ -317,19 +347,12 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
 
     connection.connect();
  
-    // Chat
+    // Template Chat
     var user = {
     screen_name: 'maxmustermann'};
     function $(q){
       res = document.getElementById(q);
       return res;
-    }
-
-    function addZero(i) {
-        if (i < 10) {
-            i = "0" + i;
-        }
-        return i;
     }
 
         var d = new Date();
