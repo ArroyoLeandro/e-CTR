@@ -24,6 +24,7 @@
 
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once(dirname(__FILE__).'/lib.php');
+require_once($CFG->libdir.'/filelib.php');
 
 $id = optional_param('id', 0, PARAM_INT); // Course_module ID, or
 $n  = optional_param('n', 0, PARAM_INT);  // ... e-CTR instancia ID
@@ -73,6 +74,7 @@ $PAGE->set_context($context);
 //$PAGE->set_focuscontrol('some-html-id');
 
 $PAGE->requires->js('/mod/ectr/js/jquery-2.1.4.min.js',true);
+//$PAGE->requires->js('/mod/ectr/bootstrap/js/bootstrap.js',true);
 $PAGE->requires->css('/mod/ectr/css/font-awesome.css');
 $PAGE->requires->css('/mod/ectr/bootstrap/css/bootstrap.min.css');
 $PAGE->requires->css('/mod/ectr/css/styles.css');
@@ -120,9 +122,21 @@ $groupid = optional_param('groupid', 0, PARAM_INT); // Solo para profesores.
   if (!hash.length) {
       location.href = location.href + '#grupo=' + '".$currentgroup."';
       location.reload();
-  }
-</script>";*/
+  }*/
 
+$user = $DB->get_record('user', array('id' => $USER->id));
+$avatar = new user_picture($user);
+$avatar->courseid = $courseid;
+$avatar->link = true;
+$avatarjs = $OUTPUT->render($avatar);
+?>
+
+<script>
+var avatarjs = '<?php echo $avatarjs; ?>' ;
+document.write("avatarJS = " + avatarjs);
+</script>
+
+<?php
 echo '
 <div class="row">
   <div class="col-sm-12 col-md-5 sidebar-offcanvas">
@@ -174,8 +188,8 @@ echo '
                 <div class="panel-heading">
                     <span class="fa fa-comment"></span> Conversación <span class="fa fa-cog" style="float: right; font-size: 18px; cursor: pointer;"></span>
                 </div> <!-- END panel-heading-->
-                <div class="panel-body content" id="file-progress">
-                    <ul id="chat-output" class="chat">
+                <div class="panel-body content">
+                    <ul id="chat-output" class="chat" id="file-progress">
                         
                     </ul>
                 </div> <!-- END panel-body-->
@@ -218,6 +232,7 @@ echo '
               </tr>
           </table>
       </section>';*/
+
 echo '<section class="experiment">
           <h2 class="header" id="feedback">
               Select SessionType and Direction-of-Flow!
