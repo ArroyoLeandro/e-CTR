@@ -127,13 +127,14 @@ $groupid = optional_param('groupid', 0, PARAM_INT); // Solo para profesores.
 $user = $DB->get_record('user', array('id' => $USER->id));
 $avatar = new user_picture($user);
 $avatar->courseid = $courseid;
-$avatar->link = true;
+$avatar->link = false;
+$avatar->size = 150;
+$avatar->class = 'imgchat img-rounded chat-img pull-left';
 $avatarjs = $OUTPUT->render($avatar);
 ?>
 
 <script>
 var avatarjs = '<?php echo $avatarjs; ?>' ;
-document.write("avatarJS = " + avatarjs);
 </script>
 
 <?php
@@ -210,35 +211,9 @@ echo '
             </div> <!-- END panel panel-primary-->
         </div> <!-- col-sm-12 col-md-7-->
 </div> <!-- END row-->';
-/*echo '<section class="experiment">          
-          <!-- local/remote contenedor del video -->
-          <div id="videos-container"></div>
-      </section>
-                  
-      <section class="experiment data-box">
-          <h2 class="header" style="border-bottom: 0;">WebRTC DataChannel</h2>
-          <table style="width: 100%;">
-              <tr>
-                  <td>
-                      <h2 style="display: block; font-size: 1em; text-align: center;">Texto del chat</h2>
-                      <div id="chat-output"></div> <!-- chat-->
-                      <input type="text" id="user-id" style="font-size: 1.2em; margin-right: 0; width: 5em;" placeholder="all" disabled="" title="Enter user-id to send direct messages.">
-                      <input type="text" id="chat-input" style="font-size: 1.2em;" placeholder="chat message" disabled>
-                  </td>
-                  <td style="background: white;">
-                      <h2 style="display: block; font-size: 1em; text-align: center;">Compartir archivos</h2>
-                      <div id="file-progress"></div> <!-- archivos p2p-->
-                  </td>
-              </tr>
-          </table>
-      </section>';*/
 
 echo '<section class="experiment">
-          <h2 class="header" id="feedback">
-              Select SessionType and Direction-of-Flow!
-          </h2>
-          
-          <section>
+          <section hidden>
               <select id="session" title="Session">
                   <option>audio+video+data+screen</option>
                   <option selected>audio+video+data</option>
@@ -271,7 +246,7 @@ echo '<section class="experiment">
           <div id="videos-container"></div>
       </section>
                   
-      <section class="experiment data-box">
+      <section class="experiment data-box" hidden>
           <h2 class="header" style="border-bottom: 0;">WebRTC DataChannel</h2>
           <table style="width: 100%;">
               <tr>

@@ -8,15 +8,15 @@ M.mod_ectr = {};
 
 M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
 
-        // Inicializando el constructor
+    // Inicializando el constructor
     var connection = new RTCMultiConnection();
     // conexion por firebase
     connection.firebase = false;
     // Configuracion del tipo de coneccion de medios
     connection.session = {
         data: true,
-        audio: false,
-        video: false
+        audio: true,
+        video: true
     };
     // Capturo el usuario de la sesion
     var current_user = username;
@@ -24,6 +24,9 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     connection.preventSSLAutoAllowed = false;
     connection.autoReDialOnFailure = true;
     connection.setDefaultEventsForMediaElement = false;
+    //var userMaxParticipantsAllowed = 8;
+    //var maxParticipantsAllowed = 8;
+    var direction = 'many-to-many';
 
     connection.openSignalingChannel = function(config) {
 
@@ -64,9 +67,6 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     var roomid = connection.channel;
     var channel = location.href.replace(/\/|:|#|%|\.|\[|\]/g, '');
     var websocket = new WebSocket(signalingserver);
-    //var userMaxParticipantsAllowed = 8;
-    //var maxParticipantsAllowed = 8;
-    //var direction = 'many-to-many';
 
     websocket.onmessage = function (event) {
         var data = JSON.parse(event.data);
@@ -243,34 +243,6 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         };
         progressHelper[file.uuid].progress.max = file.maxChunks;
     };
-    // conversor de hora a hora 10:45 pm
-    var d = new Date();
-    var h = d.getHours();
-    var m = d.getMinutes();
-
-    if (d.getHours() < 10) {
-      gH = "0";
-    } else {
-      gH = "";
-    }
-
-    if (d.getMinutes() < 10) {
-      gM = "0";
-    } else {
-      gM = "";
-    }
-
-    if (h <= 12) {
-    var H = "am";
-    } else{
-      var H = "pm";
-    };
-    // Variables de configuracion DataChat
-    var avatar = avatarjs;
-    var chatBody = '<div class="chat-body clearfix">';
-    var nombre ='<strong class="primary-font">'+ current_user +'</strong>'; 
-    var hora = '<small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>'+ gH + new Date().getHours() + ":"+ gM + new Date().getMinutes() + " " + H + '</small>';
-
     // www.RTCMultiConnection.org/docs/onFileEnd/
     connection.onFileEnd = function(file) {
                 var helper = progressHelper[file.uuid];
@@ -285,7 +257,33 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
                         return;
                     }
                 }
+                // conversor de hora a hora 10:45 pm
+                var d = new Date();
+                var h = d.getHours();
+                var m = d.getMinutes();
 
+                if (d.getHours() < 10) {
+                  gH = "0";
+                } else {
+                  gH = "";
+                }
+
+                if (d.getMinutes() < 10) {
+                  gM = "0";
+                } else {
+                  gM = "";
+                }
+
+                if (h <= 12) {
+                var H = "am";
+                } else{
+                  var H = "pm";
+                };
+                // Variables de configuracion DataChat
+                var avatar = avatarjs;
+                var chatBody = '<div class="chat-body clearfix">';
+                var nombre ='<strong class="primary-font">'+ current_user +'</strong>'; 
+                var hora = '<small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>'+ gH + new Date().getHours() + ":"+ gM + new Date().getMinutes() + " " + H + '</small>';
 
                 var div = helper.div;
                 if (file.type.indexOf('image') != -1) {
@@ -337,7 +335,33 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     var chatInput = document.getElementById('chat-input');
     chatInput.onkeydown = function(e) {
         if (e.keyCode !== 13 || !this.value) return;
+        // conversor de hora a hora 10:45 pm
+        var d = new Date();
+        var h = d.getHours();
+        var m = d.getMinutes();
 
+        if (d.getHours() < 10) {
+          gH = "0";
+        } else {
+          gH = "";
+        }
+
+        if (d.getMinutes() < 10) {
+          gM = "0";
+        } else {
+          gM = "";
+        }
+
+        if (h <= 12) {
+        var H = "am";
+        } else{
+          var H = "pm";
+        };
+        // Variables de configuracion DataChat
+        var avatar = avatarjs;
+        var chatBody = '<div class="chat-body clearfix">';
+        var nombre ='<strong class="primary-font">'+ current_user +'</strong>'; 
+        var hora = '<small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>'+ gH + new Date().getHours() + ":"+ gM + new Date().getMinutes() + " " + H + '</small>';
         var text = avatar + chatBody + nombre + hora + '<p class="content">' + this.value + '</p></div> <!-- END hat-body clearfix-->';
         appendDIV(text);
 
