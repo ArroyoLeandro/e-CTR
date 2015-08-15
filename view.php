@@ -78,7 +78,6 @@ $PAGE->requires->js('/mod/ectr/js/jquery-2.1.4.min.js',true);
 $PAGE->requires->css('/mod/ectr/css/font-awesome.css');
 $PAGE->requires->css('/mod/ectr/bootstrap/css/bootstrap.min.css');
 $PAGE->requires->css('/mod/ectr/css/styles.css');
-//$PAGE->requires->js('/mod/ectr/bootstrap/js/bootstrap.js');
 //$PAGE->requires->js('/mod/ectr/module.js',true);
 //$PAGE->requires->js('/mod/ectr/js/RTCMultiConnection.js');
 //$PAGE->requires->js('/mod/ectr/js/socket.io.js');
@@ -189,7 +188,7 @@ echo '
                 <div class="panel-heading">
                     <span class="fa fa-comment"></span> Conversación <span class="fa fa-cog" style="float: right; font-size: 18px; cursor: pointer;"></span>
                 </div> <!-- END panel-heading-->
-                <div class="panel-body content">
+                <div class="panel-body content" id="scrollmessage">
                     <ul id="chat-output" class="chat" id="file-progress">
                         
                     </ul>
@@ -247,16 +246,12 @@ echo '<section class="experiment">
       </section>
                   
       <section class="experiment data-box" hidden>
-          <h2 class="header" style="border-bottom: 0;">WebRTC DataChannel</h2>
           <table style="width: 100%;">
               <tr>
                   <td>
-                      <h2 style="display: block; font-size: 1em; text-align: center;">Text Chat</h2>
-                      
-                      <input type="text" id="chat-input" style="font-size: 1.2em;" placeholder="chat message" disabled>
+                    <input type="text" id="chat-input" style="font-size: 1.2em;" placeholder="chat message" disabled>
                   </td>
                   <td style="background: white;">
-                      <h2 style="display: block; font-size: 1em; text-align: center;">Share Files</h2>
                   </td>
               </tr>
           </table>

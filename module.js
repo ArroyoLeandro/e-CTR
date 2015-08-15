@@ -15,8 +15,8 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     // Configuracion del tipo de coneccion de medios
     connection.session = {
         data: true,
-        audio: true,
-        video: true
+        audio: false,
+        video: false
     };
     // Capturo el usuario de la sesion
     var current_user = username;
@@ -286,6 +286,11 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
                 var hora = '<small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>'+ gH + new Date().getHours() + ":"+ gM + new Date().getMinutes() + " " + H + '</small>';
 
                 var div = helper.div;
+                // Manejo del Scroll del chat
+                $(document).ready(function(){
+                    $('#scrollmessage').animate({
+                        scrollTop: $('#scrollmessage').get(0).scrollHeight}, 1000);
+                });
                 if (file.type.indexOf('image') != -1) {
                     div.innerHTML = avatar + chatBody + nombre + hora + '<br /><a class="content" href="' + file.url + '" download="' + file.name + '"><strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> <br /><img src="' + file.url + '" data-toggle="tooltip" data-placement="top" title="Clic para descargar: ' + file.name + '" style="max-width: 100%; padding-top: 5px;" class="img-rounded"></a></div> <!-- END hat-body clearfix-->';
                 } else {
@@ -334,6 +339,11 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
 
     var chatInput = document.getElementById('chat-input');
     chatInput.onkeydown = function(e) {
+        // Manejo del Scroll del chat
+        $(document).ready(function(){
+            $('#scrollmessage').animate({
+                scrollTop: $('#scrollmessage').get(0).scrollHeight}, 1000);
+        });
         if (e.keyCode !== 13 || !this.value) return;
         // conversor de hora a hora 10:45 pm
         var d = new Date();
@@ -357,6 +367,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         } else{
           var H = "pm";
         };
+        
         // Variables de configuracion DataChat
         var avatar = avatarjs;
         var chatBody = '<div class="chat-body clearfix">';
