@@ -292,7 +292,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
                     div.innerHTML = avatar + chatBody + nombre + hora + '<br /><a class="content" href="' + file.url + '" download="' + file.name + '"><strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> <br /><iframe src="' + file.url + '" data-toggle="tooltip" data-placement="top" title="Clic para descargar: ' + file.name + '" style="width: 100%;border: 0;height: inherit;margin-top:1em;" class="img-rounded"></iframe></a></div> <!-- END hat-body clearfix-->';
                 }
                 // configuracion scroll chat-body image
-                $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},1);
+                $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},650);
 
                 // para la compatibilidad con versiones anteriores
                 if (connection.onFileSent || connection.onFileReceived) {
@@ -319,7 +319,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
             div.className = "left clearfix";
             div.innerHTML = content;
             // configuracion scroll chat-body text
-            $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},1);
+            $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},650);
         }
 
         if (!parent) chatOutput.appendChild(div, chatOutput.firstChild);
