@@ -203,7 +203,6 @@ label {
     display: inline;
 }
 
-#messagewindow {   
-    overflow:auto;
-    position: absolute;
+#panel-body{   
+    overflow-y: scroll;
 }
