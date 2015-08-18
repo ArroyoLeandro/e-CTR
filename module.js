@@ -314,6 +314,8 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
 
     function appendDIV(div, parent) {
         if (typeof div === 'string') {
+            // jQuery-CSSEmoticons
+            $('.comment').emoticonize();
             var content = div;
             var div = document.createElement('li');
             div.className = "left clearfix";
@@ -366,9 +368,8 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         var chatBody = '<div class="chat-body clearfix">';
         var nombre ='<strong class="primary-font">'+ current_user +'</strong>'; 
         var hora = '<small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>'+ gH + new Date().getHours() + ":"+ gM + new Date().getMinutes() + " " + H + '</small>';
-        var text = avatar + chatBody + nombre + hora + '<p class="content">' + this.value + '</p></div> <!-- END hat-body clearfix-->';
+        var text = avatar + chatBody + nombre + hora + '<p class="content comment">' + this.value + '</p></div> <!-- END hat-body clearfix-->';
         appendDIV(text);
-
         // enviando los datos del mensaje
         connection.send(text);
 

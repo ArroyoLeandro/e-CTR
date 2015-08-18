@@ -75,6 +75,8 @@ $PAGE->set_context($context);
 
 $PAGE->requires->js('/mod/ectr/js/jquery-2.1.4.min.js', true);
 $PAGE->requires->js('/mod/ectr/bootstrap/js/bootstrap.js');
+$PAGE->requires->js('/mod/ectr/js/jquery.cssemoticons.min.js');
+$PAGE->requires->css('/mod/ectr/css/jquery.cssemoticons.css');
 $PAGE->requires->css('/mod/ectr/css/font-awesome.css');
 $PAGE->requires->css('/mod/ectr/bootstrap/css/bootstrap.min.css');
 $PAGE->requires->css('/mod/ectr/css/styles.css');
