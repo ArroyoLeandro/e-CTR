@@ -73,14 +73,11 @@ $PAGE->set_context($context);
 //$PAGE->set_cacheable(false); // Cache por parte del cliente, por default es true
 //$PAGE->set_focuscontrol('some-html-id');
 
-$PAGE->requires->js('/mod/ectr/js/jquery-2.1.4.min.js',true);
-$PAGE->requires->js('/mod/ectr/bootstrap/js/bootstrap.js',true);
+$PAGE->requires->js('/mod/ectr/js/jquery-2.1.4.min.js', true);
+$PAGE->requires->js('/mod/ectr/bootstrap/js/bootstrap.js');
 $PAGE->requires->css('/mod/ectr/css/font-awesome.css');
 $PAGE->requires->css('/mod/ectr/bootstrap/css/bootstrap.min.css');
 $PAGE->requires->css('/mod/ectr/css/styles.css');
-//$PAGE->requires->js('/mod/ectr/module.js',true);
-//$PAGE->requires->js('/mod/ectr/js/RTCMultiConnection.js');
-//$PAGE->requires->js('/mod/ectr/js/socket.io.js');
 //$PAGE->requires->js('/mod/ectr/js/DataChannel.js',true);
 
 // Imprimo el encabezado de pagina
@@ -213,22 +210,6 @@ echo '
 
 echo '<section class="experiment" hidden>
           <section hidden>
-              <select id="session" title="Session">
-                  <option>audio+video+data+screen</option>
-                  <option selected>audio+video+data</option>
-                  <option>audio+video+screen</option>
-                  <option>audio+data+screen</option>
-                  <option>audio+video</option>
-                  <option>audio+screen</option>
-                  <option>video+screen</option>
-                  <option>data+screen</option>
-                  <option>audio+data</option>
-                  <option>video+data</option>
-                  <option>audio</option>
-                  <option>video</option>
-                  <option>data</option>
-                  <option>screen</option>
-              </select>
               <select id="direction" title="Direction">
                   <option>many-to-many</option>
                   <option>one-to-one</option>
@@ -237,30 +218,11 @@ echo '<section class="experiment" hidden>
               </select>
               <button id="setup-new-session" class="setup">New Session</button>
           </section>
-          
-          <!-- list of all available broadcasting rooms -->
-          <table style="width: 100%;" id="rooms-list"></table>
-          
-          <!-- local/remote videos container -->
-          <div id="videos-container"></div>
-      </section>
-                  
-      <section class="experiment data-box" hidden>
-          <table style="width: 100%;">
-              <tr>
-                  <td>
-                    <input type="text" id="chat-input" style="font-size: 1.2em;" placeholder="chat message" disabled>
-                  </td>
-                  <td style="background: white;">
-                  </td>
-              </tr>
-          </table>
       </section>';
 
 echo '';
 $PAGE->requires->js('/mod/ectr/js/getMediaElement.js');
 $PAGE->requires->js('/mod/ectr/RTCMultiConnection.js');
-$PAGE->requires->js('/mod/ectr/module.js');
 $PAGE->requires->js_init_call('M.mod_ectr.init_meeting', array($webrtc->signalingserver, fullname($USER)));
 
 // Termina la pagina.
