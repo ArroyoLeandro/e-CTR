@@ -108,16 +108,6 @@ a {
     margin-left: 0px;
 }
 
-.img-adjuntar {
-    width: 33px;
-    height: 33px;
-    padding: 2px;
-}
-
-.btn-enviar-chat {
-    padding:3px;
-}
-
 .list-group {
     margin-left: 0px;
 }
@@ -176,8 +166,8 @@ a {
 .input-group .input-wrapper span.fa-paperclip:hover {
     color: #6EA0FF;
 }
-.input-group .input-wrapper span.fa-camera:hover {
-    color: #6E6E6E;
+.input-group .input-wrapper span.fa-picture-o:hover {
+    color: #6EA0FF;
 }
 .input-group > input{
     background: #a0b4c0;

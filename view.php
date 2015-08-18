@@ -194,8 +194,8 @@ echo '
                   <div class="input-group">
             <div class="input-wrapper">
               <input id="chat-input" type="text" value="" placeholder="Escriba su mensaje..." disabled autofocus />
-              <span class="fa fa-camera"></span>
               <label for="file">
+                <span class="fa fa-picture-o"></span>
                 <span class="fa fa-paperclip"></span>
               </label>
               <input id="file" type="file" style="display: none;" disabled />
