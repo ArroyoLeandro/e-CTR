@@ -160,13 +160,13 @@ a {
     cursor: pointer;
     float: right;
 }
-.input-group .input-wrapper span.fa-smile-o:hover{
+span.fa.fa-smile-o.add-emoticon:hover{
     color: #E7B200;
 }
-.input-group .input-wrapper span.fa-paperclip:hover {
+span.fa.fa-paperclip.add-file:hover {
     color: #6EA0FF;
 }
-.input-group .input-wrapper span.fa-picture-o:hover {
+span.fa.fa-picture-o.add-picture:hover {
     color: #6EA0FF;
 }
 .input-group > input{

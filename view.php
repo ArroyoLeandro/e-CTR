@@ -74,10 +74,10 @@ $PAGE->set_context($context);
 //$PAGE->set_focuscontrol('some-html-id');
 
 $PAGE->requires->js('/mod/ectr/js/jquery-2.1.4.min.js', true);
-$PAGE->requires->js('/mod/ectr/bootstrap/js/bootstrap.js');
-$PAGE->requires->js('/mod/ectr/js/jquery.cssemoticons.min.js');
+$PAGE->requires->js('/mod/ectr/bootstrap/js/bootstrap.min.js');
+$PAGE->requires->js('/mod/ectr/js/jquery.cssemoticons.min.js', true);
 $PAGE->requires->css('/mod/ectr/css/jquery.cssemoticons.css');
-$PAGE->requires->css('/mod/ectr/css/font-awesome.css');
+$PAGE->requires->css('/mod/ectr/css/font-awesome.min.css');
 $PAGE->requires->css('/mod/ectr/bootstrap/css/bootstrap.min.css');
 $PAGE->requires->css('/mod/ectr/css/styles.css');
 //$PAGE->requires->js('/mod/ectr/js/DataChannel.js',true);
@@ -192,22 +192,33 @@ echo '
                         
                     </ul>
                 </div> <!-- END panel-body-->
-                <div class="panel-footer">
-                  <div class="input-group">
-            <div class="input-wrapper">
-              <input id="chat-input" type="text" value="" placeholder="Escriba su mensaje..." disabled autofocus />
-              <label for="file">
-                <span class="fa fa-picture-o"></span>
-                <span class="fa fa-paperclip"></span>
-              </label>
-              <input id="file" type="file" style="display: none;" disabled />
-              <span class="fa fa-smile-o"></span>
+            <div class="panel-footer">
+              <div class="input-group">
+                <div class="input-wrapper">
+                <input id="chat-input" type="text" value="" placeholder="Escriba su mensaje..." disabled autofocus />
+                <label for="file">
+                  <span class="fa fa-picture-o add-picture"></span>
+                  <span class="fa fa-paperclip add-file"></span>
+                </label>
+                <input id="file" type="file" style="display: none;" disabled />
+                <a role="button" data-toggle="collapse" href="#collapseEmoticon" aria-expanded="false" aria-controls="collapseEmoticon">
+                  <span class="fa fa-smile-o add-emoticon"></span>
+                </a>
+              </div>
             </div>
-          </div>
-              </div> <!-- END panel-footer-->
-
-            </div> <!-- END panel panel-primary-->
-        </div> <!-- col-sm-12 col-md-7-->
+            <div class="collapse" id="collapseEmoticon" style="padding-top: 10px; margin-bottom: -15px;">
+              <div class="well" style="padding: 5px;">
+                :-) :-) :) :o) :c) :^) :-D :-( :-9 ;-) :-P :-p :-Þ :-b :-O :-/ :-X :-# B-) 8-) :-\ ;*( :-* :] :> =] =) 8) :} :D 8D XD xD =D :( :< :[ :{ =( ;) ;] ;D :P :p =P =p :b :Þ :O 8O :/ =/ :S :# :X B) O:)
+                <3 ;( >:) >;) >:( O_o O_O o_o 0_o T_T ^_^ ?-) [+=..]
+              </div>
+              <script type="text/javascript">
+                $(".well").emoticonize({
+                });
+              </script>
+            </div>
+          </div> <!-- END panel-footer-->
+        </div> <!-- END panel panel-primary-->
+      </div> <!-- col-sm-12 col-md-7-->
 </div> <!-- END row-->';
 
 echo '<section class="experiment" hidden>
