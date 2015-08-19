@@ -12,7 +12,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     var connection = new RTCMultiConnection();
     // conexion por firebase
     connection.firebase = false;
-    // Configuracion del tipo de coneccion de medios
+    // Configuracion del tipo de conección de medios
     connection.session = {
         data: true,
         audio: false,
