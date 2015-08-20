@@ -220,6 +220,13 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         if (document.getElementById('file')) document.getElementById('file').disabled = false;
         if (document.getElementById('open-new-session')) document.getElementById('open-new-session').disabled = true;
     };
+    // www.RTCMultiConnection.org/docs/onstatechange/
+    // snippet recomendado por @muaz Khan para: "Session-rechecking... Descriptions not found"
+    connection.onstatechange = function(state) {
+    if(state.name === 'room-not-available') {
+            connection.open(); // si el local no esta disponible, abrirla.
+        }
+    };
 
     var progressHelper = { };
     // Autoguardar en el disco duro
