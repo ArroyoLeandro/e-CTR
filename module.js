@@ -12,7 +12,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     var connection = new RTCMultiConnection();
     // conexion por firebase
     connection.firebase = false;
-    // Configuracion del tipo de coneccion de medios
+    // Configuracion del tipo de conección de medios
     connection.session = {
         data: true,
         audio: false,
@@ -197,24 +197,25 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         connection.sessionid = 'Anonymous';
         connection.open();
     };
-
+    // www.RTCMultiConnection.org/docs/onmessage/
     connection.onmessage = function(e) {
         appendDIV(e.data);
 
         console.debug(e.userid, 'posted', e.data);
         console.log('latency:', e.latency, 'ms');
     };
-
+    // www.RTCMultiConnection.org/docs/onclose/
     connection.onclose = function(e) {
-        appendDIV('La conexión de datos se ha cerrado entre usted y ' + e.userid);
+        appendAlertWarning('La conexión de datos se ha cerrado entre usted y ' + e.userid);
     };
-
+    // www.RTCMultiConnection.org/docs/onleave/
     connection.onleave = function(e) {
-        appendDIV(e.userid + ' ha cerrado la sesión.');
+        appendAlertWarning(e.userid + ' ha abandonado el chat!');
     };
-
-    // on data connection gets open
-    connection.onopen = function() {
+    // www.RTCMultiConnection.org/docs/onopen/
+    // Los datos de conexion se abren
+    connection.onopen = function(e) {
+        appendAlertSuccess(e.userid + ' se ha conectado al chat!');
         if (document.getElementById('chat-input')) document.getElementById('chat-input').disabled = false;
         if (document.getElementById('file')) document.getElementById('file').disabled = false;
         if (document.getElementById('open-new-session')) document.getElementById('open-new-session').disabled = true;
@@ -311,7 +312,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         var position = +progress.position.toFixed(2).split('.')[1] || 100;
         label.innerHTML = position + '%';
     }
-
+    // Abriendo elementos basicos de la conversacion <li>
     function appendDIV(div, parent) {
         if (typeof div === 'string') {
             var content = div;
@@ -328,14 +329,48 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         // div.tabIndex = 0;
         div.focus();
     }
+    // cuando un usuario se conecta al chat
+    function appendAlertSuccess(li, parent) {
+        if (typeof li === 'string') {
+            var content = li;
+            var li = document.createElement('li');
+            li.className = "alert alert-success text-center clearfix";
+            li.innerHTML = content;
+            // configuracion scroll chat-body text
+            $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},650);
+        }
 
+        if (!parent) chatOutput.appendChild(li, chatOutput.firstChild);
+        else fileProgress.appendChild(li, fileProgress.firstChild);
+
+        // li.tabIndex = 0;
+        li.focus();
+    }
+    // cuando un usuario se desconecta del chat
+    function appendAlertWarning(li, parent) {
+        if (typeof li === 'string') {
+            var content = li;
+            var li = document.createElement('li');
+            li.className = "alert alert-warning text-center clearfix";
+            li.innerHTML = content;
+            // configuracion scroll chat-body text
+            $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},650);
+        }
+
+        if (!parent) chatOutput.appendChild(li, chatOutput.firstChild);
+        else fileProgress.appendChild(li, fileProgress.firstChild);
+
+        // li.tabIndex = 0;
+        li.focus();
+    }
+    // variables
     var chatOutput = document.getElementById('chat-output');
     var fileProgress = document.getElementById('file-progress');
 
     document.getElementById('file').onchange = function() {
         connection.send(this.files[0]);
     };
-
+    // cuando se pulsa Enter como abreviacion para el envio de los mensajes
     var chatInput = document.getElementById('chat-input');
     chatInput.onkeydown = function(e) {
         // jQuery-CSSEmoticons
