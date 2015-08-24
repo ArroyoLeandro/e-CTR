@@ -20,7 +20,14 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     };
     // Capturo el usuario de la sesion
     var current_user = username;
-    // some booleans to override defaults
+    // Capturo foto de perfil usuario
+    var avatar = avatarjs;
+    // datos extra para compartir el nombre completo
+    connection.extra = {
+        fullname: current_user,
+        email: 'correo@correo.com'
+    };
+    // Establecer algunos valores predeterminados
     connection.preventSSLAutoAllowed = false;
     connection.autoReDialOnFailure = true;
     connection.setDefaultEventsForMediaElement = false;
@@ -206,16 +213,19 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     };
     // www.RTCMultiConnection.org/docs/onclose/
     connection.onclose = function(e) {
-        appendAlertWarning('La conexión de datos se ha cerrado entre usted y ' + e.userid);
+        var userData = e.extra;
+        appendAlertWarning('La conexión de datos se ha cerrado entre usted y ' + userData.fullname + ' (' + e.userid +')');
     };
     // www.RTCMultiConnection.org/docs/onleave/
     connection.onleave = function(e) {
-        appendAlertWarning(e.userid + ' ha abandonado el chat!');
-    };
+        var userData = e.extra;
+        appendAlertWarning(userData.fullname + ' (' + e.userid + ') ha abandonado el chat!');
+    };  
     // www.RTCMultiConnection.org/docs/onopen/
     // Los datos de conexion se abren
     connection.onopen = function(e) {
-        appendAlertSuccess(e.userid + ' se ha conectado al chat!');
+        var userData = e.extra;
+        appendAlertSuccess(userData.fullname + ' (' + e.userid + ') se ha conectado al chat! ');
         if (document.getElementById('chat-input')) document.getElementById('chat-input').disabled = false;
         if (document.getElementById('file')) document.getElementById('file').disabled = false;
         if (document.getElementById('open-new-session')) document.getElementById('open-new-session').disabled = true;
@@ -226,6 +236,19 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     if(state.name === 'room-not-available') {
             connection.open(); // si el local no esta disponible, abrirla.
         }
+    }; 
+    // Usuarios conectados
+    connection.onconnected = function(e) {
+        var userData = e.extra;
+        console.log('Numero de usuarios conectados: ', connection.numberOfConnectedUsers + 1);
+
+        var arrayOfAllConnectedUsers = [];
+        for (var userid in connection.peers) {
+             console.debug(userid, 'esta conectado.', userData.fullname);
+             arrayOfAllConnectedUsers.push(userid);
+        }
+        console.info('Arreglo de todos los usuarios conectados: ', arrayOfAllConnectedUsers);
+        console.log('Datos extra: ', userData.fullname, '=', current_user);
     };
 
     var progressHelper = { };
