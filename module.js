@@ -34,6 +34,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     //var userMaxParticipantsAllowed = 8;
     //var maxParticipantsAllowed = 8;
     var direction = 'many-to-many';
+    connection.direction = 'one-to-many';
 
     connection.openSignalingChannel = function(config) {
 
@@ -74,6 +75,48 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     var roomid = connection.channel;
     var channel = location.href.replace(/\/|:|#|%|\.|\[|\]/g, '');
     var websocket = new WebSocket(signalingserver);
+    // Usuarios conectados (Peers)
+    connection.onconnected = function(e) {
+        console.log('Numero de usuarios conectados: ', connection.numberOfConnectedUsers + 1);
+
+        var arrayOfAllConnectedUsers = [];
+        for (var userid in connection.peers) {
+            console.debug(userid, 'esta conectado.');
+            arrayOfAllConnectedUsers.push(userid);
+            // document.getElementById("usuariosOnline").innerHTML = arrayOfAllConnectedUsers;
+
+        }
+        console.info('Arreglo de todos los usuarios conectados: ', arrayOfAllConnectedUsers);
+        // establezco el bucle que pasa a traves de los items en el arreglo
+        var numberOfListItems = arrayOfAllConnectedUsers.length;
+        for (var i = 0; i < numberOfListItems; ++i) {
+            // creamos <li> para cada uno
+            var listItem = document.createElement('li');
+            listItem.className = "list-group-item";
+            var imgPerfil = document.createElement('img');
+            imgPerfil.className = "imgchat img-circle";
+            var perfilUsuario = document.createElement('a');
+            perfilUsuario.className = "user-perfil";
+            var spanPerfil = document.createElement('span');
+            spanPerfil.className = "user-perfil";
+            var h6 = document.createElement('h6');
+            var spanLabel = document.createElement('span');
+            spanLabel.className = "label label-success";
+            // agrego el texto del elemento
+            perfilUsuario.innerHTML = arrayOfAllConnectedUsers[i];
+            // añado los elementos a la pagina
+            document.getElementById("usuariosOnline").appendChild(listItem);
+            listItem.appendChild(imgPerfil);
+            listItem.appendChild(perfilUsuario);
+            listItem.appendChild(spanPerfil);
+            spanPerfil.appendChild(h6);
+            h6.appendChild(spanLabel);
+            // estado predeterminado
+            spanLabel.innerHTML = 'online';
+            // imagen predeterminada
+
+        }
+    };
 
     websocket.onmessage = function (event) {
         var data = JSON.parse(event.data);
@@ -86,7 +129,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
             console.log('Se ha unido a la sala existente: ', connection.channel);
         }
     };
-
+    
     websocket.onopen = function () {
         websocket.send(JSON.stringify({
             checkPresence: true,
@@ -237,19 +280,6 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
             connection.open(); // si el local no esta disponible, abrirla.
         }
     }; 
-    // Usuarios conectados
-    connection.onconnected = function(e) {
-        var userData = e.extra;
-        console.log('Numero de usuarios conectados: ', connection.numberOfConnectedUsers + 1);
-
-        var arrayOfAllConnectedUsers = [];
-        for (var userid in connection.peers) {
-             console.debug(userid, 'esta conectado.', userData.fullname);
-             arrayOfAllConnectedUsers.push(userid);
-        }
-        console.info('Arreglo de todos los usuarios conectados: ', arrayOfAllConnectedUsers);
-        console.log('Datos extra: ', userData.fullname, '=', current_user);
-    };
 
     var progressHelper = { };
     // Autoguardar en el disco duro
@@ -393,6 +423,14 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         // li.tabIndex = 0;
         li.focus();
     }
+    // Detectar si WebRTC es soportado o detectado por el navegador
+    detectWebRTC = function () {
+        if (webrtcDetectedBrowser == null) {
+            console.log('Su navegador no Soporta WebRTC!.');
+            $('.browser-warning').show();
+        }
+    }
+
     // variables
     var chatOutput = document.getElementById('chat-output');
     var fileProgress = document.getElementById('file-progress');
