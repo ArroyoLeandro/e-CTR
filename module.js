@@ -20,13 +20,21 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     };
     // Capturo el usuario de la sesion
     var current_user = username;
-    // some booleans to override defaults
+    // Capturo foto de perfil usuario
+    var avatar = avatarjs;
+    // datos extra para compartir el nombre completo
+    connection.extra = {
+        fullname: current_user,
+        email: 'correo@correo.com'
+    };
+    // Establecer algunos valores predeterminados
     connection.preventSSLAutoAllowed = false;
     connection.autoReDialOnFailure = true;
     connection.setDefaultEventsForMediaElement = false;
     //var userMaxParticipantsAllowed = 8;
     //var maxParticipantsAllowed = 8;
     var direction = 'many-to-many';
+    connection.direction = 'one-to-many';
 
     connection.openSignalingChannel = function(config) {
 
@@ -67,6 +75,53 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     var roomid = connection.channel;
     var channel = location.href.replace(/\/|:|#|%|\.|\[|\]/g, '');
     var websocket = new WebSocket(signalingserver);
+    // Usuarios conectados (Peers)
+    connection.onconnected = function(e) {
+        console.log('Numero de usuarios conectados: ', connection.numberOfConnectedUsers + 1);
+
+        var arrayOfAllConnectedUsers = [];
+        for (var userid in connection.peers) {
+            console.debug(userid, 'esta conectado.');
+            arrayOfAllConnectedUsers.push(userid);
+
+        }
+        // console.info('Arreglo de todos los usuarios conectados: ', arrayOfAllConnectedUsers);
+        // establezco el bucle que pasa a traves de los items en el arreglo
+        var numberOfListItems = arrayOfAllConnectedUsers.length;
+        for (var i = 0; i < numberOfListItems; ++i) {
+            // creamos <li> para cada uno
+            var listItem = document.createElement('li');
+            listItem.className = "list-group-item";
+            var imgPerfil = document.createElement('img');
+            imgPerfil.className = "imgchat img-circle";
+            var perfilUsuario = document.createElement('a');
+            perfilUsuario.className = "user-perfil";
+            var spanPerfil = document.createElement('span');
+            spanPerfil.className = "user-perfil";
+            var h6 = document.createElement('h6');
+            var spanLabel = document.createElement('span');
+            spanLabel.className = "label label-success";
+            // agrego el texto del elemento
+            perfilUsuario.innerHTML = arrayOfAllConnectedUsers[i];
+            // añado los elementos a la pagina
+            document.getElementById("usuariosOnline").appendChild(listItem);
+            listItem.appendChild(imgPerfil);
+            listItem.appendChild(perfilUsuario);
+            listItem.appendChild(spanPerfil);
+            spanPerfil.appendChild(h6);
+            h6.appendChild(spanLabel);
+            // estado predeterminado
+            spanLabel.innerHTML = 'online';
+            // imagen predeterminada
+            var imgDefault = 'pix/foto-perfil.jpg';
+            imgPerfil.setAttribute('src', imgDefault);
+            // al conectarse ocultar mensaje
+            document.getElementById('listWarning').setAttribute('hidden','')
+            // numero de usuarios conectados
+            badge.innerHTML = numberOfConnectedUsers = connection.numberOfConnectedUsers + 1;
+
+        }
+    };
 
     websocket.onmessage = function (event) {
         var data = JSON.parse(event.data);
@@ -79,7 +134,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
             console.log('Se ha unido a la sala existente: ', connection.channel);
         }
     };
-
+    
     websocket.onopen = function () {
         websocket.send(JSON.stringify({
             checkPresence: true,
@@ -197,28 +252,39 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         connection.sessionid = 'Anonymous';
         connection.open();
     };
-
+    // www.RTCMultiConnection.org/docs/onmessage/
     connection.onmessage = function(e) {
         appendDIV(e.data);
 
         console.debug(e.userid, 'posted', e.data);
         console.log('latency:', e.latency, 'ms');
     };
-
+    // www.RTCMultiConnection.org/docs/onclose/
     connection.onclose = function(e) {
-        appendDIV('La conexión de datos se ha cerrado entre usted y ' + e.userid);
+        var userData = e.extra;
+        appendAlertWarning('La conexión de datos se ha cerrado entre usted y ' + userData.fullname + ' (' + e.userid +')');
     };
-
+    // www.RTCMultiConnection.org/docs/onleave/
     connection.onleave = function(e) {
-        appendDIV(e.userid + ' ha cerrado la sesión.');
-    };
-
-    // on data connection gets open
-    connection.onopen = function() {
+        var userData = e.extra;
+        appendAlertWarning(userData.fullname + ' (' + e.userid + ') ha abandonado el chat!');
+    };  
+    // www.RTCMultiConnection.org/docs/onopen/
+    // Los datos de conexion se abren
+    connection.onopen = function(e) {
+        var userData = e.extra;
+        appendAlertSuccess(userData.fullname + ' (' + e.userid + ') se ha conectado al chat! ');
         if (document.getElementById('chat-input')) document.getElementById('chat-input').disabled = false;
         if (document.getElementById('file')) document.getElementById('file').disabled = false;
         if (document.getElementById('open-new-session')) document.getElementById('open-new-session').disabled = true;
     };
+    // www.RTCMultiConnection.org/docs/onstatechange/
+    // snippet recomendado por @muaz Khan para: "Session-rechecking... Descriptions not found"
+    connection.onstatechange = function(state) {
+    if(state.name === 'room-not-available') {
+            connection.open(); // si el local no esta disponible, abrirla.
+        }
+    }; 
 
     var progressHelper = { };
     // Autoguardar en el disco duro
@@ -311,7 +377,7 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         var position = +progress.position.toFixed(2).split('.')[1] || 100;
         label.innerHTML = position + '%';
     }
-
+    // Abriendo elementos basicos de la conversacion <li>
     function appendDIV(div, parent) {
         if (typeof div === 'string') {
             var content = div;
@@ -328,14 +394,56 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         // div.tabIndex = 0;
         div.focus();
     }
+    // cuando un usuario se conecta al chat
+    function appendAlertSuccess(li, parent) {
+        if (typeof li === 'string') {
+            var content = li;
+            var li = document.createElement('li');
+            li.className = "alert alert-success text-center clearfix";
+            li.innerHTML = content;
+            // configuracion scroll chat-body text
+            $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},650);
+        }
 
+        if (!parent) chatOutput.appendChild(li, chatOutput.firstChild);
+        else fileProgress.appendChild(li, fileProgress.firstChild);
+
+        // li.tabIndex = 0;
+        li.focus();
+    }
+    // cuando un usuario se desconecta del chat
+    function appendAlertWarning(li, parent) {
+        if (typeof li === 'string') {
+            var content = li;
+            var li = document.createElement('li');
+            li.className = "alert alert-warning text-center clearfix";
+            li.innerHTML = content;
+            // configuracion scroll chat-body text
+            $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},650);
+        }
+
+        if (!parent) chatOutput.appendChild(li, chatOutput.firstChild);
+        else fileProgress.appendChild(li, fileProgress.firstChild);
+
+        // li.tabIndex = 0;
+        li.focus();
+    }
+    // Detectar si WebRTC es soportado o detectado por el navegador
+    detectWebRTC = function () {
+        if (webrtcDetectedBrowser == null) {
+            console.log('Su navegador no Soporta WebRTC!.');
+            $('.browser-warning').show();
+        }
+    }
+
+    // variables
     var chatOutput = document.getElementById('chat-output');
     var fileProgress = document.getElementById('file-progress');
 
     document.getElementById('file').onchange = function() {
         connection.send(this.files[0]);
     };
-
+    // cuando se pulsa Enter como abreviacion para el envio de los mensajes
     var chatInput = document.getElementById('chat-input');
     chatInput.onkeydown = function(e) {
         // jQuery-CSSEmoticons

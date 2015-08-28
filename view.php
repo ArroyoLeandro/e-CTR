@@ -76,6 +76,7 @@ $PAGE->set_context($context);
 $PAGE->requires->js('/mod/ectr/js/jquery-2.1.4.min.js', true);
 $PAGE->requires->js('/mod/ectr/bootstrap/js/bootstrap.min.js');
 $PAGE->requires->js('/mod/ectr/js/jquery.cssemoticons.min.js', true);
+$PAGE->requires->js('/mod/ectr/js/adapter.js', true);
 $PAGE->requires->css('/mod/ectr/css/jquery.cssemoticons.css');
 $PAGE->requires->css('/mod/ectr/css/font-awesome.min.css');
 $PAGE->requires->css('/mod/ectr/bootstrap/css/bootstrap.min.css');
@@ -141,39 +142,11 @@ echo '
   <div class="col-sm-12 col-md-5 sidebar-offcanvas">
   <div class="panel panel-primary">
     <div class="panel-heading">
-      <span class="fa fa-users"></span> Usuarios Conectados
+      <span class="fa fa-users"></span> Usuarios Conectados <span class="badge" id="badge">0</span>
     </div>
-    <ul class="list-group">
-        <li class="list-group-item" ng-repeat="peer in peers">
-            <div class="btn-group btn-group-xs pull-right">
-              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                Acción <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="javascript:void(0)" ng-click="setMessageTarget(peer.user)">Mensaje directo</a></li>
-                <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Video llamada</a></li>
-                <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Llamada de voz</a></li>
-              </ul>
-            </div>
-           <img src="pix/manuel.jpg" alt="" class="imgchat img-circle" />
-              <a href="#" class="user-perfil">Manuel Fernando Marulanda Aguirre</a>
-              <span class="user-perfil"><h6><span class="label label-success">online</span></h6></span>
-        </li>
-        <li class="list-group-item" ng-repeat="peer in peers">
-            <div class="btn-group btn-group-xs pull-right">
-              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                Acción <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="javascript:void(0)" ng-click="setMessageTarget(peer.user)">Mensaje directo</a></li>
-                <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Video llamada</a></li>
-                <li><a href="javascript:void(0)" ng-click="startVideoCall(peer.user)">Llamada de voz</a></li>
-              </ul>
-            </div>
-           <img src="pix/foto.jpg" alt="" class="imgchat img-circle">
-              <a href="#" class="user-perfil">Shirly Robayo Montenegro</a>
-              <span class="user-perfil"><h6><span class="label label-warning">inactivo</span></h6></span>
-        </li>
+    <ul class="list-group" id="usuariosOnline">
+      <li class="list-group-item list-group-item-warning"><small id="listWarning">No hay ningun usuario conectado en este momento! :(</small></li>
+
     </ul>
 </div> 
         </div> <!-- END col-sm-10 col-md-5 sidebar-offcanvas-->
