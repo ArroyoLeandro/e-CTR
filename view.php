@@ -142,19 +142,11 @@ echo '
   <div class="col-sm-12 col-md-5 sidebar-offcanvas">
   <div class="panel panel-primary">
     <div class="panel-heading">
-      <span class="fa fa-users"></span> Usuarios Conectados
+      <span class="fa fa-users"></span> Usuarios Conectados <span class="badge" id="badge">0</span>
     </div>
     <ul class="list-group" id="usuariosOnline">
-      <li class="list-group-item list-group-item-warning" ng-show="!isLoggedIn()" id="usuariosOnline"><small>No hay ningun usuario conectado en este momento! :(</small></li>
+      <li class="list-group-item list-group-item-warning"><small id="listWarning">No hay ningun usuario conectado en este momento! :(</small></li>
 
-        <li class="list-group-item" ng-repeat="peer in peers">
-           <img src="pix/manuel.jpg" alt="" class="imgchat img-circle" />
-              <a href="#" class="user-perfil">Manuel Fernando Marulanda Aguirre</a>
-              <span class="user-perfil">
-              <h6><span class="label label-success">online</span>
-              </h6>
-              </span>
-        </li>
     </ul>
 </div> 
         </div> <!-- END col-sm-10 col-md-5 sidebar-offcanvas-->

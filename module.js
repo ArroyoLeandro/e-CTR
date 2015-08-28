@@ -83,10 +83,9 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         for (var userid in connection.peers) {
             console.debug(userid, 'esta conectado.');
             arrayOfAllConnectedUsers.push(userid);
-            // document.getElementById("usuariosOnline").innerHTML = arrayOfAllConnectedUsers;
 
         }
-        console.info('Arreglo de todos los usuarios conectados: ', arrayOfAllConnectedUsers);
+        // console.info('Arreglo de todos los usuarios conectados: ', arrayOfAllConnectedUsers);
         // establezco el bucle que pasa a traves de los items en el arreglo
         var numberOfListItems = arrayOfAllConnectedUsers.length;
         for (var i = 0; i < numberOfListItems; ++i) {
@@ -114,6 +113,12 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
             // estado predeterminado
             spanLabel.innerHTML = 'online';
             // imagen predeterminada
+            var imgDefault = 'pix/foto-perfil.jpg';
+            imgPerfil.setAttribute('src', imgDefault);
+            // al conectarse ocultar mensaje
+            document.getElementById('listWarning').setAttribute('hidden','')
+            // numero de usuarios conectados
+            badge.innerHTML = numberOfConnectedUsers = connection.numberOfConnectedUsers + 1;
 
         }
     };
