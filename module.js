@@ -18,15 +18,16 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         audio: false,
         video: false
     };
+    // datos extra para compartir el nombre completo
+    connection.extra = {
+        fullname: current_user,
+        imgPerfil: avatar,
+        email: 'correo@correo.com'
+    };
     // Capturo el usuario de la sesion
     var current_user = username;
     // Capturo foto de perfil usuario
     var avatar = avatarjs;
-    // datos extra para compartir el nombre completo
-    connection.extra = {
-        fullname: current_user,
-        email: 'correo@correo.com'
-    };
     // Establecer algunos valores predeterminados
     connection.preventSSLAutoAllowed = false;
     connection.autoReDialOnFailure = true;
@@ -311,66 +312,66 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
     };
     // www.RTCMultiConnection.org/docs/onFileEnd/
     connection.onFileEnd = function(file) {
-                var helper = progressHelper[file.uuid];
-                if (!helper) {
-                    console.error('No existe tal elemento del asistente de progreso.', file);
-                    return;
-                }
+        var helper = progressHelper[file.uuid];
+        if (!helper) {
+            console.error('No existe tal elemento del asistente de progreso.', file);
+            return;
+        }
 
-                if (file.remoteUserId) {
-                    helper = progressHelper[file.uuid][file.remoteUserId];
-                    if (!helper) {
-                        return;
-                    }
-                }
-                // conversor de hora a hora 10:45 pm
-                var d = new Date();
-                var h = d.getHours();
-                var m = d.getMinutes();
+        if (file.remoteUserId) {
+            helper = progressHelper[file.uuid][file.remoteUserId];
+            if (!helper) {
+                return;
+            }
+        }
+        // conversor de hora a hora 10:45 pm
+        var d = new Date();
+        var h = d.getHours();
+        var m = d.getMinutes();
 
-                if (d.getHours() < 10) {
-                  gH = "0";
-                } else {
-                  gH = "";
-                }
+        if (d.getHours() < 10) {
+          gH = "0";
+        } else {
+          gH = "";
+        }
 
-                if (d.getMinutes() < 10) {
-                  gM = "0";
-                } else {
-                  gM = "";
-                }
+        if (d.getMinutes() < 10) {
+          gM = "0";
+        } else {
+          gM = "";
+        }
 
-                if (h <= 12) {
-                var H = "am";
-                } else{
-                  var H = "pm";
-                };
-                // Variables de configuracion DataChannel
-                var avatar = avatarjs;
-                var chatBody = '<div class="chat-body clearfix">';
-                var nombre ='<strong class="primary-font">'+ current_user +'</strong>'; 
-                var hora = '<small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>'+ gH + new Date().getHours() + ":"+ gM + new Date().getMinutes() + " " + H + '</small>';
+        if (h <= 12) {
+        var H = "am";
+        } else{
+          var H = "pm";
+        };
+        // Variables de configuracion DataChannel
+        var avatar = avatarjs;
+        var chatBody = '<div class="chat-body clearfix">';
+        var nombre ='<strong class="primary-font">'+ current_user +'</strong>'; 
+        var hora = '<small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>'+ gH + new Date().getHours() + ":"+ gM + new Date().getMinutes() + " " + H + '</small>';
 
-                var div = helper.div;
-                if (file.type.indexOf('image') != -1) {
-                    div.innerHTML = avatar + chatBody + nombre + hora + '<br /><a class="content" href="' + file.url + '" download="' + file.name + '"><strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> <br /><img src="' + file.url + '" data-toggle="tooltip" data-placement="top" title="Clic para descargar: ' + file.name + '" style="max-width: 100%; padding-top: 5px;" class="img-rounded"></a></div> <!-- END hat-body clearfix-->';
-                } else {
-                    div.innerHTML = avatar + chatBody + nombre + hora + '<br /><a class="content" href="' + file.url + '" download="' + file.name + '"><strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> <br /><iframe src="' + file.url + '" data-toggle="tooltip" data-placement="top" title="Clic para descargar: ' + file.name + '" style="width: 100%;border: 0;height: inherit;margin-top:1em;" class="img-rounded"></iframe></a></div> <!-- END hat-body clearfix-->';
-                }
-                // configuracion scroll chat-body image
-                $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},650);
+        var div = helper.div;
+        if (file.type.indexOf('image') != -1) {
+            div.innerHTML = avatar + chatBody + nombre + hora + '<br /><a class="content" href="' + file.url + '" download="' + file.name + '"><strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> <br /><img src="' + file.url + '" data-toggle="tooltip" data-placement="top" title="Clic para descargar: ' + file.name + '" style="max-width: 100%; padding-top: 5px;" class="img-rounded"></a></div> <!-- END hat-body clearfix-->';
+        } else {
+            div.innerHTML = avatar + chatBody + nombre + hora + '<br /><a class="content" href="' + file.url + '" download="' + file.name + '"><strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> <br /><iframe src="' + file.url + '" data-toggle="tooltip" data-placement="top" title="Clic para descargar: ' + file.name + '" style="width: 100%;border: 0;height: inherit;margin-top:1em;" class="img-rounded"></iframe></a></div> <!-- END hat-body clearfix-->';
+        }
+        // configuracion scroll chat-body image
+        $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},650);
 
-                // para la compatibilidad con versiones anteriores
-                if (connection.onFileSent || connection.onFileReceived) {
-                    if (connection.onFileSent) {
-                        connection.onFileSent(file, file.uuid);
-                    }
+        // para la compatibilidad con versiones anteriores
+        if (connection.onFileSent || connection.onFileReceived) {
+            if (connection.onFileSent) {
+                connection.onFileSent(file, file.uuid);
+            }
 
-                    if (connection.onFileReceived) {
-                        connection.onFileReceived(file.name, file);
-                    }
-                }
-            };
+            if (connection.onFileReceived) {
+                connection.onFileReceived(file.name, file);
+            }
+        }
+    };
 
     function updateLabel(progress, label) {
         if (progress.position == -1) return;
