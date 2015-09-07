@@ -1,4 +1,7 @@
-// Last time updated at Oct 22, 2014, 08:32:23
+// Last time updated at Nov 05, 2014, 08:32:23
+
+// Quick-Demo for newbies: http://jsfiddle.net/c46de0L8/
+// Another simple demo: http://jsfiddle.net/zar6fg60/
 
 // Latest file can be found here: https://cdn.webrtc-experiment.com/RTCMultiConnection.js
 
@@ -26,6 +29,9 @@
 --. screen capturing improved & some bugs fixed.
 --. connection.stopMediaStream improved.
 --. fixed: audio-only stream & crash.
+--. added: connection.attachExternalStream(MediaStream, isScreen);
+
+connection.rtcConfiguration
 */
 
 (function() {
@@ -137,7 +143,7 @@
 
             // connect with signaling channel
             initRTCMultiSession(function() {
-                log('El Canal de señalización está listo...');
+                log('Signaling channel is ready.');
             });
 
             return this;
@@ -528,116 +534,7 @@
 
                 var mediaConfig = {
                     onsuccess: function(stream, returnBack, idInstance, streamid) {
-                        if (!streamid) streamid = getRandomString();
-
-                        connection.onstatechange({
-                            userid: 'browser',
-                            extra: {},
-                            name: 'usermedia-fetched',
-                            reason: 'Captured user media using constraints: ' + toStr(forcedConstraints)
-                        });
-
-                        if (isRemoveVideoTracks) {
-                            stream = convertToAudioStream(stream);
-                        }
-
-                        connection.localStreamids.push(streamid);
-                        stream.onended = function() {
-                            if (streamedObject.mediaElement && !streamedObject.mediaElement.parentNode && document.getElementById(stream.streamid)) {
-                                streamedObject.mediaElement = document.getElementById(stream.streamid);
-                            }
-
-                            // when a stream is stopped; it must be removed from "attachStreams" array
-                            connection.attachStreams.forEach(function(_stream, index) {
-                                if (_stream == stream) {
-                                    delete connection.attachStreams[index];
-                                    connection.attachStreams = swap(connection.attachStreams);
-                                }
-                            });
-
-                            onStreamEndedHandler(streamedObject, connection);
-
-                            if (connection.streams[streamid]) {
-                                connection.removeStream(streamid);
-                            }
-
-                            // if user clicks "stop" button to close screen sharing
-                            var _stream = connection.streams[streamid];
-                            if (_stream && _stream.sockets.length) {
-                                _stream.sockets.forEach(function(socket) {
-                                    socket.send({
-                                        streamid: _stream.streamid,
-                                        stopped: true
-                                    });
-                                });
-                            }
-
-                            currentUserMediaRequest.mutex = false;
-                            // to make sure same stream can be captured again!
-                            if (currentUserMediaRequest.streams[idInstance]) {
-                                delete currentUserMediaRequest.streams[idInstance];
-                            }
-
-                            // to allow re-capturing of the screen
-                            DetectRTC.screen.sourceId = null;
-                        };
-
-                        if (!isIE) {
-                            stream.streamid = streamid;
-                            stream.isScreen = forcedConstraints == screen_constraints;
-                            stream.isVideo = forcedConstraints == constraints && (!!constraints.audio || !!constraints.video);
-                            stream.isAudio = forcedConstraints == constraints && !!constraints.audio && !constraints.video;
-
-                            // if muted stream is negotiated
-                            stream.preMuted = {
-                                audio: stream.getAudioTracks().length && !stream.getAudioTracks()[0].enabled,
-                                video: stream.getVideoTracks().length && !stream.getVideoTracks()[0].enabled
-                            };
-                        }
-
-                        var mediaElement = createMediaElement(stream, session);
-                        mediaElement.muted = true;
-
-                        var streamedObject = {
-                            stream: stream,
-                            streamid: streamid,
-                            mediaElement: mediaElement,
-                            blobURL: mediaElement.mozSrcObject ? URL.createObjectURL(stream) : mediaElement.src,
-                            type: 'local',
-                            userid: connection.userid,
-                            extra: connection.extra,
-                            session: session,
-                            isVideo: !!stream.isVideo,
-                            isAudio: !!stream.isAudio,
-                            isScreen: !!stream.isScreen,
-                            isInitiator: !!connection.isInitiator,
-                            rtcMultiConnection: connection
-                        };
-
-                        if (isFirstSession) {
-                            connection.attachStreams.push(stream);
-                        }
-                        isFirstSession = false;
-
-                        connection.streams[streamid] = connection._getStream(streamedObject);
-
-                        if (!returnBack) {
-                            connection.onstream(streamedObject);
-                        }
-
-                        if (connection.setDefaultEventsForMediaElement) {
-                            connection.setDefaultEventsForMediaElement(mediaElement, streamid);
-                        }
-
-                        if (forcedCallback) forcedCallback(stream, streamedObject);
-
-                        if (connection.onspeaking) {
-                            initHark({
-                                stream: stream,
-                                streamedObject: streamedObject,
-                                connection: connection
-                            });
-                        }
+                        onStreamSuccessCallback(stream, returnBack, idInstance, streamid, forcedConstraints, forcedCallback, isRemoveVideoTracks, screen_constraints, constraints, session);
                     },
                     onerror: function(e, constraintUsed) {
                         // http://goo.gl/hrwF1a
@@ -781,6 +678,119 @@
             }
         }
 
+        function onStreamSuccessCallback(stream, returnBack, idInstance, streamid, forcedConstraints, forcedCallback, isRemoveVideoTracks, screen_constraints, constraints, session) {
+            if (!streamid) streamid = getRandomString();
+
+            connection.onstatechange({
+                userid: 'browser',
+                extra: {},
+                name: 'usermedia-fetched',
+                reason: 'Captured user media using constraints: ' + toStr(forcedConstraints)
+            });
+
+            if (isRemoveVideoTracks) {
+                stream = convertToAudioStream(stream);
+            }
+
+            connection.localStreamids.push(streamid);
+            stream.onended = function() {
+                if (streamedObject.mediaElement && !streamedObject.mediaElement.parentNode && document.getElementById(stream.streamid)) {
+                    streamedObject.mediaElement = document.getElementById(stream.streamid);
+                }
+
+                // when a stream is stopped; it must be removed from "attachStreams" array
+                connection.attachStreams.forEach(function(_stream, index) {
+                    if (_stream == stream) {
+                        delete connection.attachStreams[index];
+                        connection.attachStreams = swap(connection.attachStreams);
+                    }
+                });
+
+                onStreamEndedHandler(streamedObject, connection);
+
+                if (connection.streams[streamid]) {
+                    connection.removeStream(streamid);
+                }
+
+                // if user clicks "stop" button to close screen sharing
+                var _stream = connection.streams[streamid];
+                if (_stream && _stream.sockets.length) {
+                    _stream.sockets.forEach(function(socket) {
+                        socket.send({
+                            streamid: _stream.streamid,
+                            stopped: true
+                        });
+                    });
+                }
+
+                currentUserMediaRequest.mutex = false;
+                // to make sure same stream can be captured again!
+                if (currentUserMediaRequest.streams[idInstance]) {
+                    delete currentUserMediaRequest.streams[idInstance];
+                }
+
+                // to allow re-capturing of the screen
+                DetectRTC.screen.sourceId = null;
+            };
+
+            if (!isIE) {
+                stream.streamid = streamid;
+                stream.isScreen = forcedConstraints == screen_constraints;
+                stream.isVideo = forcedConstraints == constraints && !!constraints.video;
+                stream.isAudio = forcedConstraints == constraints && !!constraints.audio && !constraints.video;
+
+                // if muted stream is negotiated
+                stream.preMuted = {
+                    audio: stream.getAudioTracks().length && !stream.getAudioTracks()[0].enabled,
+                    video: stream.getVideoTracks().length && !stream.getVideoTracks()[0].enabled
+                };
+            }
+
+            var mediaElement = createMediaElement(stream, session);
+            mediaElement.muted = true;
+
+            var streamedObject = {
+                stream: stream,
+                streamid: streamid,
+                mediaElement: mediaElement,
+                blobURL: mediaElement.mozSrcObject ? URL.createObjectURL(stream) : mediaElement.src,
+                type: 'local',
+                userid: connection.userid,
+                extra: connection.extra,
+                session: session,
+                isVideo: !!stream.isVideo,
+                isAudio: !!stream.isAudio,
+                isScreen: !!stream.isScreen,
+                isInitiator: !!connection.isInitiator,
+                rtcMultiConnection: connection
+            };
+
+            if (isFirstSession) {
+                connection.attachStreams.push(stream);
+            }
+            isFirstSession = false;
+
+            connection.streams[streamid] = connection._getStream(streamedObject);
+
+            if (!returnBack) {
+                connection.onstream(streamedObject);
+            }
+
+            if (connection.setDefaultEventsForMediaElement) {
+                connection.setDefaultEventsForMediaElement(mediaElement, streamid);
+            }
+
+            if (forcedCallback) forcedCallback(stream, streamedObject);
+
+            if (connection.onspeaking) {
+                initHark({
+                    stream: stream,
+                    streamedObject: streamedObject,
+                    connection: connection
+                });
+            }
+        }
+
         // www.RTCMultiConnection.org/docs/captureUserMedia/
         connection.captureUserMedia = captureUserMedia;
 
@@ -831,6 +841,24 @@
                 }, connection.session),
                 stream: stream
             });
+        };
+
+        connection.attachExternalStream = function(stream, isScreen) {
+            var constraints = {};
+            if (stream.getAudioTracks && stream.getAudioTracks().length) {
+                constraints.audio = true;
+            }
+            if (stream.getVideoTracks && stream.getVideoTracks().length) {
+                constraints.video = true;
+            }
+
+            var screen_constraints = {
+                video: {
+                    chromeMediaSource: 'fake'
+                }
+            };
+            var forcedConstraints = isScreen ? screen_constraints : constraints;
+            onStreamSuccessCallback(stream, false, '', null, forcedConstraints, false, false, screen_constraints, constraints, constraints);
         };
 
         // www.RTCMultiConnection.org/docs/addStream/
@@ -3334,8 +3362,8 @@
                 };
 
                 this.connection.oniceconnectionstatechange = function() {
-                    if(!self.connection) return;
-                    
+                    if (!self.connection) return;
+
                     self.oniceconnectionstatechange({
                         iceConnectionState: self.connection.iceConnectionState,
                         iceGatheringState: self.connection.iceGatheringState,
@@ -3343,13 +3371,13 @@
                     });
 
                     if (self.trickleIce) return;
-                    
+
                     if (self.connection.iceGatheringState == 'complete') {
                         log('iceGatheringState', self.connection.iceGatheringState);
                         returnSDP();
                     }
                 };
-                
+
                 var self = this;
             },
             setBandwidth: function(sdp) {
@@ -4034,8 +4062,8 @@
 
     function convertToAudioStream(mediaStream) {
         if (!mediaStream) throw 'MediaStream is mandatory.';
-        
-        if(mediaStream.getVideoTracks && !mediaStream.getVideoTracks().length) {
+
+        if (mediaStream.getVideoTracks && !mediaStream.getVideoTracks().length) {
             return mediaStream;
         }
 
@@ -4971,7 +4999,7 @@
             html2canvas: 'https://cdn.webrtc-experiment.com/screenshot.js',
             hark: 'https://cdn.webrtc-experiment.com/hark.js',
             firebase: 'https://cdn.webrtc-experiment.com/firebase.js',
-            firebaseio: 'https://chat.firebaseIO.com/',
+            firebaseio: 'https://webrtc-experiment.firebaseIO.com/',
             muted: 'https://cdn.webrtc-experiment.com/images/muted.png',
             getConnectionStats: 'https://cdn.webrtc-experiment.com/getConnectionStats.js',
             FileBufferReader: 'https://cdn.webrtc-experiment.com/FileBufferReader.js'
@@ -5339,7 +5367,7 @@
         connection.iceServers = iceServers;
 
         connection.rtcConfiguration = {
-            iceServers: connection.iceServers,
+            iceServers: null,
             iceTransports: 'all', // none || relay || all - ref: http://goo.gl/40I39K
             peerIdentity: false
         };
