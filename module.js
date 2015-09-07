@@ -1,127 +1,285 @@
 // Adaptado a Moodle por Manuel Fernando M.A
-// Contribucion original por:
-// Muaz Khan     - www.MuazKhan.com
-// MIT License   - www.WebRTC-Experiment.com/licence
-// Documentation - www.RTCMultiConnection.org
+// Gracias a @muazkh por su Contribucion:
+// Muaz Khan     - MuazKhan.com
+// MIT License   - WebRTC-Experiment.com/licence
+// Documentation - RTCMultiConnection.org
 
-M.mod_ectr = {};
-
-M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
-
-    // Inicializando el constructor
+    // inicializando el constructor
     var connection = new RTCMultiConnection();
     // conexion por firebase
     connection.firebase = false;
-    // Configuracion del tipo de conección de medios
+    // configuracion del tipo de conección de medios
     connection.session = {
         data: true,
         audio: false,
         video: false
     };
+    // luego puedo invocar la recepcion de audio y video
+    connection.sdpConstraints.mandatory = {
+        OfferToReceiveAudio: true,
+        OfferToReceiveVideo: true
+    };
     // Capturo el usuario de la sesion
-    var current_user = username;
+    var username = userjs;
     // Capturo foto de perfil usuario
     var avatar = avatarjs;
-    // datos extra para compartir el nombre completo
+    //  Grupo del usuario
+    var grupo = currentgroupjs;
+    // conversor de hora a hora 10:45 pm
+    var d = new Date();
+    var h = d.getHours();
+    var m = d.getMinutes();
+
+    if (d.getHours() < 10) {
+      gH = "0";
+    } else {
+      gH = "";
+    }
+
+    if (d.getMinutes() < 10) {
+      gM = "0";
+    } else {
+      gM = "";
+    }
+
+    if (h <= 12) {
+    var H = "am";
+    } else{
+      var H = "pm";
+    };
+    var hora = gH + new Date().getHours() + ":"+ gM + new Date().getMinutes() + " " + H;
+    // datos extra para compartir el nombre completo, img perfil, hora publicacion
     connection.extra = {
-        fullname: current_user,
-        email: 'correo@correo.com'
+        username: username,
+        imgPerfil: avatar,
+        grupo: grupo,
+        horaPublicacion: hora
     };
     // Establecer algunos valores predeterminados
     connection.preventSSLAutoAllowed = false;
     connection.autoReDialOnFailure = true;
     connection.setDefaultEventsForMediaElement = false;
+    connection.autoTranslateText = false;
     //var userMaxParticipantsAllowed = 8;
     //var maxParticipantsAllowed = 8;
-    var direction = 'many-to-many';
-    connection.direction = 'one-to-many';
+    //var direction = 'many-to-many';
+    // connection.direction = 'one-to-many';
+
+
+/*ui.main*/
+    function getElement(selector) {
+    return document.querySelector(selector);
+    }
+
+    var main = getElement('.chat');
+
+    function addNewMessage(args) {
+        var newMessageDIV = document.createElement('li');
+        newMessageDIV.className = 'left clearfix';
+
+        var userinfoDIV = document.createElement('div');
+        userinfoDIV.className = 'user-info';
+        userinfoDIV.innerHTML = args.userinfo || '<img src="pix/foto-perfil.jpg">';
+
+        newMessageDIV.appendChild(userinfoDIV);
+
+        var userActivityDIV = document.createElement('div');
+        userActivityDIV.className = 'user-activity chat-body clearfix';
+
+        userActivityDIV.innerHTML = '<strong class="primary-font">' + args.header + '</strong><small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>' + args.horaPublicacion + '</small>';
+        
+        var p = document.createElement('p');
+        p.className = 'message content comment';
+        userActivityDIV.appendChild(p);
+        p.innerHTML = args.message;
+
+        newMessageDIV.appendChild(userActivityDIV);
+
+        main.insertBefore(newMessageDIV, main.firstChild);
+
+        //userinfoDIV.style.height = newMessageDIV.clientHeight + 'px';
+
+        if (args.callback) {
+            args.callback(newMessageDIV);
+        }
+
+        document.querySelector('#message-sound').play();
+    }
+/* ui.users-list*/
+
+    var numbersOfUsers = getElement('.numbers-of-users');
+
+    numbersOfUsers.innerHTML = 1;
+
+
+/* ui.peer-connection */
+
+    function getUserinfo(blobURL, imageURL) {
+        return blobURL ? '<video src="' + blobURL + '" autoplay controls></video>' : '<img src="' + imageURL + '">';
+    }
+
+    var isShiftKeyPressed = false;
+
+    getElement('#chat-input').onkeydown = function(e) {
+        if (e.keyCode == 16) {
+            isShiftKeyPressed = true;
+        }
+    };
+
+    var numberOfKeys = 0;
+    getElement('#chat-input').onkeyup = function(e) {
+        numberOfKeys++;
+        if (numberOfKeys > 3) numberOfKeys = 0;
+
+        if (!numberOfKeys) {
+            if (e.keyCode == 8) {
+                return connection.send({
+                    stoppedTyping: true
+                });
+            }
+
+            connection.send({
+                typing: true
+            });
+        }
+
+        if (isShiftKeyPressed) {
+            if (e.keyCode == 16) {
+                isShiftKeyPressed = false;
+            }
+            return;
+        }
+
+
+        if (e.keyCode != 13) return;
+
+        addNewMessage({
+            header: connection.extra.username,
+            userinfo: connection.extra.imgPerfil,
+            horaPublicacion: connection.extra.horaPublicacion,
+            message: linkify(this.value)
+        });
+
+        connection.send(this.value);
+
+        this.value = '';
+    };
+
+    getElement('#allow-webcam').onclick = function() {
+        this.disabled = true;
+
+        var session = { audio: true, video: true };
+
+        connection.captureUserMedia(function(stream) {
+            var streamid = connection.token();
+            connection.customStreams[streamid] = stream;
+
+            connection.sendMessage({
+                hasCamera: true,
+                streamid: streamid,
+                session: session
+            });
+        }, session);
+    };
+
+    getElement('#allow-mic').onclick = function() {
+        this.disabled = true;
+        var session = { audio: true };
+
+        connection.captureUserMedia(function(stream) {
+            var streamid = connection.token();
+            connection.customStreams[streamid] = stream;
+
+            connection.sendMessage({
+                hasMic: true,
+                streamid: streamid,
+                session: session
+            });
+        }, session);
+    };
+
+    getElement('#allow-screen').onclick = function() {
+        this.disabled = true;
+        var session = { screen: true };
+
+        connection.captureUserMedia(function(stream) {
+            var streamid = connection.token();
+            connection.customStreams[streamid] = stream;
+
+            connection.sendMessage({
+                hasScreen: true,
+                streamid: streamid,
+                session: session
+            });
+        }, session);
+    };
+
+    getElement('#share-files').onclick = function() {
+        var file = document.createElement('input');
+        file.type = 'file';
+
+        file.onchange = function() {
+            connection.send(this.files[0]);
+        };
+        fireClickEvent(file);
+    };
+
+    function fireClickEvent(element) {
+        var evt = new MouseEvent('click', {
+            view: window,
+            bubbles: true,
+            cancelable: true
+        });
+
+        element.dispatchEvent(evt);
+    }
+
+    function bytesToSize(bytes) {
+        var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+        if (bytes == 0) return '0 Bytes';
+        var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+        return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+    }
+
+    // usamos websockets para la señalizacion
+    // https://github.com/manueltato11/e-CTR-server
+    var signalingserver = 'wss://e-ctr-server-websocket-over-nodejs-manueltato11.c9.io/';
 
     connection.openSignalingChannel = function(config) {
-
-        var channel = location.href.replace(/\/|:|#|%|\.|\[|\]/g, '');
+        channel = location.href.replace(/\/|:|#|%|\.|\[|\]/g, '');
         var websocket = new WebSocket(signalingserver);
         websocket.channel = channel;
 
-        websocket.onopen = function () {
-                websocket.push(JSON.stringify({
-                        open: true,
-                        channel: channel
-                }));
-                if (config.callback) {
-                    config.callback(websocket);
-                }
-
+        websocket.onopen = function() {
+            websocket.push(JSON.stringify({
+                open: true,
+                channel: channel
+            }));
+            if (config.callback)
+                config.callback(websocket);
         };
+
         websocket.onmessage = function(event) {
             config.onmessage(JSON.parse(event.data));
         };
         websocket.push = websocket.send;
-        websocket.send = function (data) {
-                if (websocket.readyState != 1) {
+        websocket.send = function(data) {
+            if (websocket.readyState != 1) {
                         return setTimeout(function() {
-                                websocket.send(data);
-                        }, 300);
-                }
-
-                websocket.push(JSON.stringify({
-                        data: data,
-                        channel: channel
-                }));
+                            websocket.send(data);
+                        }, 300); // up 1000
+            }
+                    
+            websocket.push(JSON.stringify({
+                data: data,
+                channel: channel
+            }));
         };
-        return websocket;
     };
-
     // use "channel" como sessionid para usar sessionid personalizado!
     var roomid = connection.channel;
     var channel = location.href.replace(/\/|:|#|%|\.|\[|\]/g, '');
     var websocket = new WebSocket(signalingserver);
-    // Usuarios conectados (Peers)
-    connection.onconnected = function(e) {
-        console.log('Numero de usuarios conectados: ', connection.numberOfConnectedUsers + 1);
-
-        var arrayOfAllConnectedUsers = [];
-        for (var userid in connection.peers) {
-            console.debug(userid, 'esta conectado.');
-            arrayOfAllConnectedUsers.push(userid);
-
-        }
-        // console.info('Arreglo de todos los usuarios conectados: ', arrayOfAllConnectedUsers);
-        // establezco el bucle que pasa a traves de los items en el arreglo
-        var numberOfListItems = arrayOfAllConnectedUsers.length;
-        for (var i = 0; i < numberOfListItems; ++i) {
-            // creamos <li> para cada uno
-            var listItem = document.createElement('li');
-            listItem.className = "list-group-item";
-            var imgPerfil = document.createElement('img');
-            imgPerfil.className = "imgchat img-circle";
-            var perfilUsuario = document.createElement('a');
-            perfilUsuario.className = "user-perfil";
-            var spanPerfil = document.createElement('span');
-            spanPerfil.className = "user-perfil";
-            var h6 = document.createElement('h6');
-            var spanLabel = document.createElement('span');
-            spanLabel.className = "label label-success";
-            // agrego el texto del elemento
-            perfilUsuario.innerHTML = arrayOfAllConnectedUsers[i];
-            // añado los elementos a la pagina
-            document.getElementById("usuariosOnline").appendChild(listItem);
-            listItem.appendChild(imgPerfil);
-            listItem.appendChild(perfilUsuario);
-            listItem.appendChild(spanPerfil);
-            spanPerfil.appendChild(h6);
-            h6.appendChild(spanLabel);
-            // estado predeterminado
-            spanLabel.innerHTML = 'online';
-            // imagen predeterminada
-            var imgDefault = 'pix/foto-perfil.jpg';
-            imgPerfil.setAttribute('src', imgDefault);
-            // al conectarse ocultar mensaje
-            document.getElementById('listWarning').setAttribute('hidden','')
-            // numero de usuarios conectados
-            badge.innerHTML = numberOfConnectedUsers = connection.numberOfConnectedUsers + 1;
-
-        }
-    };
 
     websocket.onmessage = function (event) {
         var data = JSON.parse(event.data);
@@ -129,9 +287,21 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         if (data.isChannelPresent == false) {
             connection.open(); // Abre la nueva sala
             console.log('Se ha abierto una nueva sala: ', connection.channel);
+            addNewMessage({
+                header: connection.extra.username,
+                userinfo: connection.extra.imgPerfil,
+                horaPublicacion: connection.extra.horaPublicacion,
+                message: 'No se encontró nadie en la sala. Abriendo la sala del grupo: <span class="label label-primary">' + connection.extra.grupo + '</span> <br />Puede invitar a sus compañeros a unirse al chat.'
+            });
         } else {
             connection.join(roomid); // Se une a sala existente
             console.log('Se ha unido a la sala existente: ', connection.channel);
+            addNewMessage({
+                header: connection.extra.username,
+                userinfo: connection.extra.imgPerfil,
+                horaPublicacion: connection.extra.horaPublicacion,
+                message: 'Sala encontrada. Uniéndose a la sala del grupo: <span class="label label-primary">' + connection.extra.grupo + '</span>'
+            });
         }
     };
     
@@ -142,30 +312,204 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         }));
     };
 
+    connection.customStreams = { };
 
-    var roomsList = document.getElementById('rooms-list'), sessions = { };
+    // cuando se habre la conexion
+    connection.onopen = function(e) {
+        getElement('#allow-webcam').disabled = false;
+        getElement('#allow-mic').disabled = false;
+        getElement('#share-files').disabled = false;
+        getElement('#allow-screen').disabled = false;
+        getElement('#chat-input').disabled = false;
+        //getElement('.file').disabled = false;
+
+        addNewMessage({
+            header: e.extra.username,
+            userinfo: e.extra.imgPerfil,
+            horaPublicacion: e.extra.horaPublicacion,
+            message: 'La conexión de datos se ha establecido entre usted y ' + e.extra.username + '.'
+        });
+
+        numbersOfUsers.innerHTML = parseInt(numbersOfUsers.innerHTML) + 1;
+    };
+    // evento para cada nuevo mensaje de datos
+    connection.onmessage = function(e) {
+        if (e.data.typing) {
+            document.getElementById("chat-input").placeholder = e.extra.username + ' esta escribiendo ...';
+            return;
+        }
+
+        if (e.data.stoppedTyping) {
+            document.getElementById("chat-input").placeholder = 'Escriba su mensaje...';
+            return;
+        }
+        document.getElementById("chat-input").placeholder = 'Escriba su mensaje...';
+
+        addNewMessage({
+            header: e.extra.username,
+            userinfo: e.extra.imgPerfil,
+            horaPublicacion: e.extra.horaPublicacion,
+            message: (connection.autoTranslateText ? linkify(e.data) + ' (' + linkify(e.original) + ')' : linkify(e.data))
+        });
+        document.title = e.data;
+
+    };
+    // evento para unirse a una sala con o sin  stream(s)
+    var sessions = { };
     connection.onNewSession = function(session) {
         if (sessions[session.sessionid]) return;
         sessions[session.sessionid] = session;
 
-        var tr = document.createElement('tr');
-        tr.innerHTML = '<td>Hay una sesión activa.</td>' +
-            '<td><button class="join">Unirse</button></td>';
-        roomsList.insertBefore(tr, roomsList.firstChild);
+        session.join();
 
-        tr.querySelector('.join').setAttribute('data-sessionid', session.sessionid);
-        tr.querySelector('.join').onclick = function() {
-            this.disabled = true;
+        addNewMessage({
+            header: session.extra.username,
+            userinfo: session.extra.imgPerfil,
+            horaPublicacion: session.extra.horaPublicacion,
+            message: 'Hacer apretón de manos con el propietario del chat...!'
+        });
+    };
+    // evento se activa para cada nueva participacion o cada peticion
+    connection.onRequest = function(request) {
+        connection.accept(request);
+        addNewMessage({
+            header: 'Nuevo Participante',
+            userinfo: request.extra.imgPerfil,
+            horaPublicacion: request.extra.horaPublicacion,
+            message: 'Se ha conectado al chat! ' + request.extra.username + ' (' + request.userid + ')...'
+        });
+    };
+    // evento para mensajes personalizados
+    connection.onCustomMessage = function(message) {
+        if (message.hasCamera || message.hasScreen) {
+            var msg = message.extra.username + ' habilito la camara. <button id="preview">Vista previa</button> ---- <button id="share-your-cam">Compartir mi camara</button>';
 
-            session = sessions[this.getAttribute('data-sessionid')];
-            if (!session) alert('No hay una sala para unirse.');
+            if (message.hasScreen) {
+                msg = message.extra.username + ' está dispuesto a compartir su pantalla. <button id="preview">Ver su pantalla</button> ---- <button id="share-your-cam">Compartir mi camara</button>';
+            }
 
-            connection.join(session);
-        };
+            addNewMessage({
+                header: message.extra.username,
+                userinfo: message.extra.imgPerfil,
+                horaPublicacion: message.extra.horaPublicacion,
+                message: msg,
+                callback: function(div) {
+                    div.querySelector('#preview').onclick = function() {
+                        this.disabled = true;
+
+                        message.session.oneway = true;
+                        connection.sendMessage({
+                            renegotiate: true,
+                            streamid: message.streamid,
+                            session: message.session
+                        });
+                    };
+
+                    div.querySelector('#share-your-cam').onclick = function() {
+                        this.disabled = true;
+
+                        if (!message.hasScreen) {
+                            session = { audio: true, video: true };
+
+                            connection.captureUserMedia(function(stream) {
+                                connection.renegotiatedSessions[JSON.stringify(session)] = {
+                                    session: session,
+                                    stream: stream
+                                }
+                            
+                                connection.peers[message.userid].peer.connection.addStream(stream);
+                                div.querySelector('#preview').onclick();
+                            }, session);
+                        }
+
+                        if (message.hasScreen) {
+                            var session = { screen: true };
+
+                            connection.captureUserMedia(function(stream) {
+                                connection.renegotiatedSessions[JSON.stringify(session)] = {
+                                    session: session,
+                                    stream: stream
+                                }
+                                connection.peers[message.userid].peer.connection.addStream(stream);
+                                div.querySelector('#preview').onclick();
+                            }, session);
+                        }
+                    };
+                }
+            });
+        }
+
+        if (message.hasMic) {
+            addNewMessage({
+                header: message.extra.username,
+                userinfo: message.extra.imgPerfil,
+                horaPublicacion: message.extra.horaPublicacion,
+                message: message.extra.username + ' habilito el microfono. <button id="listen">Escuchar</button> ---- <button id="share-your-mic">Compartir mi microfono</button>',
+                callback: function(div) {
+                    div.querySelector('#listen').onclick = function() {
+                        this.disabled = true;
+                        message.session.oneway = true;
+                        connection.sendMessage({
+                            renegotiate: true,
+                            streamid: message.streamid,
+                            session: message.session
+                        });
+                    };
+
+                    div.querySelector('#share-your-mic').onclick = function() {
+                        this.disabled = true;
+
+                        var session = { audio: true };
+
+                        connection.captureUserMedia(function(stream) {
+                            connection.renegotiatedSessions[JSON.stringify(session)] = {
+                                session: session,
+                                stream: stream
+                            }
+                            
+                            connection.peers[message.userid].peer.connection.addStream(stream);
+                            div.querySelector('#listen').onclick();
+                        }, session);
+                    };
+                }
+            });
+        }
+
+        if (message.renegotiate) {
+            var customStream = connection.customStreams[message.streamid];
+            if (customStream) {
+                connection.peers[message.userid].renegotiate(customStream, message.session);
+            }
+        }
     };
 
-    var videosContainer = document.getElementById('videos-container') || document.body;
+    connection.blobURLs = { };
     connection.onstream = function(e) {
+        if (e.stream.getVideoTracks().length) {
+            connection.blobURLs[e.userid] = e.blobURL;
+            /*
+            if( document.getElementById(e.userid) ) {
+                document.getElementById(e.userid).muted = true;
+            }
+            */
+            addNewMessage({
+                header: e.extra.username,
+                userinfo: e.extra.imgPerfil,
+                horaPublicacion: e.extra.horaPublicacion,
+                message: e.extra.username + ' habilito la camara.'
+            });
+        } else {
+            addNewMessage({
+                header: e.extra.username,
+                userinfo: e.extra.imgPerfil,
+                horaPublicacion: e.extra.horaPublicacion,
+                message: e.extra.username + ' habilito el microfono.'
+            });
+        }
+        // contenedor de la llamada de video
+        var videosContainer = document.getElementById('videos-container') || document.body;
+
+        // botones de la llamado de voz y audio
         var buttons = ['mute-audio', 'mute-video', 'record-audio', 'record-video', 'full-screen', 'volume-slider', 'stop'];
 
         if (connection.session.audio && !connection.session.video) {
@@ -222,271 +566,160 @@ M.mod_ectr.init_meeting = function(Y, signalingserver, username) {
         }
     };
 
-    var setupNewSession = document.getElementById('setup-new-session');
-
-    setupNewSession.onclick = function() {
-        setupNewSession.disabled = true;
-
-        var direction = document.getElementById('direction').value;
-        var _session = document.getElementById('session').value;
-        var splittedSession = _session.split('+');
-
-        var session = { };
-        for (var i = 0; i < splittedSession.length; i++) {
-            session[splittedSession[i]] = true;
-        }
-
-        var maxParticipantsAllowed = 256;
-
-        if (direction == 'one-to-one') maxParticipantsAllowed = 1;
-        if (direction == 'one-to-many') session.broadcast = true;
-        if (direction == 'one-way') session.oneway = true;
-
-        connection.extra = {
-            'session-name': 'Anonymous'
-        };
-
-        connection.session = session;
-        connection.maxParticipantsAllowed = maxParticipantsAllowed;
-
-        connection.sessionid = 'Anonymous';
-        connection.open();
+    connection.sendMessage = function(message) {
+        message.userid = connection.userid;
+        message.extra = connection.extra;
+        connection.sendCustomMessage(message);
     };
-    // www.RTCMultiConnection.org/docs/onmessage/
-    connection.onmessage = function(e) {
-        appendDIV(e.data);
 
-        console.debug(e.userid, 'posted', e.data);
-        console.log('latency:', e.latency, 'ms');
+    connection.onclose = connection.onleave = function(event) {
+        addNewMessage({
+            header: event.extra.username,
+            userinfo: event.extra.imgPerfil,
+            horaPublicacion: event.extra.horaPublicacion,
+            message: event.extra.username + ' ha abandonado el chat!'
+        });
     };
-    // www.RTCMultiConnection.org/docs/onclose/
-    connection.onclose = function(e) {
-        var userData = e.extra;
-        appendAlertWarning('La conexión de datos se ha cerrado entre usted y ' + userData.fullname + ' (' + e.userid +')');
-    };
-    // www.RTCMultiConnection.org/docs/onleave/
-    connection.onleave = function(e) {
-        var userData = e.extra;
-        appendAlertWarning(userData.fullname + ' (' + e.userid + ') ha abandonado el chat!');
-    };  
-    // www.RTCMultiConnection.org/docs/onopen/
-    // Los datos de conexion se abren
-    connection.onopen = function(e) {
-        var userData = e.extra;
-        appendAlertSuccess(userData.fullname + ' (' + e.userid + ') se ha conectado al chat! ');
-        if (document.getElementById('chat-input')) document.getElementById('chat-input').disabled = false;
-        if (document.getElementById('file')) document.getElementById('file').disabled = false;
-        if (document.getElementById('open-new-session')) document.getElementById('open-new-session').disabled = true;
-    };
-    // www.RTCMultiConnection.org/docs/onstatechange/
-    // snippet recomendado por @muaz Khan para: "Session-rechecking... Descriptions not found"
-    connection.onstatechange = function(state) {
-    if(state.name === 'room-not-available') {
-            connection.open(); // si el local no esta disponible, abrirla.
-        }
-    }; 
 
+
+/*ui.share-files*/
+    // file sharing
     var progressHelper = { };
-    // Autoguardar en el disco duro
-    connection.autoSaveToDisk = false;
-    // www.RTCMultiConnection.org/docs/onFileProgress/
+    connection.onFileStart = function(file) {
+        addNewMessage({
+            header: connection.extra.username,
+            userinfo: connection.extra.imgPerfil,
+            horaPublicacion: connection.extra.horaPublicacion,
+            message: '<strong>' + file.name + '</strong> ( ' + bytesToSize(file.size) + ' )',
+            callback: function(div) {
+                var innerDiv = document.createElement('div');
+                innerDiv.title = file.name;
+                innerDiv.innerHTML = '<label>0%</label><progress></progress>';
+                div.querySelector('.message').appendChild(innerDiv);
+                progressHelper[file.uuid] = {
+                    div: innerDiv,
+                    progress: innerDiv.querySelector('progress'),
+                    label: innerDiv.querySelector('label')
+                };
+                progressHelper[file.uuid].progress.max = file.maxChunks;
+            }
+        });
+    };
     connection.onFileProgress = function(chunk) {
         var helper = progressHelper[chunk.uuid];
         helper.progress.value = chunk.currentPosition || chunk.maxChunks || helper.progress.max;
         updateLabel(helper.progress, helper.label);
     };
-    // RTCMultiConnection.org/docs/onFileStart/
-    connection.onFileStart = function(file) {
-        var div = document.createElement('li');
-        div.className = "left clearfix";
-        div.title = file.name;
-        div.innerHTML = '<label>0%</label> <progress></progress>';
-        appendDIV(div, fileProgress);
-        progressHelper[file.uuid] = {
-            div: div,
-            progress: div.querySelector('progress'),
-            label: div.querySelector('label')
-        };
-        progressHelper[file.uuid].progress.max = file.maxChunks;
-    };
-    // www.RTCMultiConnection.org/docs/onFileEnd/
+
+    // www.connection.org/docs/onFileEnd/
     connection.onFileEnd = function(file) {
-                var helper = progressHelper[file.uuid];
-                if (!helper) {
-                    console.error('No existe tal elemento del asistente de progreso.', file);
-                    return;
-                }
+        var helper = progressHelper[file.uuid];
+        if (!helper) {
+            console.error('No existe tal elemento en el asistente de progreso.', file);
+            return;
+        }
+        if (file.remoteUserId) {
+            helper = progressHelper[file.uuid][file.remoteUserId];
+            if (!helper) {
+                return;
+            }
+        }
+        var div = helper.div;
+        if (file.type.indexOf('image') != -1) {
+            div.innerHTML = '<a class="content" href="' + file.url + '" download="' + file.name + '">Descargar <strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> </a><br /><img src="' + file.url + '" title="' + file.name + '" style="max-width: 100%; padding-top: 5px;" class="img-rounded"> <!-- END hat-body clearfix-->';
+        } else {
+            div.innerHTML = '<a class="content" href="' + file.url + '" download="' + file.name + '">Descargar <strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> </a><br /><iframe src="' + file.url + '" title="' + file.name + '" style="width: 100%;border: 0;height: inherit;margin-top:1em;" class="img-rounded"></iframe> <!-- END hat-body clearfix-->';
+        }
 
-                if (file.remoteUserId) {
-                    helper = progressHelper[file.uuid][file.remoteUserId];
-                    if (!helper) {
-                        return;
-                    }
-                }
-                // conversor de hora a hora 10:45 pm
-                var d = new Date();
-                var h = d.getHours();
-                var m = d.getMinutes();
+        // para la compatibilidad con versiones anteriores
+        if (connection.onFileSent || connection.onFileReceived) {
+            if (connection.onFileSent) {
+                connection.onFileSent(file, file.uuid);
+            }
 
-                if (d.getHours() < 10) {
-                  gH = "0";
-                } else {
-                  gH = "";
-                }
-
-                if (d.getMinutes() < 10) {
-                  gM = "0";
-                } else {
-                  gM = "";
-                }
-
-                if (h <= 12) {
-                var H = "am";
-                } else{
-                  var H = "pm";
-                };
-                // Variables de configuracion DataChannel
-                var avatar = avatarjs;
-                var chatBody = '<div class="chat-body clearfix">';
-                var nombre ='<strong class="primary-font">'+ current_user +'</strong>'; 
-                var hora = '<small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>'+ gH + new Date().getHours() + ":"+ gM + new Date().getMinutes() + " " + H + '</small>';
-
-                var div = helper.div;
-                if (file.type.indexOf('image') != -1) {
-                    div.innerHTML = avatar + chatBody + nombre + hora + '<br /><a class="content" href="' + file.url + '" download="' + file.name + '"><strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> <br /><img src="' + file.url + '" data-toggle="tooltip" data-placement="top" title="Clic para descargar: ' + file.name + '" style="max-width: 100%; padding-top: 5px;" class="img-rounded"></a></div> <!-- END hat-body clearfix-->';
-                } else {
-                    div.innerHTML = avatar + chatBody + nombre + hora + '<br /><a class="content" href="' + file.url + '" download="' + file.name + '"><strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> <br /><iframe src="' + file.url + '" data-toggle="tooltip" data-placement="top" title="Clic para descargar: ' + file.name + '" style="width: 100%;border: 0;height: inherit;margin-top:1em;" class="img-rounded"></iframe></a></div> <!-- END hat-body clearfix-->';
-                }
-                // configuracion scroll chat-body image
-                $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},650);
-
-                // para la compatibilidad con versiones anteriores
-                if (connection.onFileSent || connection.onFileReceived) {
-                    if (connection.onFileSent) {
-                        connection.onFileSent(file, file.uuid);
-                    }
-
-                    if (connection.onFileReceived) {
-                        connection.onFileReceived(file.name, file);
-                    }
-                }
-            };
+            if (connection.onFileReceived) {
+                connection.onFileReceived(file.name, file);
+            }
+        }
+    };
 
     function updateLabel(progress, label) {
         if (progress.position == -1) return;
         var position = +progress.position.toFixed(2).split('.')[1] || 100;
         label.innerHTML = position + '%';
     }
-    // Abriendo elementos basicos de la conversacion <li>
-    function appendDIV(div, parent) {
-        if (typeof div === 'string') {
-            var content = div;
-            var div = document.createElement('li');
-            div.className = "left clearfix";
-            div.innerHTML = content;
-            // configuracion scroll chat-body text
-            $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},650);
-        }
 
-        if (!parent) chatOutput.appendChild(div, chatOutput.firstChild);
-        else fileProgress.appendChild(div, fileProgress.firstChild);
-
-        // div.tabIndex = 0;
-        div.focus();
-    }
-    // cuando un usuario se conecta al chat
-    function appendAlertSuccess(li, parent) {
-        if (typeof li === 'string') {
-            var content = li;
-            var li = document.createElement('li');
-            li.className = "alert alert-success text-center clearfix";
-            li.innerHTML = content;
-            // configuracion scroll chat-body text
-            $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},650);
-        }
-
-        if (!parent) chatOutput.appendChild(li, chatOutput.firstChild);
-        else fileProgress.appendChild(li, fileProgress.firstChild);
-
-        // li.tabIndex = 0;
-        li.focus();
-    }
-    // cuando un usuario se desconecta del chat
-    function appendAlertWarning(li, parent) {
-        if (typeof li === 'string') {
-            var content = li;
-            var li = document.createElement('li');
-            li.className = "alert alert-warning text-center clearfix";
-            li.innerHTML = content;
-            // configuracion scroll chat-body text
-            $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},650);
-        }
-
-        if (!parent) chatOutput.appendChild(li, chatOutput.firstChild);
-        else fileProgress.appendChild(li, fileProgress.firstChild);
-
-        // li.tabIndex = 0;
-        li.focus();
-    }
-    // Detectar si WebRTC es soportado o detectado por el navegador
-    detectWebRTC = function () {
-        if (webrtcDetectedBrowser == null) {
-            console.log('Su navegador no Soporta WebRTC!.');
-            $('.browser-warning').show();
-        }
-    }
-
-    // variables
-    var chatOutput = document.getElementById('chat-output');
-    var fileProgress = document.getElementById('file-progress');
-
-    document.getElementById('file').onchange = function() {
-        connection.send(this.files[0]);
+/* ui.settings*/
+    var settingsPanel = getElement('.settings-panel');
+        getElement('#settings').onclick = function() {
+        settingsPanel.style.display = 'block';
     };
-    // cuando se pulsa Enter como abreviacion para el envio de los mensajes
-    var chatInput = document.getElementById('chat-input');
-    chatInput.onkeydown = function(e) {
-        // jQuery-CSSEmoticons
-        $('.comment').emoticonize();
-        if (e.keyCode !== 13 || !this.value) return;       
-        // conversor de hora a hora 10:45 pm
-        var d = new Date();
-        var h = d.getHours();
-        var m = d.getMinutes();
 
-        if (d.getHours() < 10) {
-          gH = "0";
-        } else {
-          gH = "";
-        }
+    getElement('#save-settings').onclick = function() {
+        settingsPanel.style.display = 'none';
 
-        if (d.getMinutes() < 10) {
-          gM = "0";
-        } else {
-          gM = "";
-        }
+        if (!!getElement('#autoTranslateText').checked) {
+            connection.autoTranslateText = true;
+            connection.language = getElement('#language').value;
+        } else connection.autoTranslateText = false;
 
-        if (h <= 12) {
-        var H = "am";
-        } else{
-          var H = "pm";
+        connection.bandwidth.audio = getElement('#audio-bandwidth').value;
+        connection.bandwidth.video = getElement('#video-bandwidth').value;
+
+        connection.sdpConstraints.mandatory = {
+            OfferToReceiveAudio: !!getElement('#OfferToReceiveAudio').checked,
+            OfferToReceiveVideo: !!getElement('#OfferToReceiveVideo').checked,
+            IceRestart: !!getElement('#IceRestart').checked
         };
-        // Variables de configuracion DataChat
-        var avatar = avatarjs;
-        var chatBody = '<div class="chat-body clearfix">';
-        var nombre ='<strong class="primary-font">'+ current_user +'</strong>'; 
-        var hora = '<small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>'+ gH + new Date().getHours() + ":"+ gM + new Date().getMinutes() + " " + H + '</small>';
-        var text = avatar + chatBody + nombre + hora + '<p class="content comment">' + this.value + '</p></div> <!-- END hat-body clearfix-->';
-        appendDIV(text);
 
-        // enviando los datos del mensaje
-        connection.send(text);
-        // jQuery-CSSEmoticons
-        $('.comment').emoticonize();
-        this.value = '';
-        
+        var videWidth = getElement('#video-width').value;
+        var videHeight = getElement('#video-height').value;
+        connection.mediaConstraints.mandatory = {
+            minWidth: videWidth,
+            maxWidth: videWidth,
+            minHeight: videHeight,
+            maxHeight: videHeight
+        };
+
+        connection.preferSCTP = !!getElement('#prefer-sctp').checked;
+        connection.chunkSize = +getElement('#chunk-size').value;
+        connection.chunkInterval = +getElement('#chunk-interval').value;
+
+        window.skipconnectionLogs = !!getElement('#skip-connection-Logs').checked;
+
+        //connection.selectDevices(getElement('#audio-devices').value, getElement('#video-devices').value);
+        connection.maxParticipantsAllowed = getElement('#max-participants-allowed').value;
+        connection.candidates = {
+            relay: getElement('#prefer-stun').checked,
+            reflexive: getElement('#prefer-turn').checked,
+            host: getElement('#prefer-host').checked
+        };
+
+        connection.dataChannelDict = eval('(' + getElement('#dataChannelDict').value + ')');
+
+        if (!!getElement('#fake-pee-connection').checked) {
+            // http://www.connection.org/docs/fakeDataChannels/
+            connection.fakeDataChannels = true;
+            connection.session = { };
+        }
+        ;
     };
 
-    connection.connect();
+    var audioDeviecs = getElement('#audio-devices');
+    var videoDeviecs = getElement('#video-devices');
 
-}
+    connection.getDevices(function(devices) {
+        for (var device in devices) {
+            device = devices[device];
+            appendDevice(device);
+        }
+    });
+
+    function appendDevice(device) {
+        var option = document.createElement('option');
+        option.value = device.id;
+        option.innerHTML = device.label || device.id;
+        if (device.kind == 'audio') {
+            audioDeviecs.appendChild(option);
+        } else videoDeviecs.appendChild(option);
+    }
