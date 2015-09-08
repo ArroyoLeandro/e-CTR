@@ -42,8 +42,8 @@
 
 .imgchat {
     position: relative;
-    width: 60px;
-    height: 70px;
+    width: 70px;
+    height: 80px;
     float: left;
     margin-right: 5px;
 }
@@ -214,14 +214,14 @@ label {
 }
 
 /*ui css*/
-button{
+button.fa{
     border: none;
     color: #337ab7;
     background-color: transparent;
     text-decoration: none;
     border-radius: 5px;
 }
-button:hover{
+button.fa:hover{
     border: none;
     color: #337ab7;
     background-position: 0 -5px;
@@ -232,7 +232,7 @@ button:hover{
     background-color: #48ca3b;
     border-radius: 5px;
 }
-button:active, button:focus{
+button.fa:active, button.fa:focus{
     border: none;
     color: #337ab7;
     background-color: #48ca3b; 
@@ -245,7 +245,7 @@ button:active, button:focus{
     border-radius: 5px;
 }
 
-button[disabled], input[type=button][disabled] {
+button.fa[disabled], input[type=button][disabled] {
     background-color: transparent;
     color: #333;
     text-shadow: none;

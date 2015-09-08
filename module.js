@@ -72,7 +72,7 @@
     }
 
     var main = getElement('.chat');
-
+    // añadir los nuevos mensajes
     function addNewMessage(args) {
         var newMessageDIV = document.createElement('li');
         newMessageDIV.className = 'left clearfix';
@@ -164,7 +164,7 @@
 
         this.value = '';
     };
-
+    // que sucede cuando habilitamos la camara
     getElement('#allow-webcam').onclick = function() {
         this.disabled = true;
 
@@ -181,7 +181,7 @@
             });
         }, session);
     };
-
+    // que sucede cuando habilitamos la el microfono
     getElement('#allow-mic').onclick = function() {
         this.disabled = true;
         var session = { audio: true };
@@ -197,7 +197,7 @@
             });
         }, session);
     };
-
+    // que sucede cuando compartimos la pantalla
     getElement('#allow-screen').onclick = function() {
         this.disabled = true;
         var session = { screen: true };
@@ -213,7 +213,7 @@
             });
         }, session);
     };
-
+    // que sucede cuando compartirmos archivos
     getElement('#share-files').onclick = function() {
         var file = document.createElement('input');
         file.type = 'file';
@@ -233,7 +233,7 @@
 
         element.dispatchEvent(evt);
     }
-
+    // funcion para detectar tamaño archivos
     function bytesToSize(bytes) {
         var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
         if (bytes == 0) return '0 Bytes';
@@ -282,6 +282,7 @@
     var websocket = new WebSocket(signalingserver);
 
     websocket.onmessage = function (event) {
+        var URLactual = window.location;
         var data = JSON.parse(event.data);
 
         if (data.isChannelPresent == false) {
@@ -291,7 +292,7 @@
                 header: connection.extra.username,
                 userinfo: connection.extra.imgPerfil,
                 horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
-                message: 'No se encontró nadie en la sala. Abriendo la sala del grupo: <span class="label label-primary">' + connection.extra.grupo + '</span> <br />Puede invitar a sus compañeros a unirse al chat.'
+                message: 'No hay usuarios conectados al chat. Abriendo el chat del grupo: <span class="badge">' + connection.extra.grupo + '</span> <br />Puede invitar a sus compañeros a unirse al chat. <span class="badge">' + URLactual + '</span>'
             });
         } else {
             connection.join(roomid); // Se une a sala existente
@@ -300,7 +301,7 @@
                 header: connection.extra.username,
                 userinfo: connection.extra.imgPerfil,
                 horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
-                message: 'Sala encontrada. Uniéndose a la sala del grupo: <span class="label label-primary">' + connection.extra.grupo + '</span>'
+                message: 'Hay usuarios conectados al chat. Uniéndose al chat del grupo: <span class="badge">' + connection.extra.grupo + '</span>'
             });
         }
     };
@@ -327,7 +328,7 @@
             header: e.extra.username,
             userinfo: e.extra.imgPerfil,
             horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
-            message: 'La conexión de datos se ha establecido entre usted y ' + e.extra.username + '.'
+            message: 'La conexión de datos se ha establecido entre usted y <strong>' + e.extra.username + '</strong>.'
         });
 
         numbersOfUsers.innerHTML = parseInt(numbersOfUsers.innerHTML) + 1;
@@ -373,19 +374,19 @@
     connection.onRequest = function(request) {
         connection.accept(request);
         addNewMessage({
-            header: 'Nuevo Participante',
+            header: 'Nuevo Participante!',
             userinfo: request.extra.imgPerfil,
             horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
-            message: 'Se ha conectado al chat! ' + request.extra.username + ' (' + request.userid + ')...'
+            message: 'Se ha conectado al chat <strong>' + request.extra.username + '<span class="badge">' + request.userid + '</span>'
         });
     };
     // evento para mensajes personalizados
     connection.onCustomMessage = function(message) {
         if (message.hasCamera || message.hasScreen) {
-            var msg = message.extra.username + ' habilito la camara. <button id="preview">Vista previa</button> ---- <button id="share-your-cam">Compartir mi camara</button>';
+            var msg = message.extra.username + ' compartió su cámara. <br /><button id="preview" class="btn btn-success btn-sm">Vista previa <span class="fa fa-desktop"></span></button>  <button id="share-your-cam" class="btn btn-success btn-sm">Compartir mi cámara <span class="fa fa-camera"></span></button>';
 
             if (message.hasScreen) {
-                msg = message.extra.username + ' está dispuesto a compartir su pantalla. <button id="preview">Ver su pantalla</button> ---- <button id="share-your-cam">Compartir mi camara</button>';
+                msg = message.extra.username + ' está dispuesto a compartir su pantalla. <br /><button id="preview" class="btn btn-success btn-sm">Ver su pantalla<span class="fa fa-desktop"></span></button>  <button id="share-your-cam" class="btn btn-success btn-sm">Compartir mi cámara <span class="fa fa-camera"></span></button>';
             }
 
             addNewMessage({
@@ -444,7 +445,7 @@
                 header: message.extra.username,
                 userinfo: message.extra.imgPerfil,
                 horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
-                message: message.extra.username + ' habilito el microfono. <button id="listen">Escuchar</button> ---- <button id="share-your-mic">Compartir mi microfono</button>',
+                message: message.extra.username + ' compartió su micrófono. <br /><button id="listen" class="btn btn-success btn-sm">Escuchar <span class="fa fa-volume-up"></span></button>  <button id="share-your-mic" class="btn btn-success btn-sm">Compartir mi micrófono <span class="fa fa-microphone"></span></button>',
                 callback: function(div) {
                     div.querySelector('#listen').onclick = function() {
                         this.disabled = true;
@@ -496,14 +497,14 @@
                 header: e.extra.username,
                 userinfo: e.extra.imgPerfil,
                 horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
-                message: e.extra.username + ' habilito la camara.'
+                message: e.extra.username + ' compartió su cámara <span class="fa fa-camera"></span>'
             });
         } else {
             addNewMessage({
                 header: e.extra.username,
                 userinfo: e.extra.imgPerfil,
                 horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
-                message: e.extra.username + ' habilito el microfono.'
+                message: e.extra.username + ' compartió su micrófono <span class="fa fa-microphone"></span>'
             });
         }
         // contenedor de la llamada de video
