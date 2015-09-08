@@ -128,7 +128,7 @@ $avatarjs = $OUTPUT->render($avatar);
 <script type="text/javascript">
 var avatarjs = '<?php echo $avatarjs; ?>';
 var userjs = '<?php echo fullname($user, true); ?>';
-var currentgroupjs = '<?php echo $currentgroup; ?>'
+var currentgroupjs = '<?php echo $currentgroup; ?>';
 </script>
 
 <?php

@@ -25,35 +25,35 @@
     var avatar = avatarjs;
     //  Grupo del usuario
     var grupo = currentgroupjs;
-    // conversor de hora a hora 10:45 pm
+    // conversor de hora a hora 10:45 pm - 08:06 am
+    // funcion para insertar el cero
+    function addZero(i) {
+        if (i < 10) {
+            i = "0" + i;
+        }
+        return i;
+    }
+    // funcion para convertir hora en 10:45
+    function modHora(i) {
+        if (i > 12){
+            i = i - 12;
+        }
+        return i;
+    }
+    // funcion para insertar el am y pm
     var d = new Date();
-    var h = d.getHours();
-    var m = d.getMinutes();
-
-    if (d.getHours() < 10) {
-      gH = "0";
-    } else {
-      gH = "";
+    if (d.getHours() <= 12) {
+        var H = "am";
+        } else{
+          var H = "pm";
     }
-
-    if (d.getMinutes() < 10) {
-      gM = "0";
-    } else {
-      gM = "";
-    }
-
-    if (h <= 12) {
-    var H = "am";
-    } else{
-      var H = "pm";
-    };
-    var hora = gH + new Date().getHours() + ":"+ gM + new Date().getMinutes() + " " + H;
+    
     // datos extra para compartir el nombre completo, img perfil, hora publicacion
     connection.extra = {
         username: username,
         imgPerfil: avatar,
-        grupo: grupo,
-        horaPublicacion: hora
+        grupo: grupo
+        //horaPublicacion: horaPublicacion
     };
     // Establecer algunos valores predeterminados
     connection.preventSSLAutoAllowed = false;
@@ -156,7 +156,7 @@
         addNewMessage({
             header: connection.extra.username,
             userinfo: connection.extra.imgPerfil,
-            horaPublicacion: connection.extra.horaPublicacion,
+            horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
             message: linkify(this.value)
         });
 
@@ -290,7 +290,7 @@
             addNewMessage({
                 header: connection.extra.username,
                 userinfo: connection.extra.imgPerfil,
-                horaPublicacion: connection.extra.horaPublicacion,
+                horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
                 message: 'No se encontró nadie en la sala. Abriendo la sala del grupo: <span class="label label-primary">' + connection.extra.grupo + '</span> <br />Puede invitar a sus compañeros a unirse al chat.'
             });
         } else {
@@ -299,7 +299,7 @@
             addNewMessage({
                 header: connection.extra.username,
                 userinfo: connection.extra.imgPerfil,
-                horaPublicacion: connection.extra.horaPublicacion,
+                horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
                 message: 'Sala encontrada. Uniéndose a la sala del grupo: <span class="label label-primary">' + connection.extra.grupo + '</span>'
             });
         }
@@ -326,7 +326,7 @@
         addNewMessage({
             header: e.extra.username,
             userinfo: e.extra.imgPerfil,
-            horaPublicacion: e.extra.horaPublicacion,
+            horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
             message: 'La conexión de datos se ha establecido entre usted y ' + e.extra.username + '.'
         });
 
@@ -348,7 +348,7 @@
         addNewMessage({
             header: e.extra.username,
             userinfo: e.extra.imgPerfil,
-            horaPublicacion: e.extra.horaPublicacion,
+            horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
             message: (connection.autoTranslateText ? linkify(e.data) + ' (' + linkify(e.original) + ')' : linkify(e.data))
         });
         document.title = e.data;
@@ -365,7 +365,7 @@
         addNewMessage({
             header: session.extra.username,
             userinfo: session.extra.imgPerfil,
-            horaPublicacion: session.extra.horaPublicacion,
+            horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
             message: 'Hacer apretón de manos con el propietario del chat...!'
         });
     };
@@ -375,7 +375,7 @@
         addNewMessage({
             header: 'Nuevo Participante',
             userinfo: request.extra.imgPerfil,
-            horaPublicacion: request.extra.horaPublicacion,
+            horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
             message: 'Se ha conectado al chat! ' + request.extra.username + ' (' + request.userid + ')...'
         });
     };
@@ -391,7 +391,7 @@
             addNewMessage({
                 header: message.extra.username,
                 userinfo: message.extra.imgPerfil,
-                horaPublicacion: message.extra.horaPublicacion,
+                horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
                 message: msg,
                 callback: function(div) {
                     div.querySelector('#preview').onclick = function() {
@@ -443,7 +443,7 @@
             addNewMessage({
                 header: message.extra.username,
                 userinfo: message.extra.imgPerfil,
-                horaPublicacion: message.extra.horaPublicacion,
+                horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
                 message: message.extra.username + ' habilito el microfono. <button id="listen">Escuchar</button> ---- <button id="share-your-mic">Compartir mi microfono</button>',
                 callback: function(div) {
                     div.querySelector('#listen').onclick = function() {
@@ -495,14 +495,14 @@
             addNewMessage({
                 header: e.extra.username,
                 userinfo: e.extra.imgPerfil,
-                horaPublicacion: e.extra.horaPublicacion,
+                horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
                 message: e.extra.username + ' habilito la camara.'
             });
         } else {
             addNewMessage({
                 header: e.extra.username,
                 userinfo: e.extra.imgPerfil,
-                horaPublicacion: e.extra.horaPublicacion,
+                horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
                 message: e.extra.username + ' habilito el microfono.'
             });
         }
@@ -576,7 +576,7 @@
         addNewMessage({
             header: event.extra.username,
             userinfo: event.extra.imgPerfil,
-            horaPublicacion: event.extra.horaPublicacion,
+            horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
             message: event.extra.username + ' ha abandonado el chat!'
         });
     };
@@ -589,7 +589,7 @@
         addNewMessage({
             header: connection.extra.username,
             userinfo: connection.extra.imgPerfil,
-            horaPublicacion: connection.extra.horaPublicacion,
+            horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
             message: '<strong>' + file.name + '</strong> ( ' + bytesToSize(file.size) + ' )',
             callback: function(div) {
                 var innerDiv = document.createElement('div');
@@ -618,28 +618,11 @@
             console.error('No existe tal elemento en el asistente de progreso.', file);
             return;
         }
-        if (file.remoteUserId) {
-            helper = progressHelper[file.uuid][file.remoteUserId];
-            if (!helper) {
-                return;
-            }
-        }
         var div = helper.div;
         if (file.type.indexOf('image') != -1) {
             div.innerHTML = '<a class="content" href="' + file.url + '" download="' + file.name + '">Descargar <strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> </a><br /><img src="' + file.url + '" title="' + file.name + '" style="max-width: 100%; padding-top: 5px;" class="img-rounded"> <!-- END hat-body clearfix-->';
         } else {
             div.innerHTML = '<a class="content" href="' + file.url + '" download="' + file.name + '">Descargar <strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> </a><br /><iframe src="' + file.url + '" title="' + file.name + '" style="width: 100%;border: 0;height: inherit;margin-top:1em;" class="img-rounded"></iframe> <!-- END hat-body clearfix-->';
-        }
-
-        // para la compatibilidad con versiones anteriores
-        if (connection.onFileSent || connection.onFileReceived) {
-            if (connection.onFileSent) {
-                connection.onFileSent(file, file.uuid);
-            }
-
-            if (connection.onFileReceived) {
-                connection.onFileReceived(file.name, file);
-            }
         }
     };
 
