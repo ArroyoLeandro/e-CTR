@@ -91,10 +91,10 @@ $PAGE->requires->js('/mod/ectr/bootstrap/js/bootstrap.min.js');
 $PAGE->requires->js('/mod/ectr/RTCMultiConnection.js', true);
 $PAGE->requires->js('/mod/ectr/js/linkify.js', true);
 $PAGE->requires->js('/mod/ectr/js/jquery.cssemoticons.min.js', true);
+// ui-stylesheet
 $PAGE->requires->css('/mod/ectr/css/jquery.cssemoticons.css');
 $PAGE->requires->css('/mod/ectr/css/font-awesome.min.css');
 $PAGE->requires->css('/mod/ectr/bootstrap/css/bootstrap.min.css');
-// ui-stylesheet
 $PAGE->requires->css('/mod/ectr/css/styles.css');
 
 // Imprimo el encabezado de pagina
@@ -168,11 +168,11 @@ echo '
               <div class="input-group">
                 <div class="input-wrapper">
                 <input id="chat-input" type="text" value="" placeholder="Escriba su mensaje..." disabled autofocus />
-                <label for="file">
-                  <span class="fa fa-picture-o add-picture"></span>
-                  <span class="fa fa-paperclip add-file"></span>
+                <label for="share-files">
+                  <span role="button" class="fa fa-picture-o add-picture"></span>
+                  <span role="button" class="fa fa-paperclip add-file"></span>
                 </label>
-                <input id="file" type="file" style="display: none;" disabled />
+                <input id="share-files" type="file" style="display: none;" disabled />
                 <a role="button" data-toggle="collapse" href="#collapseEmoticon" aria-expanded="false" aria-controls="collapseEmoticon">
                   <span class="fa fa-smile-o add-emoticon"></span>
                 </a>
@@ -183,7 +183,7 @@ echo '
               <button id="allow-webcam" class="fa fa-video-camera fa-3x" disabled title="Iniciar una videollamada" ></button>
               <button id="allow-mic" class="fa fa-phone fa-3x" disabled title="Iniciar una llamada de voz"></button>
               <button id="allow-screen" class="fa fa-desktop fa-3x" disabled title="Compartir el escritorio"></button>
-              <button id="share-files" class="fa fa-paperclip fa-3x" disabled title="Compartir archivos .PDF, .DOC, Videos, etc."></button>
+              <!-- <button id="share-files" class="fa fa-paperclip fa-3x" disabled title="Compartir archivos .PDF, .DOC, Videos, etc."></button> -->
               <button class="fa fa-question-circle fa-2x" disabled title="Ayuda y Comentarios"></button>
             </div>
             <div class="collapse" id="collapseEmoticon" style="padding-top: 10px; margin-bottom: -15px;">

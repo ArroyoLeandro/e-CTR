@@ -106,6 +106,8 @@
         document.querySelector('#message-sound').play();
         // configuracion scroll chat-body image
         $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},650);
+         // jQuery-CSSEmoticons
+        //$('.comment').emoticonize();
     }
 /* ui.users-list*/
 
@@ -217,24 +219,12 @@
     };
     // que sucede cuando compartirmos archivos
     getElement('#share-files').onclick = function() {
-        var file = document.createElement('input');
-        file.type = 'file';
-
-        file.onchange = function() {
+        
+        document.getElementById('share-files').onchange = function() {
             connection.send(this.files[0]);
         };
-        fireClickEvent(file);
     };
 
-    function fireClickEvent(element) {
-        var evt = new MouseEvent('click', {
-            view: window,
-            bubbles: true,
-            cancelable: true
-        });
-
-        element.dispatchEvent(evt);
-    }
     // funcion para detectar tamaño archivos
     function bytesToSize(bytes) {
         var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -379,7 +369,7 @@
             header: 'Nuevo Participante!',
             userinfo: request.extra.imgPerfil,
             horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
-            message: 'Se ha conectado al chat <strong>' + request.extra.username + '<span class="badge">' + request.userid + '</span>'
+            message: 'Se ha conectado al chat <strong>' + request.extra.username + ' <span class="badge">' + request.userid + '</span>'
         });
     };
     // evento para mensajes personalizados
