@@ -95,7 +95,7 @@
 
         newMessageDIV.appendChild(userActivityDIV);
 
-        main.insertBefore(newMessageDIV, main.firstChild);
+        main.appendChild(newMessageDIV, main.firstChild);
 
         //userinfoDIV.style.height = newMessageDIV.clientHeight + 'px';
 
@@ -104,6 +104,8 @@
         }
 
         document.querySelector('#message-sound').play();
+        // configuracion scroll chat-body image
+        $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},650);
     }
 /* ui.users-list*/
 
@@ -553,7 +555,7 @@
             }
         });
 
-        videosContainer.insertBefore(mediaElement, videosContainer.firstChild);
+        videosContainer.appendChild(mediaElement, videosContainer.firstChild);
 
         if (e.type == 'local') {
             mediaElement.media.muted = true;
@@ -582,6 +584,13 @@
         });
     };
 
+    // www.RTCMultiConnection.org/docs/onstatechange/
+    // snippet recomendado por @muaz Khan para: "Session-rechecking... Descriptions not found"
+    connection.onstatechange = function(state) {
+    if(state.name === 'room-not-available') {
+            connection.open(); // si el local no esta disponible, abrirla.
+        }
+    }; 
 
 /*ui.share-files*/
     // file sharing
