@@ -65,7 +65,6 @@
     //var direction = 'many-to-many';
     // connection.direction = 'one-to-many';
 
-
 /*ui.main*/
     function getElement(selector) {
     return document.querySelector(selector);
@@ -106,8 +105,7 @@
         document.querySelector('#message-sound').play();
         // configuracion scroll chat-body image
         $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},650);
-         // jQuery-CSSEmoticons
-        //$('.comment').emoticonize();
+
     }
 /* ui.users-list*/
 
@@ -125,6 +123,8 @@
     var isShiftKeyPressed = false;
 
     getElement('#chat-input').onkeydown = function(e) {
+        // jQuery-CSSEmoticons
+        $('.comment').emoticonize();
         if (e.keyCode == 16) {
             isShiftKeyPressed = true;
         }
@@ -219,7 +219,6 @@
     };
     // que sucede cuando compartirmos archivos
     getElement('#share-files').onclick = function() {
-        
         document.getElementById('share-files').onchange = function() {
             connection.send(this.files[0]);
         };
@@ -327,6 +326,8 @@
     };
     // evento para cada nuevo mensaje de datos
     connection.onmessage = function(e) {
+        // jQuery-CSSEmoticons
+        $('.comment').emoticonize();
         if (e.data.typing) {
             document.getElementById("chat-input").placeholder = e.extra.username + ' esta escribiendo ...';
             return;
