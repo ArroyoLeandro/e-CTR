@@ -326,8 +326,6 @@
     };
     // evento para cada nuevo mensaje de datos
     connection.onmessage = function(e) {
-        // jQuery-CSSEmoticons
-        $('.comment').emoticonize();
         if (e.data.typing) {
             document.getElementById("chat-input").placeholder = e.extra.username + ' esta escribiendo ...';
             return;
@@ -345,7 +343,12 @@
             horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
             message: (connection.autoTranslateText ? linkify(e.data) + ' (' + linkify(e.original) + ')' : linkify(e.data))
         });
+        // jQuery-CSSEmoticons
+        $('.comment').emoticonize();
         document.title = e.data;
+        // Conocer la latencia de los datos que fluyen entre las conexiones
+        console.debug(e.extra.username,'(', e.userid,') publico:', e.data);
+        console.log('Su latencia:', e.latency, 'ms');
 
     };
     // evento para unirse a una sala con o sin  stream(s)
@@ -573,6 +576,8 @@
             horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
             message: event.extra.username + ' ha abandonado el chat!'
         });
+
+        numbersOfUsers.innerHTML = parseInt(numbersOfUsers.innerHTML) - 1;
     };
 
     // www.RTCMultiConnection.org/docs/onstatechange/
@@ -581,7 +586,11 @@
     if(state.name === 'room-not-available') {
             connection.open(); // si el local no esta disponible, abrirla.
         }
-    }; 
+    };
+    // Usuarios conectados (Peers)
+    connection.onconnected = function (event) {
+
+    }
 
 /*ui.share-files*/
     // file sharing
