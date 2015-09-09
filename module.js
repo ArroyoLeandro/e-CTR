@@ -47,7 +47,6 @@
         } else{
           var H = "pm";
     }
-    
     // datos extra para compartir el nombre completo, img perfil, hora publicacion
     connection.extra = {
         username: username,
@@ -305,7 +304,7 @@
     };
 
     connection.customStreams = { };
-
+    // RTCMultiConnection.org/docs/onopen/
     // cuando se habre la conexion
     connection.onopen = function(e) {
         getElement('#allow-webcam').disabled = false;
@@ -324,6 +323,7 @@
 
         numbersOfUsers.innerHTML = parseInt(numbersOfUsers.innerHTML) + 1;
     };
+    // RTCMultiConnection.org/docs/onmessage/
     // evento para cada nuevo mensaje de datos
     connection.onmessage = function(e) {
         if (e.data.typing) {
@@ -351,6 +351,7 @@
         console.log('Su latencia:', e.latency, 'ms');
 
     };
+    // RTCMultiConnection.org/docs/onNewSession/
     // evento para unirse a una sala con o sin  stream(s)
     var sessions = { };
     connection.onNewSession = function(session) {
@@ -366,6 +367,7 @@
             message: 'Hacer apretón de manos con el propietario del chat...!'
         });
     };
+    // RTCMultiConnection.org/docs/onRequest/
     // evento se activa para cada nueva participacion o cada peticion
     connection.onRequest = function(request) {
         connection.accept(request);
@@ -376,6 +378,7 @@
             message: 'Se ha conectado al chat <strong>' + request.extra.username + ' <span class="badge">' + request.userid + '</span>'
         });
     };
+    // RTCMultiConnection.org/docs/onCustomMessage/
     // evento para mensajes personalizados
     connection.onCustomMessage = function(message) {
         if (message.hasCamera || message.hasScreen) {
@@ -479,7 +482,9 @@
             }
         }
     };
-
+    // RTCMultiConnection.org/docs/onstream/
+    // Evento que se activa para los flujos locales/remotos de comunicacion
+    // Flujos como de audio, video, datos, pantalla
     connection.blobURLs = { };
     connection.onstream = function(e) {
         if (e.stream.getVideoTracks().length) {
@@ -556,25 +561,36 @@
             mediaElement.media.volume = 0;
         }
     };
-
+    // RTCMultiConnection.org/docs/onstreamended
     connection.onstreamended = function(e) {
         if (e.mediaElement.parentNode && e.mediaElement.parentNode.parentNode && e.mediaElement.parentNode.parentNode.parentNode) {
             e.mediaElement.parentNode.parentNode.parentNode.removeChild(e.mediaElement.parentNode.parentNode);
         }
     };
-
+    // RTCMultiConnection.org/docs/sendMessage
     connection.sendMessage = function(message) {
         message.userid = connection.userid;
         message.extra = connection.extra;
         connection.sendCustomMessage(message);
     };
-
-    connection.onclose = connection.onleave = function(event) {
+    // RTCMultiConnection.org/docs/onleave/
+    // Comprueba si el iniciador o participantes se han ido
+    connection.onleave = function(event) {
         addNewMessage({
             header: event.extra.username,
             userinfo: event.extra.imgPerfil,
             horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
             message: event.extra.username + ' ha abandonado el chat!'
+        });
+    };
+    // RTCMultiConnection.org/docs/onclose/
+    // Evento solo se activa cuando la conexion de datos WebRTC se ha cerrado
+    connection.onclose = function(event) {
+        addNewMessage({
+            header: event.extra.username,
+            userinfo: event.extra.imgPerfil,
+            horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
+            message: 'La conexión de datos se ha cerrado entre usted y <strong>' + event.extra.username + '</strong>'
         });
 
         numbersOfUsers.innerHTML = parseInt(numbersOfUsers.innerHTML) - 1;
@@ -587,6 +603,7 @@
             connection.open(); // si el local no esta disponible, abrirla.
         }
     };
+    // RTCMultiConnection.org/docs/onconnected/
     // Usuarios conectados (Peers)
     connection.onconnected = function (event) {
 
@@ -656,7 +673,7 @@
             }
         }
     };
-
+    // actualiza el porcentaje de carga de los archivos
     function updateLabel(progress, label) {
         if (progress.position == -1) return;
         var position = +progress.position.toFixed(2).split('.')[1] || 100;
@@ -728,7 +745,8 @@
             appendDevice(device);
         }
     });
-
+    
+    // emite el sonido en cualquier interaccion del chat
     function appendDevice(device) {
         var option = document.createElement('option');
         option.value = device.id;
