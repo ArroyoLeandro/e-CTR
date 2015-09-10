@@ -279,10 +279,10 @@
             connection.open(); // Abre la nueva sala
             console.log('Se ha abierto una nueva sala: ', connection.channel);
             addNewMessage({
-                header: connection.extra.username,
-                userinfo: connection.extra.imgPerfil,
+                header: 'e-Chat UNAD',
+                userinfo: '<img src="pix/default.png" alt="Admin Default" title="Admin Default" class="imgchat img-rounded chat-img pull-left">',
                 horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
-                message: 'No hay usuarios conectados al chat. Abriendo el chat del grupo: <span class="badge">' + connection.extra.grupo + '</span> <br />Puede invitar a sus compañeros a unirse al chat. <span class="badge">' + URLactual + '</span>'
+                message: 'Eres el primero en llegar al chat del grupo <span class="badge">' + connection.extra.grupo + '</span> <br />Comparte e invita a tus compañeros de grupo copiando el enlace permanente o añádalo a tus marcadores para volver cuando quieras :) <span class="badge">' + URLactual + '</span>'
             });
         } else {
             connection.join(roomid); // Se une a sala existente
@@ -291,7 +291,7 @@
                 header: connection.extra.username,
                 userinfo: connection.extra.imgPerfil,
                 horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
-                message: 'Hay usuarios conectados al chat. Uniéndose al chat del grupo: <span class="badge">' + connection.extra.grupo + '</span>'
+                message: 'Hay usuarios conectados al chat. Uniéndose al chat del grupo <span class="badge">' + connection.extra.grupo + '</span>'
             });
         }
     };
