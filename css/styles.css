@@ -42,8 +42,8 @@
 
 .imgchat {
     position: relative;
-    width: 60px;
-    height: 70px;
+    width: 70px;
+    height: 80px;
     float: left;
     margin-right: 5px;
 }
@@ -90,21 +90,8 @@ a {
     color: #3498db;
     outline: none!important;
 }
-.user-list li>img {
-    position: relative;
-    max-width: 50px;
-    float: left;
-    margin-right: 15px;
-}
 
-.listaul li {
-    font-size: 0.875em;
-    vertical-align: middle;
-    border-top: 1px solid #e7ebee;
-    padding: 12px 8px;
-}
-
-.listaul {
+.user-list {
     margin-left: 0px;
 }
 
@@ -114,6 +101,13 @@ a {
 
 .list-group-item {
     padding: 5px 5px 0px 5px;
+}
+.list-group-li {
+    font-size: 0.875em;
+    vertical-align: middle;
+    border-top: 1px solid #e7ebee;
+    padding: 12px 8px;
+    height: 100px;
 }
 
 .input-group {
@@ -214,14 +208,14 @@ label {
 }
 
 /*ui css*/
-button{
+button.fa{
     border: none;
     color: #337ab7;
     background-color: transparent;
     text-decoration: none;
     border-radius: 5px;
 }
-button:hover{
+button.fa:hover{
     border: none;
     color: #337ab7;
     background-position: 0 -5px;
@@ -232,7 +226,7 @@ button:hover{
     background-color: #48ca3b;
     border-radius: 5px;
 }
-button:active, button:focus{
+button.fa:active, button.fa:focus{
     border: none;
     color: #337ab7;
     background-color: #48ca3b; 
@@ -245,7 +239,7 @@ button:active, button:focus{
     border-radius: 5px;
 }
 
-button[disabled], input[type=button][disabled] {
+button.fa[disabled], input[type=button][disabled] {
     background-color: transparent;
     color: #333;
     text-shadow: none;

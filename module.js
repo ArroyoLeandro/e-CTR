@@ -25,35 +25,37 @@
     var avatar = avatarjs;
     //  Grupo del usuario
     var grupo = currentgroupjs;
-    // conversor de hora a hora 10:45 pm
+    // src del avatar del usuario
+    var srcAvatar = srcAvatarjs;
+    // conversor de hora a hora 10:45 pm - 08:06 am
+    // funcion para insertar el cero
+    function addZero(i) {
+        if (i < 10) {
+            i = "0" + i;
+        }
+        return i;
+    }
+    // funcion para convertir hora en 10:45
+    function modHora(i) {
+        if (i > 12){
+            i = i - 12;
+        }
+        return i;
+    }
+    // funcion para insertar el am y pm
     var d = new Date();
-    var h = d.getHours();
-    var m = d.getMinutes();
-
-    if (d.getHours() < 10) {
-      gH = "0";
-    } else {
-      gH = "";
+    if (d.getHours() <= 12) {
+        var H = "am";
+        } else{
+          var H = "pm";
     }
-
-    if (d.getMinutes() < 10) {
-      gM = "0";
-    } else {
-      gM = "";
-    }
-
-    if (h <= 12) {
-    var H = "am";
-    } else{
-      var H = "pm";
-    };
-    var hora = gH + new Date().getHours() + ":"+ gM + new Date().getMinutes() + " " + H;
     // datos extra para compartir el nombre completo, img perfil, hora publicacion
     connection.extra = {
         username: username,
         imgPerfil: avatar,
-        grupo: grupo,
-        horaPublicacion: hora
+        srcAvatar: srcAvatar,
+        grupo: grupo
+        //horaPublicacion: horaPublicacion
     };
     // Establecer algunos valores predeterminados
     connection.preventSSLAutoAllowed = false;
@@ -65,14 +67,13 @@
     //var direction = 'many-to-many';
     // connection.direction = 'one-to-many';
 
-
 /*ui.main*/
     function getElement(selector) {
     return document.querySelector(selector);
     }
 
     var main = getElement('.chat');
-
+    // añadir los nuevos mensajes
     function addNewMessage(args) {
         var newMessageDIV = document.createElement('li');
         newMessageDIV.className = 'left clearfix';
@@ -95,7 +96,7 @@
 
         newMessageDIV.appendChild(userActivityDIV);
 
-        main.insertBefore(newMessageDIV, main.firstChild);
+        main.appendChild(newMessageDIV, main.firstChild);
 
         //userinfoDIV.style.height = newMessageDIV.clientHeight + 'px';
 
@@ -104,12 +105,16 @@
         }
 
         document.querySelector('#message-sound').play();
+        // configuracion scroll chat-body image
+        $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},650);
+
     }
+
 /* ui.users-list*/
 
     var numbersOfUsers = getElement('.numbers-of-users');
 
-    numbersOfUsers.innerHTML = 1;
+    numbersOfUsers.innerHTML = 0;
 
 
 /* ui.peer-connection */
@@ -121,6 +126,8 @@
     var isShiftKeyPressed = false;
 
     getElement('#chat-input').onkeydown = function(e) {
+        // jQuery-CSSEmoticons
+        $('.comment').emoticonize();
         if (e.keyCode == 16) {
             isShiftKeyPressed = true;
         }
@@ -156,7 +163,7 @@
         addNewMessage({
             header: connection.extra.username,
             userinfo: connection.extra.imgPerfil,
-            horaPublicacion: connection.extra.horaPublicacion,
+            horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
             message: linkify(this.value)
         });
 
@@ -164,7 +171,7 @@
 
         this.value = '';
     };
-
+    // que sucede cuando habilitamos la camara
     getElement('#allow-webcam').onclick = function() {
         this.disabled = true;
 
@@ -181,7 +188,7 @@
             });
         }, session);
     };
-
+    // que sucede cuando habilitamos la el microfono
     getElement('#allow-mic').onclick = function() {
         this.disabled = true;
         var session = { audio: true };
@@ -197,7 +204,7 @@
             });
         }, session);
     };
-
+    // que sucede cuando compartimos la pantalla
     getElement('#allow-screen').onclick = function() {
         this.disabled = true;
         var session = { screen: true };
@@ -213,27 +220,14 @@
             });
         }, session);
     };
-
+    // que sucede cuando compartirmos archivos
     getElement('#share-files').onclick = function() {
-        var file = document.createElement('input');
-        file.type = 'file';
-
-        file.onchange = function() {
+        document.getElementById('share-files').onchange = function() {
             connection.send(this.files[0]);
         };
-        fireClickEvent(file);
     };
 
-    function fireClickEvent(element) {
-        var evt = new MouseEvent('click', {
-            view: window,
-            bubbles: true,
-            cancelable: true
-        });
-
-        element.dispatchEvent(evt);
-    }
-
+    // funcion para detectar tamaño archivos
     function bytesToSize(bytes) {
         var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
         if (bytes == 0) return '0 Bytes';
@@ -282,16 +276,17 @@
     var websocket = new WebSocket(signalingserver);
 
     websocket.onmessage = function (event) {
+        var URLactual = window.location;
         var data = JSON.parse(event.data);
 
         if (data.isChannelPresent == false) {
             connection.open(); // Abre la nueva sala
             console.log('Se ha abierto una nueva sala: ', connection.channel);
             addNewMessage({
-                header: connection.extra.username,
-                userinfo: connection.extra.imgPerfil,
-                horaPublicacion: connection.extra.horaPublicacion,
-                message: 'No se encontró nadie en la sala. Abriendo la sala del grupo: <span class="label label-primary">' + connection.extra.grupo + '</span> <br />Puede invitar a sus compañeros a unirse al chat.'
+                header: 'e-Chat UNAD',
+                userinfo: '<img src="pix/default.png" alt="Admin Default" title="Admin Default" class="imgchat img-rounded chat-img pull-left">',
+                horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
+                message: 'Eres el primero en llegar al chat del grupo <span class="badge">' + connection.extra.grupo + '</span> <br />Comparte e invita a tus compañeros de grupo copiando el enlace permanente o añádalo a tus marcadores para volver cuando quieras :) <span class="badge">' + URLactual + '</span>'
             });
         } else {
             connection.join(roomid); // Se une a sala existente
@@ -299,8 +294,8 @@
             addNewMessage({
                 header: connection.extra.username,
                 userinfo: connection.extra.imgPerfil,
-                horaPublicacion: connection.extra.horaPublicacion,
-                message: 'Sala encontrada. Uniéndose a la sala del grupo: <span class="label label-primary">' + connection.extra.grupo + '</span>'
+                horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
+                message: 'Hay usuarios conectados al chat. Uniéndose al chat del grupo <span class="badge">' + connection.extra.grupo + '</span>'
             });
         }
     };
@@ -313,7 +308,7 @@
     };
 
     connection.customStreams = { };
-
+    // RTCMultiConnection.org/docs/onopen/
     // cuando se habre la conexion
     connection.onopen = function(e) {
         getElement('#allow-webcam').disabled = false;
@@ -326,12 +321,54 @@
         addNewMessage({
             header: e.extra.username,
             userinfo: e.extra.imgPerfil,
-            horaPublicacion: e.extra.horaPublicacion,
-            message: 'La conexión de datos se ha establecido entre usted y ' + e.extra.username + '.'
+            horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
+            message: 'La conexión de datos se ha establecido entre usted y <strong>' + e.extra.username + '</strong>.'
         });
 
-        numbersOfUsers.innerHTML = parseInt(numbersOfUsers.innerHTML) + 1;
+        // console.info('Arreglo de todos los usuarios conectados: ', arrayOfAllConnectedUsers);
+        // establezco el bucle que pasa a traves de los items en el arreglo
+        console.log('Numero de usuarios conectados: ', connection.numberOfConnectedUsers + 1);
+        var arrayOfAllConnectedUsers = [];
+        for (var userid in connection.peers) {
+            console.debug(userid, 'esta conectado.');
+            arrayOfAllConnectedUsers.push(userid);
+
+        }
+        var numberOfListItems = arrayOfAllConnectedUsers.length;
+        for (var i = 0; i < numberOfListItems; ++i) {
+            // creamos <li> para cada uno
+            var listItem = document.createElement('li');
+            listItem.className = "list-group-item list-group-li";
+            var imgPerfil = document.createElement('img');
+            imgPerfil.className = "imgchat img-circle";
+            var perfilUsuario = document.createElement('a');
+            perfilUsuario.className = "user-perfil";
+            var spanPerfil = document.createElement('span');
+            spanPerfil.className = "user-perfil";
+            var h6 = document.createElement('h6');
+            var spanLabel = document.createElement('span');
+            spanLabel.className = "label label-success";
+            // agrego el texto del elemento
+            perfilUsuario.innerHTML = arrayOfAllConnectedUsers[i];
+            // añado los elementos a la pagina
+            document.getElementById("usuariosOnline").appendChild(listItem);
+            listItem.appendChild(imgPerfil);
+            listItem.appendChild(perfilUsuario);
+            listItem.appendChild(spanPerfil);
+            spanPerfil.appendChild(h6);
+            h6.appendChild(spanLabel);
+            // estado predeterminado
+            spanLabel.innerHTML = 'online';
+            imgPerfil.setAttribute('src', 'pix/foto-perfil.jpg');
+            // al conectarse ocultar mensaje
+            document.getElementById('listWarning').setAttribute('hidden','')
+            // numero de usuarios conectados
+            numbersOfUsers.innerHTML = parseInt(numbersOfUsers.innerHTML) + 1;
+
+        }
+
     };
+    // RTCMultiConnection.org/docs/onmessage/
     // evento para cada nuevo mensaje de datos
     connection.onmessage = function(e) {
         if (e.data.typing) {
@@ -348,12 +385,18 @@
         addNewMessage({
             header: e.extra.username,
             userinfo: e.extra.imgPerfil,
-            horaPublicacion: e.extra.horaPublicacion,
+            horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
             message: (connection.autoTranslateText ? linkify(e.data) + ' (' + linkify(e.original) + ')' : linkify(e.data))
         });
+        // jQuery-CSSEmoticons
+        $('.comment').emoticonize();
         document.title = e.data;
+        // Conocer la latencia de los datos que fluyen entre las conexiones
+        console.debug(e.extra.username,'(', e.userid,') publico:', e.data);
+        console.log('Su latencia:', e.latency, 'ms');
 
     };
+    // RTCMultiConnection.org/docs/onNewSession/
     // evento para unirse a una sala con o sin  stream(s)
     var sessions = { };
     connection.onNewSession = function(session) {
@@ -365,33 +408,35 @@
         addNewMessage({
             header: session.extra.username,
             userinfo: session.extra.imgPerfil,
-            horaPublicacion: session.extra.horaPublicacion,
+            horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
             message: 'Hacer apretón de manos con el propietario del chat...!'
         });
     };
+    // RTCMultiConnection.org/docs/onRequest/
     // evento se activa para cada nueva participacion o cada peticion
     connection.onRequest = function(request) {
         connection.accept(request);
         addNewMessage({
-            header: 'Nuevo Participante',
+            header: 'Nuevo Participante!',
             userinfo: request.extra.imgPerfil,
-            horaPublicacion: request.extra.horaPublicacion,
-            message: 'Se ha conectado al chat! ' + request.extra.username + ' (' + request.userid + ')...'
+            horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
+            message: 'Se ha conectado al chat <strong>' + request.extra.username + ' <span class="badge">' + request.userid + '</span>'
         });
     };
+    // RTCMultiConnection.org/docs/onCustomMessage/
     // evento para mensajes personalizados
     connection.onCustomMessage = function(message) {
         if (message.hasCamera || message.hasScreen) {
-            var msg = message.extra.username + ' habilito la camara. <button id="preview">Vista previa</button> ---- <button id="share-your-cam">Compartir mi camara</button>';
+            var msg = message.extra.username + ' compartió su cámara. <br /><button id="preview" class="btn btn-success btn-sm">Vista previa <span class="fa fa-desktop"></span></button>  <button id="share-your-cam" class="btn btn-success btn-sm">Compartir mi cámara <span class="fa fa-camera"></span></button>';
 
             if (message.hasScreen) {
-                msg = message.extra.username + ' está dispuesto a compartir su pantalla. <button id="preview">Ver su pantalla</button> ---- <button id="share-your-cam">Compartir mi camara</button>';
+                msg = message.extra.username + ' está dispuesto a compartir su pantalla. <br /><button id="preview" class="btn btn-success btn-sm">Ver su pantalla<span class="fa fa-desktop"></span></button>  <button id="share-your-cam" class="btn btn-success btn-sm">Compartir mi cámara <span class="fa fa-camera"></span></button>';
             }
 
             addNewMessage({
                 header: message.extra.username,
                 userinfo: message.extra.imgPerfil,
-                horaPublicacion: message.extra.horaPublicacion,
+                horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
                 message: msg,
                 callback: function(div) {
                     div.querySelector('#preview').onclick = function() {
@@ -443,8 +488,8 @@
             addNewMessage({
                 header: message.extra.username,
                 userinfo: message.extra.imgPerfil,
-                horaPublicacion: message.extra.horaPublicacion,
-                message: message.extra.username + ' habilito el microfono. <button id="listen">Escuchar</button> ---- <button id="share-your-mic">Compartir mi microfono</button>',
+                horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
+                message: message.extra.username + ' compartió su micrófono. <br /><button id="listen" class="btn btn-success btn-sm">Escuchar <span class="fa fa-volume-up"></span></button>  <button id="share-your-mic" class="btn btn-success btn-sm">Compartir mi micrófono <span class="fa fa-microphone"></span></button>',
                 callback: function(div) {
                     div.querySelector('#listen').onclick = function() {
                         this.disabled = true;
@@ -482,7 +527,9 @@
             }
         }
     };
-
+    // RTCMultiConnection.org/docs/onstream/
+    // Evento que se activa para los flujos locales/remotos de comunicacion
+    // Flujos como de audio, video, datos, pantalla
     connection.blobURLs = { };
     connection.onstream = function(e) {
         if (e.stream.getVideoTracks().length) {
@@ -495,15 +542,15 @@
             addNewMessage({
                 header: e.extra.username,
                 userinfo: e.extra.imgPerfil,
-                horaPublicacion: e.extra.horaPublicacion,
-                message: e.extra.username + ' habilito la camara.'
+                horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
+                message: e.extra.username + ' compartió su cámara <span class="fa fa-camera"></span>'
             });
         } else {
             addNewMessage({
                 header: e.extra.username,
                 userinfo: e.extra.imgPerfil,
-                horaPublicacion: e.extra.horaPublicacion,
-                message: e.extra.username + ' habilito el microfono.'
+                horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
+                message: e.extra.username + ' compartió su micrófono <span class="fa fa-microphone"></span>'
             });
         }
         // contenedor de la llamada de video
@@ -552,44 +599,78 @@
             }
         });
 
-        videosContainer.insertBefore(mediaElement, videosContainer.firstChild);
+        videosContainer.appendChild(mediaElement, videosContainer.firstChild);
 
         if (e.type == 'local') {
             mediaElement.media.muted = true;
             mediaElement.media.volume = 0;
         }
     };
-
+    // RTCMultiConnection.org/docs/onstreamended
     connection.onstreamended = function(e) {
         if (e.mediaElement.parentNode && e.mediaElement.parentNode.parentNode && e.mediaElement.parentNode.parentNode.parentNode) {
             e.mediaElement.parentNode.parentNode.parentNode.removeChild(e.mediaElement.parentNode.parentNode);
         }
     };
-
+    // RTCMultiConnection.org/docs/sendMessage
     connection.sendMessage = function(message) {
         message.userid = connection.userid;
         message.extra = connection.extra;
         connection.sendCustomMessage(message);
     };
-
-    connection.onclose = connection.onleave = function(event) {
+    // RTCMultiConnection.org/docs/onleave/
+    // Comprueba si el iniciador o participantes se han ido
+    connection.onleave = function(event) {
         addNewMessage({
             header: event.extra.username,
             userinfo: event.extra.imgPerfil,
-            horaPublicacion: event.extra.horaPublicacion,
+            horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
             message: event.extra.username + ' ha abandonado el chat!'
         });
     };
+    // RTCMultiConnection.org/docs/onclose/
+    // Evento solo se activa cuando la conexion de datos WebRTC se ha cerrado
+    connection.onclose = function(event) {
+        addNewMessage({
+            header: event.extra.username,
+            userinfo: event.extra.imgPerfil,
+            horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
+            message: 'La conexión de datos se ha cerrado entre usted y <strong>' + event.extra.username + '</strong>'
+        });
 
+        numbersOfUsers.innerHTML = parseInt(numbersOfUsers.innerHTML) - 1;
+    };
+
+    // www.RTCMultiConnection.org/docs/onstatechange/
+    // snippet recomendado por @muaz Khan para: "Session-rechecking... Descriptions not found"
+    connection.onstatechange = function(state) {
+    if(state.name === 'room-not-available') {
+            connection.open(); // si el local no esta disponible, abrirla.
+        }
+    };
+    // RTCMultiConnection.org/docs/onconnected/
+    // Usuarios conectados (Peers)
+    connection.onconnected = function (e) {
+        
+    }
 
 /*ui.share-files*/
     // file sharing
     var progressHelper = { };
+    // Autoguardar en el disco duro
+    connection.autoSaveToDisk = false;
+    // www.RTCMultiConnection.org/docs/onFileProgress/
+    connection.onFileProgress = function(chunk) {
+        var helper = progressHelper[chunk.uuid];
+        helper.progress.value = chunk.currentPosition || chunk.maxChunks || helper.progress.max;
+        updateLabel(helper.progress, helper.label);
+    };
+    // RTCMultiConnection.org/docs/onFileStart/
     connection.onFileStart = function(file) {
         addNewMessage({
-            header: connection.extra.username,
-            userinfo: connection.extra.imgPerfil,
-            horaPublicacion: connection.extra.horaPublicacion,
+            header: file.extra.username,
+            userinfo: file.extra.imgPerfil,
+            horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
             message: '<strong>' + file.name + '</strong> ( ' + bytesToSize(file.size) + ' )',
             callback: function(div) {
                 var innerDiv = document.createElement('div');
@@ -605,13 +686,8 @@
             }
         });
     };
-    connection.onFileProgress = function(chunk) {
-        var helper = progressHelper[chunk.uuid];
-        helper.progress.value = chunk.currentPosition || chunk.maxChunks || helper.progress.max;
-        updateLabel(helper.progress, helper.label);
-    };
 
-    // www.connection.org/docs/onFileEnd/
+    // www.RTCMultiConnection.org/docs/onFileEnd/
     connection.onFileEnd = function(file) {
         var helper = progressHelper[file.uuid];
         if (!helper) {
@@ -624,13 +700,13 @@
                 return;
             }
         }
+
         var div = helper.div;
         if (file.type.indexOf('image') != -1) {
             div.innerHTML = '<a class="content" href="' + file.url + '" download="' + file.name + '">Descargar <strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> </a><br /><img src="' + file.url + '" title="' + file.name + '" style="max-width: 100%; padding-top: 5px;" class="img-rounded"> <!-- END hat-body clearfix-->';
         } else {
             div.innerHTML = '<a class="content" href="' + file.url + '" download="' + file.name + '">Descargar <strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> </a><br /><iframe src="' + file.url + '" title="' + file.name + '" style="width: 100%;border: 0;height: inherit;margin-top:1em;" class="img-rounded"></iframe> <!-- END hat-body clearfix-->';
         }
-
         // para la compatibilidad con versiones anteriores
         if (connection.onFileSent || connection.onFileReceived) {
             if (connection.onFileSent) {
@@ -642,7 +718,7 @@
             }
         }
     };
-
+    // actualiza el porcentaje de carga de los archivos
     function updateLabel(progress, label) {
         if (progress.position == -1) return;
         var position = +progress.position.toFixed(2).split('.')[1] || 100;
@@ -714,7 +790,8 @@
             appendDevice(device);
         }
     });
-
+    
+    // emite el sonido en cualquier interaccion del chat
     function appendDevice(device) {
         var option = document.createElement('option');
         option.value = device.id;

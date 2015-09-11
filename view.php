@@ -91,10 +91,10 @@ $PAGE->requires->js('/mod/ectr/bootstrap/js/bootstrap.min.js');
 $PAGE->requires->js('/mod/ectr/RTCMultiConnection.js', true);
 $PAGE->requires->js('/mod/ectr/js/linkify.js', true);
 $PAGE->requires->js('/mod/ectr/js/jquery.cssemoticons.min.js', true);
+// ui-stylesheet
 $PAGE->requires->css('/mod/ectr/css/jquery.cssemoticons.css');
 $PAGE->requires->css('/mod/ectr/css/font-awesome.min.css');
 $PAGE->requires->css('/mod/ectr/bootstrap/css/bootstrap.min.css');
-// ui-stylesheet
 $PAGE->requires->css('/mod/ectr/css/styles.css');
 
 // Imprimo el encabezado de pagina
@@ -123,12 +123,14 @@ $avatar->link = false;
 $avatar->size = 150;
 $avatar->class = 'imgchat img-rounded chat-img pull-left';
 $avatarjs = $OUTPUT->render($avatar);
+$srcAvatarjs = $avatar->get_url($PAGE);
 ?>
 
 <script type="text/javascript">
 var avatarjs = '<?php echo $avatarjs; ?>';
+var srcAvatarjs = '<?php echo $srcAvatarjs; ?>';
 var userjs = '<?php echo fullname($user, true); ?>';
-var currentgroupjs = '<?php echo $currentgroup; ?>'
+var currentgroupjs = '<?php echo $currentgroup; ?>';
 </script>
 
 <?php
@@ -139,7 +141,7 @@ echo '
     <div class="panel-heading">
       <span class="fa fa-users"></span> Usuarios Conectados <span class="badge numbers-of-users" id="badge">0</span> <span title="Opciones" class="fa fa-chevron-down" style="float: right; font-size: 18px; cursor: pointer;"></span>
     </div>
-    <ul class="list-group" id="usuariosOnline">
+    <ul class="list-group user-list" id="usuariosOnline">
       <li class="list-group-item list-group-item-warning"><small id="listWarning">No hay ningun usuario conectado en este momento! :(</small></li>
 
     </ul>
@@ -168,11 +170,11 @@ echo '
               <div class="input-group">
                 <div class="input-wrapper">
                 <input id="chat-input" type="text" value="" placeholder="Escriba su mensaje..." disabled autofocus />
-                <label for="file">
-                  <span class="fa fa-picture-o add-picture"></span>
-                  <span class="fa fa-paperclip add-file"></span>
+                <label for="share-files">
+                  <span role="button" class="fa fa-picture-o add-picture"></span>
+                  <span role="button" class="fa fa-paperclip add-file"></span>
                 </label>
-                <input id="file" type="file" style="display: none;" disabled />
+                <input id="share-files" type="file" style="display: none;" disabled />
                 <a role="button" data-toggle="collapse" href="#collapseEmoticon" aria-expanded="false" aria-controls="collapseEmoticon">
                   <span class="fa fa-smile-o add-emoticon"></span>
                 </a>
@@ -183,7 +185,7 @@ echo '
               <button id="allow-webcam" class="fa fa-video-camera fa-3x" disabled title="Iniciar una videollamada" ></button>
               <button id="allow-mic" class="fa fa-phone fa-3x" disabled title="Iniciar una llamada de voz"></button>
               <button id="allow-screen" class="fa fa-desktop fa-3x" disabled title="Compartir el escritorio"></button>
-              <button id="share-files" class="fa fa-paperclip fa-3x" disabled title="Compartir archivos .PDF, .DOC, Videos, etc."></button>
+              <!-- <button id="share-files" class="fa fa-paperclip fa-3x" disabled title="Compartir archivos .PDF, .DOC, Videos, etc."></button> -->
               <button class="fa fa-question-circle fa-2x" disabled title="Ayuda y Comentarios"></button>
             </div>
             <div class="collapse" id="collapseEmoticon" style="padding-top: 10px; margin-bottom: -15px;">
