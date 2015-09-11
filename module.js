@@ -25,6 +25,8 @@
     var avatar = avatarjs;
     //  Grupo del usuario
     var grupo = currentgroupjs;
+    // src del avatar del usuario
+    var srcAvatar = srcAvatarjs;
     // conversor de hora a hora 10:45 pm - 08:06 am
     // funcion para insertar el cero
     function addZero(i) {
@@ -51,6 +53,7 @@
     connection.extra = {
         username: username,
         imgPerfil: avatar,
+        srcAvatar: srcAvatar,
         grupo: grupo
         //horaPublicacion: horaPublicacion
     };
@@ -106,11 +109,12 @@
         $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},650);
 
     }
+
 /* ui.users-list*/
 
     var numbersOfUsers = getElement('.numbers-of-users');
 
-    numbersOfUsers.innerHTML = 1;
+    numbersOfUsers.innerHTML = 0;
 
 
 /* ui.peer-connection */
@@ -321,7 +325,48 @@
             message: 'La conexión de datos se ha establecido entre usted y <strong>' + e.extra.username + '</strong>.'
         });
 
-        numbersOfUsers.innerHTML = parseInt(numbersOfUsers.innerHTML) + 1;
+        // console.info('Arreglo de todos los usuarios conectados: ', arrayOfAllConnectedUsers);
+        // establezco el bucle que pasa a traves de los items en el arreglo
+        console.log('Numero de usuarios conectados: ', connection.numberOfConnectedUsers + 1);
+        var arrayOfAllConnectedUsers = [];
+        for (var userid in connection.peers) {
+            console.debug(userid, 'esta conectado.');
+            arrayOfAllConnectedUsers.push(userid);
+
+        }
+        var numberOfListItems = arrayOfAllConnectedUsers.length;
+        for (var i = 0; i < numberOfListItems; ++i) {
+            // creamos <li> para cada uno
+            var listItem = document.createElement('li');
+            listItem.className = "list-group-item list-group-li";
+            var imgPerfil = document.createElement('img');
+            imgPerfil.className = "imgchat img-circle";
+            var perfilUsuario = document.createElement('a');
+            perfilUsuario.className = "user-perfil";
+            var spanPerfil = document.createElement('span');
+            spanPerfil.className = "user-perfil";
+            var h6 = document.createElement('h6');
+            var spanLabel = document.createElement('span');
+            spanLabel.className = "label label-success";
+            // agrego el texto del elemento
+            perfilUsuario.innerHTML = arrayOfAllConnectedUsers[i];
+            // añado los elementos a la pagina
+            document.getElementById("usuariosOnline").appendChild(listItem);
+            listItem.appendChild(imgPerfil);
+            listItem.appendChild(perfilUsuario);
+            listItem.appendChild(spanPerfil);
+            spanPerfil.appendChild(h6);
+            h6.appendChild(spanLabel);
+            // estado predeterminado
+            spanLabel.innerHTML = 'online';
+            imgPerfil.setAttribute('src', 'pix/foto-perfil.jpg');
+            // al conectarse ocultar mensaje
+            document.getElementById('listWarning').setAttribute('hidden','')
+            // numero de usuarios conectados
+            numbersOfUsers.innerHTML = parseInt(numbersOfUsers.innerHTML) + 1;
+
+        }
+
     };
     // RTCMultiConnection.org/docs/onmessage/
     // evento para cada nuevo mensaje de datos
@@ -605,8 +650,8 @@
     };
     // RTCMultiConnection.org/docs/onconnected/
     // Usuarios conectados (Peers)
-    connection.onconnected = function (event) {
-
+    connection.onconnected = function (e) {
+        
     }
 
 /*ui.share-files*/

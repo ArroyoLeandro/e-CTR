@@ -123,10 +123,12 @@ $avatar->link = false;
 $avatar->size = 150;
 $avatar->class = 'imgchat img-rounded chat-img pull-left';
 $avatarjs = $OUTPUT->render($avatar);
+$srcAvatarjs = $avatar->get_url($PAGE);
 ?>
 
 <script type="text/javascript">
 var avatarjs = '<?php echo $avatarjs; ?>';
+var srcAvatarjs = '<?php echo $srcAvatarjs; ?>';
 var userjs = '<?php echo fullname($user, true); ?>';
 var currentgroupjs = '<?php echo $currentgroup; ?>';
 </script>
@@ -139,7 +141,7 @@ echo '
     <div class="panel-heading">
       <span class="fa fa-users"></span> Usuarios Conectados <span class="badge numbers-of-users" id="badge">0</span> <span title="Opciones" class="fa fa-chevron-down" style="float: right; font-size: 18px; cursor: pointer;"></span>
     </div>
-    <ul class="list-group" id="usuariosOnline">
+    <ul class="list-group user-list" id="usuariosOnline">
       <li class="list-group-item list-group-item-warning"><small id="listWarning">No hay ningun usuario conectado en este momento! :(</small></li>
 
     </ul>
