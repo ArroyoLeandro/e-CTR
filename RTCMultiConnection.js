@@ -50,11 +50,11 @@ connection.rtcConfiguration
         // a reference to RTCMultiSession
         var rtcMultiSession;
 
-        // setting default channel or channel passed through constructor
+        // ajuste de canal o canal predeterminado pasaron por el constructor
         connection.channel = channel || RMCDefaultChannel;
 
-        // to allow single user to join multiple rooms;
-        // you can change this property at runtime!
+        //permite que un solo usuario se una a múltiples habitaciones;
+        // usted puede cambiar esta propiedad en tiempo de ejecución!
         connection.isAcceptNewSession = true;
 
         // www.RTCMultiConnection.org/docs/open/
@@ -62,12 +62,12 @@ connection.rtcConfiguration
             connection.isAcceptNewSession = false;
 
             // www.RTCMultiConnection.org/docs/session-initiator/
-            // you can always use this property to determine room owner!
+            // siempre se puede utilizar esta propiedad para determinar el propietario de la sala!
             connection.isInitiator = true;
 
             var dontTransmit = false;
 
-            // a channel can contain multiple rooms i.e. sessions
+            // un canal puede contener múltiples sesiones de habitaciones i.e. 
             if (args) {
                 if (isString(args)) {
                     connection.sessionid = args;
@@ -104,17 +104,17 @@ connection.rtcConfiguration
                 connection.sessionDescriptions[connection.sessionDescription.sessionid] = connection.sessionDescription;
             }
 
-            // connect with signaling channel
+            // conectar con canal de señalización
             initRTCMultiSession(function() {
-                // "captureUserMediaOnDemand" is disabled by default.
-                // invoke "getUserMedia" only when first participant found.
+                // "captureUserMediaOnDemand" está desactivado por defecto.
+                // invocar "getUserMedia" sólo cuando se encuentre el primer participante .
                 rtcMultiSession.captureUserMediaOnDemand = args ? !!args.captureUserMediaOnDemand : false;
 
                 if (args && args.onMediaCaptured) {
                     connection.onMediaCaptured = args.onMediaCaptured;
                 }
 
-                // for session-initiator, user-media is captured as soon as "open" is invoked.
+                // para iniciar-sesion,utilice los medios de comunicación tan pronto como sea "abierto" se invoca.
                 if (!rtcMultiSession.captureUserMediaOnDemand) captureUserMedia(function() {
                     rtcMultiSession.initSession({
                         sessionDescription: connection.sessionDescription,
@@ -136,14 +136,14 @@ connection.rtcConfiguration
 
         // www.RTCMultiConnection.org/docs/connect/
         connection.connect = function(sessionid) {
-            // a channel can contain multiple rooms i.e. sessions
+            // un canal puede contener varias habitaciones, es decir, sesiones
             if (sessionid) {
                 connection.sessionid = sessionid;
             }
 
-            // connect with signaling channel
+            // conectar con canal de señalización
             initRTCMultiSession(function() {
-                log('Signaling channel is ready.');
+                log('el canal de señalización está listo.');
             });
 
             return this;
@@ -167,11 +167,11 @@ connection.rtcConfiguration
             if (!data)
                 throw 'No file, data or text message to share.';
 
-            // connection.send([file1, file2, file3])
-            // you can share multiple files, strings or data objects using "send" method!
+            // enviar.conexion([fila1, fila2, fila3])
+            // usted puede compartir varios archivos, cadenas o los objetos de datos utilizando "enviar" metodo!
             if (data instanceof Array && !isNull(data[0].size) && !isNull(data[0].type)) {
-                // this mechanism can cause failure for subsequent packets/data 
-                // on Firefox especially; and on chrome as well!
+                // este mecanismo puede causar la falla para los paquetes posterior / datos 
+                // En Firefox especialmente; y en chrome tambien!
                 // todo: need to use setTimeout instead.
                 for (var i = 0; i < data.length; i++) {
                     data[i].size && data[i].type && connection.send(data[i], _channel);
@@ -179,7 +179,7 @@ connection.rtcConfiguration
                 return;
             }
 
-            // File or Blob object MUST have "type" and "size" properties
+            // Archivo u objeto Blob MUST tiene propiedades "tamaño" y "tipo" 
             if (!isNull(data.size) && !isNull(data.type)) {
                 if (!connection.enableFileSharing) {
                     throw '"enableFileSharing" boolean MUST be "true" to support file sharing.';
@@ -204,10 +204,10 @@ connection.rtcConfiguration
                     });
                 }, extra);
             } else {
-                // to allow longest string messages
-                // and largest data objects
-                // or anything of any size!
-                // to send multiple data objects concurrently!
+                // permitite mensajes de cadena más larga
+                // y objetos de datos más grandes
+                // o cualquier cosa de cualquier tamaño!
+                // para enviar varios objetos de datos al mismo tiempo!
 
                 TextSender.send({
                     text: data,
@@ -223,8 +223,8 @@ connection.rtcConfiguration
                 loadScreenFrame();
             }
 
-            // RTCMultiSession is the backbone object;
-            // this object MUST be initialized once!
+            // RTCMultiSession es la columna vertebral del objeto;
+            // este objeto se debe inicializar una vez!
             if (rtcMultiSession) return onSignalingReady();
 
             // your everything is passed over RTCMultiSession constructor!
@@ -242,10 +242,10 @@ connection.rtcConfiguration
             }
 
             if (!rtcMultiSession) {
-                log('Signaling channel is not ready. Connecting...');
-                // connect with signaling channel
+                log('Canal de señalización no está listo. Conexión...');
+                // conectar con canal de señalización
                 initRTCMultiSession(function() {
-                    log('Signaling channel is connected. Joining the session again...');
+                    log('Canal de señalización está conectado. Unirse a la sesión de nuevo...');
                     setTimeout(function() {
                         joinSession(session, joinAs);
                     }, 1000);
@@ -253,18 +253,18 @@ connection.rtcConfiguration
                 return;
             }
 
-            // connection.join('sessionid');
+            // unirse.conexion('Id sesion');
             if (isString(session)) {
                 if (connection.sessionDescriptions[session]) {
                     session = connection.sessionDescriptions[session];
                 } else
                     return setTimeout(function() {
-                        log('Session-Descriptions not found. Rechecking..');
+                        log('Session-descripciones no encontrados. Segunda verificación..');
                         joinSession(session, joinAs);
                     }, 1000);
             }
 
-            // connection.join('sessionid', { audio: true });
+            // unirse.conexion('Id sesion', { audio: verdadero });
             if (joinAs) {
                 return captureUserMedia(function() {
                     session.oneway = true;
