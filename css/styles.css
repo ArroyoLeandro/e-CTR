@@ -29,7 +29,7 @@
     margin-right: 5px;
 }
 
-.panel-body {
+.panel-body-content {
     overflow-y: scroll;
     height: 400px;
 }
@@ -273,28 +273,6 @@ a:active {
     color: #000;
 }
 
-input {
-    border-radius: 1px;
-    border: 1px solid #d9d9d9;
-    font-size: 15px;
-    height: 32px;
-    width: 200px;
-    margin-top: .5em;
-    padding: 0 8px;
-    -moz-user-select: initial;
-    -o-user-select: initial;
-    -webkit-user-select: initial;
-    -ms-user-select: initial;
-    user-select: initial;
-}
-
-input[type=checkbox] {
-    width: 30px;
-    height: 30px;
-    margin: 0;
-    vertical-align: middle;
-}
-
 .numbers-of-users {
     font-size: 1.5em;
 
@@ -348,4 +326,8 @@ select {
 label.adjust-width {
     display: inline-block;
     width: 30%;
+}
+
+.media-container {
+    border: 1px solid #337ab7;
 }
