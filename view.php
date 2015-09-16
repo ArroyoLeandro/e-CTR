@@ -89,7 +89,7 @@ $PAGE->requires->js('/mod/ectr/js/jquery-2.1.4.min.js', true);
 $PAGE->requires->js('/mod/ectr/bootstrap/js/bootstrap.min.js');
 $PAGE->requires->js('/mod/ectr/RTCMultiConnection.js', true);
 $PAGE->requires->js('/mod/ectr/js/jquery.cssemoticons.min.js', true);
-//$PAGE->requires->js('/mod/ectr/js/linkify.js');
+$PAGE->requires->js('/mod/ectr/js/linkify.js');
 // ui-stylesheet
 $PAGE->requires->css('/mod/ectr/css/jquery.cssemoticons.css');
 $PAGE->requires->css('/mod/ectr/css/font-awesome.min.css');
@@ -122,6 +122,7 @@ $url_actual = "http://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
 // 1 = Admin, 2 = Director del curso, 3 = Tutor.
     if ($role->roleid == 1 || $role->roleid == 2 || $role->roleid == 3) { 
         // Puede elegir que chat de Grupo Abrir
+        echo $role->name.'. ';
         groups_print_activity_menu($cm, $CFG->wwwroot . "/mod/ectr/view.php?id=$cm->id");
     }
     // Si ya esta en la URL del chat del grupo
@@ -152,7 +153,6 @@ var srcAvatarjs = '<?php echo $srcAvatarjs; ?>';
 var userjs = '<?php echo fullname($user, true); ?>';
 var currentgroupjs = '<?php echo $currentgroup; ?>';
 </script>
-<script type="text/javascript" src="https://www.webrtc-experiment.com/RTCMultiConnection/MultiRTC/linkify.js"></script>
 
 <?php
 echo '    
@@ -202,7 +202,8 @@ echo '
                 <option value="ws">Swahili (Kiswahili)</option>
                 <option value="cy">Welsh (Cymraeg)</option>
             </select>
-                        
+            <input type="checkbox" id="stop-sound">
+            <label for="stop-sound" title="Desactivar los sonidos del chat.">Desactivar sonido</label>           
             <button id="save-settings" style="float: right;">Guardar Configuraciones</button>
             <table>
                 <tr>

@@ -297,7 +297,7 @@ a:active {
 .settings-panel {
     margin: 0 0 13px 0;
     height: auto;
-    border: 1px solid black;
+    border: 1px solid #337ab7;
     overflow: hidden;
     overflow-x: auto;
     padding: .4em .8em;

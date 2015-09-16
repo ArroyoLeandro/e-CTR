@@ -61,7 +61,6 @@
     connection.preventSSLAutoAllowed = false;
     connection.autoReDialOnFailure = true;
     connection.setDefaultEventsForMediaElement = false;
-    connection.autoTranslateText = false;
     //var userMaxParticipantsAllowed = 8;
     //var maxParticipantsAllowed = 8;
     //var direction = 'many-to-many';
@@ -109,42 +108,9 @@
         $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},650);
 
     }
-
-    // usamos websockets para la señalizacion
+    // usando websockets para la señalizacion
     // https://github.com/manueltato11/e-CTR-server
     var signalingserver = 'wss://e-ctr-server-websocket-over-nodejs-manueltato11.c9.io/';
-
-    connection.openSignalingChannel = function(config) {
-        config.channel = config.channel || this.channel;
-        var websocket = new WebSocket(signalingserver);
-        websocket.channel = config.channel;
-
-        websocket.onopen = function() {
-            websocket.push(JSON.stringify({
-                open: true,
-                channel: config.channel
-            }));
-            if (config.callback)
-                config.callback(websocket);
-        };
-
-        websocket.onmessage = function(event) {
-            config.onmessage(JSON.parse(event.data));
-        };
-        websocket.push = websocket.send;
-        websocket.send = function(data) {
-            if (websocket.readyState != 1) {
-                        return setTimeout(function() {
-                            websocket.send(data);
-                        }, 300); // up 1000
-            }
-                    
-            websocket.push(JSON.stringify({
-                data: data,
-                channel: config.channel
-            }));
-        };
-    };
     // use "channel" como sessionid para usar sessionid personalizado!
     var roomid = connection.channel;
     var channel = location.href.replace(/\/|:|#|%|\.|\[|\]/g, '');
@@ -297,16 +263,47 @@
         var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
         return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
     }
-/* ui.users-list*/
-
-    var numbersOfUsers = getElement('.numbers-of-users');
-
-    numbersOfUsers.innerHTML = 0;
-
 
 /* ui.peer-connection */
 
+    // usamos websockets para la señalizacion
+    // https://github.com/manueltato11/e-CTR-server
+    // var signalingserver = 'wss://e-ctr-server-websocket-over-nodejs-manueltato11.c9.io/';
+    connection.openSignalingChannel = function(config) {
+        config.channel = config.channel || this.channel;
+        var websocket = new WebSocket(signalingserver);
+        websocket.channel = config.channel;
+
+        websocket.onopen = function() {
+            websocket.push(JSON.stringify({
+                open: true,
+                channel: config.channel
+            }));
+            if (config.callback)
+                config.callback(websocket);
+        };
+
+        websocket.onmessage = function(event) {
+            config.onmessage(JSON.parse(event.data));
+        };
+        websocket.push = websocket.send;
+        websocket.send = function(data) {
+            if (websocket.readyState != 1) {
+                        return setTimeout(function() {
+                            websocket.send(data);
+                        }, 1000); // up 1000
+            }
+                    
+            websocket.push(JSON.stringify({
+                data: data,
+                channel: config.channel
+            }));
+        };
+    };
+
     connection.customStreams = { };
+    // Auto traducir, falso
+    connection.autoTranslateText = false;
     // RTCMultiConnection.org/docs/onopen/
     // cuando se habre la conexion
     connection.onopen = function(e) {
@@ -387,11 +384,11 @@
             message: (connection.autoTranslateText ? linkify(e.data) + ' (' + linkify(e.original) + ')' : linkify(e.data))
         });
         // jQuery-CSSEmoticons
-        $('.comment').emoticonize();
+       // $('.comment').emoticonize();
         document.title = e.data;
         // Conocer la latencia de los datos que fluyen entre las conexiones
-        console.debug(e.extra.username,'(', e.userid,') publico:', e.data);
-        console.log('Su latencia:', e.latency, 'ms');
+        //console.debug(e.extra.username,'(', e.userid,') publico:', e.data);
+        //console.log('Su latencia:', e.latency, 'ms');
 
     };
     // RTCMultiConnection.org/docs/onNewSession/
@@ -722,6 +719,11 @@
         var position = +progress.position.toFixed(2).split('.')[1] || 100;
         label.innerHTML = position + '%';
     }
+/* ui.users-list*/
+
+    var numbersOfUsers = getElement('.numbers-of-users');
+
+    numbersOfUsers.innerHTML = 0;
 
 /* ui.settings*/
     var settingsPanel = getElement('.settings-panel');
