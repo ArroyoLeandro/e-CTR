@@ -249,17 +249,6 @@ input[type=text][disabled] {
     cursor:not-allowed;
 }
 
-#continue {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    background-repeat: no-repeat;
-    background-position: center right;
-    background-image: url('../pix/action-needed.png');
-    padding-right: 47px;
-    padding-top: 1px;
-    padding-bottom: 4px;
-}
-
 a {
     color: #2844FA;
     text-decoration: none;
@@ -278,20 +267,8 @@ a:active {
 
 }
 
-.self-url {
-    position: absolute;
-    top: 5px;
-    left: 251px;
-    height: 25px;
-    overflow: hidden;
-}
-
 #save-settings {
-    background-repeat: no-repeat;
-    background-position: center right;
-    background-image: url('../pix/accepted.png');
-    padding-right: 53px;
-    border-color: rgb(133, 21, 21);
+    float: right;
 }
 
 .settings-panel {
@@ -305,15 +282,8 @@ a:active {
     display: none;
 } 
 
-tr, td, th {
-    vertical-align: top;
-    padding: .7em 1.4em;
-    border-top: 1px dotted #BBA9A9;
-    border-right: 1px dotted #BBA9A9;
-}
-
 table {
-    width: 100%;
+    margin-top: 6px;
 }
 
 select {
