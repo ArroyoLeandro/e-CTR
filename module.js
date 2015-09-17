@@ -381,7 +381,7 @@
             header: e.extra.username,
             userinfo: e.extra.imgPerfil,
             horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
-            message: (connection.autoTranslateText ? linkify(e.data) + ' (' + linkify(e.original) + ')' : linkify(e.data))
+            message: (connection.autoTranslateText ? linkify(e.data) + '<span style="font-style: oblique; color: #BDBDBD"> (' + linkify(e.original) + ')</span>' : linkify(e.data))
         });
         // jQuery-CSSEmoticons
        // $('.comment').emoticonize();
