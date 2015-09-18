@@ -1,16 +1,15 @@
 // Last time updated at Nov 05, 2014, 08:32:23
 
-// Quick-Demo for newbies: http://jsfiddle.net/c46de0L8/
-// Another simple demo: http://jsfiddle.net/zar6fg60/
-
 // Latest file can be found here: https://cdn.webrtc-experiment.com/RTCMultiConnection.js
 
-// Muaz Khan     - www.MuazKhan.com
-// MIT License   - www.WebRTC-Experiment.com/licence
-// Documentation - www.RTCMultiConnection.org/docs
-// FAQ           - www.RTCMultiConnection.org/FAQ
-// Changes log   - www.RTCMultiConnection.org/changes-log/
-// Demos         - www.WebRTC-Experiment.com/RTCMultiConnection
+// Library RTCMultiConnection.js
+
+// Muaz Khan     - MuazKhan.com
+// MIT License   - WebRTC-Experiment.com/licence
+// Documentation - RTCMultiConnection.org/docs
+// FAQ           - RTCMultiConnection.org/FAQ
+// Changes log   - RTCMultiConnection.org/changes-log/
+// Demos         - WebRTC-Experiment.com/RTCMultiConnection
 
 // _________________________
 // RTCMultiConnection-v2.2.2
@@ -37,37 +36,37 @@ connection.rtcConfiguration
 (function() {
 
     // RMC == RTCMultiConnection
-    // usually page-URL is used as channel-id
-    // you can always override it!
-    // www.RTCMultiConnection.org/docs/channel-id/
+    // Por lo general la URL de la pagina trabaja como channel-id
+    // Podemos modificarlo
+    // RTCMultiConnection.org/docs/channel-id/
     window.RMCDefaultChannel = location.href.replace(/\/|:|#|%|\.|\[|\]/g, '');
 
-    // www.RTCMultiConnection.org/docs/constructor/
+    // RTCMultiConnection.org/docs/constructor/
     window.RTCMultiConnection = function(channel) {
-        // an instance of constructor
+        // una instancia del constructor
         var connection = this;
 
-        // a reference to RTCMultiSession
+        // una referencia a RTCMultiSession
         var rtcMultiSession;
 
-        // setting default channel or channel passed through constructor
+        // ajuste de canal o canal predeterminado pasaron por el constructor
         connection.channel = channel || RMCDefaultChannel;
 
-        // to allow single user to join multiple rooms;
-        // you can change this property at runtime!
+        // permite que un solo usuario se una a múltiples habitaciones;
+        // usted puede cambiar esta propiedad en tiempo de ejecución!
         connection.isAcceptNewSession = true;
 
-        // www.RTCMultiConnection.org/docs/open/
+        // RTCMultiConnection.org/docs/open/
         connection.open = function(args) {
             connection.isAcceptNewSession = false;
 
-            // www.RTCMultiConnection.org/docs/session-initiator/
-            // you can always use this property to determine room owner!
+            // RTCMultiConnection.org/docs/session-initiator/
+            // siempre se puede utilizar esta propiedad para determinar el propietario de la sala!
             connection.isInitiator = true;
 
             var dontTransmit = false;
 
-            // a channel can contain multiple rooms i.e. sessions
+            // un canal puede contener múltiples sesiones de habitaciones i.e. 
             if (args) {
                 if (isString(args)) {
                     connection.sessionid = args;
@@ -86,7 +85,7 @@ connection.rtcConfiguration
                 }
             }
 
-            // if firebase && if session initiator
+            // si firebase && si es iniciador de la sesion
             if (connection.socket && connection.socket.remove) {
                 connection.socket.remove();
             }
@@ -104,17 +103,17 @@ connection.rtcConfiguration
                 connection.sessionDescriptions[connection.sessionDescription.sessionid] = connection.sessionDescription;
             }
 
-            // connect with signaling channel
+            // conexion con canal de señalización
             initRTCMultiSession(function() {
-                // "captureUserMediaOnDemand" is disabled by default.
-                // invoke "getUserMedia" only when first participant found.
+                // "captureUserMediaOnDemand" está desactivado por defecto.
+                // invocar "getUserMedia" sólo cuando se encuentre el primer participante .
                 rtcMultiSession.captureUserMediaOnDemand = args ? !!args.captureUserMediaOnDemand : false;
 
                 if (args && args.onMediaCaptured) {
                     connection.onMediaCaptured = args.onMediaCaptured;
                 }
 
-                // for session-initiator, user-media is captured as soon as "open" is invoked.
+                // para iniciar-sesion,utilice los medios de comunicación tan pronto como sea "abierto" se invoca.
                 if (!rtcMultiSession.captureUserMediaOnDemand) captureUserMedia(function() {
                     rtcMultiSession.initSession({
                         sessionDescription: connection.sessionDescription,
@@ -134,55 +133,55 @@ connection.rtcConfiguration
             return connection.sessionDescription;
         };
 
-        // www.RTCMultiConnection.org/docs/connect/
+        // RTCMultiConnection.org/docs/connect/
         connection.connect = function(sessionid) {
-            // a channel can contain multiple rooms i.e. sessions
+            // un canal puede contener varias habitaciones, es decir, sesiones
             if (sessionid) {
                 connection.sessionid = sessionid;
             }
 
-            // connect with signaling channel
+            // conectar con el canal de señalización
             initRTCMultiSession(function() {
-                log('Signaling channel is ready.');
+                log('El canal de señalización está listo.');
             });
 
             return this;
         };
 
-        // www.RTCMultiConnection.org/docs/join/
+        // RTCMultiConnection.org/docs/join/
         connection.join = joinSession;
 
-        // www.RTCMultiConnection.org/docs/send/
+        // RTCMultiConnection.org/docs/send/
         connection.send = function(data, _channel) {
             if (connection.numberOfConnectedUsers <= 0) {
-                // no connections
+                // Sin conexiones
                 setTimeout(function() {
-                    // try again
+                    // Intentar de nuevo
                     connection.send(data, _channel);
                 }, 1000);
                 return;
             }
 
-            // send file/data or /text
+            // enviar archivos/datos o texto
             if (!data)
-                throw 'No file, data or text message to share.';
+                throw 'Sin archivos, datos o mensaje de texto para compartir.';
 
             // connection.send([file1, file2, file3])
-            // you can share multiple files, strings or data objects using "send" method!
+            // usted puede compartir varios archivos, cadenas o los objetos de datos utilizando "enviar" metodo!
             if (data instanceof Array && !isNull(data[0].size) && !isNull(data[0].type)) {
-                // this mechanism can cause failure for subsequent packets/data 
-                // on Firefox especially; and on chrome as well!
-                // todo: need to use setTimeout instead.
+                // este mecanismo puede causar la falla para los paquetes posterior / datos 
+                // En Firefox especialmente; y en chrome tambien!
+                // todo: necesitara usar setTimeout en lugar.
                 for (var i = 0; i < data.length; i++) {
                     data[i].size && data[i].type && connection.send(data[i], _channel);
                 }
                 return;
             }
 
-            // File or Blob object MUST have "type" and "size" properties
+            // Archivo u objeto Blob MUST tiene propiedades "tamaño" y "tipo" 
             if (!isNull(data.size) && !isNull(data.type)) {
                 if (!connection.enableFileSharing) {
-                    throw '"enableFileSharing" boolean MUST be "true" to support file sharing.';
+                    throw '"enableFileSharing" boolean debe de ser "true" para soportar el intercambio de archivos.';
                 }
 
                 if (!rtcMultiSession.fileBufferReader) {
@@ -204,10 +203,10 @@ connection.rtcConfiguration
                     });
                 }, extra);
             } else {
-                // to allow longest string messages
-                // and largest data objects
-                // or anything of any size!
-                // to send multiple data objects concurrently!
+                // permitite mensajes de cadena más larga
+                // y objetos de datos más grandes
+                // o cualquier cosa de cualquier tamaño!
+                // para enviar varios objetos de datos al mismo tiempo!
 
                 TextSender.send({
                     text: data,
@@ -223,11 +222,11 @@ connection.rtcConfiguration
                 loadScreenFrame();
             }
 
-            // RTCMultiSession is the backbone object;
-            // this object MUST be initialized once!
+            // RTCMultiSession es la columna vertebral del objeto;
+            // este objeto se debe inicializar una vez!
             if (rtcMultiSession) return onSignalingReady();
 
-            // your everything is passed over RTCMultiSession constructor!
+            // Todo se pasa sobre el constructor RTCMultiSession!
             rtcMultiSession = new RTCMultiSession(connection, onSignalingReady);
         }
 
@@ -242,10 +241,10 @@ connection.rtcConfiguration
             }
 
             if (!rtcMultiSession) {
-                log('Signaling channel is not ready. Connecting...');
-                // connect with signaling channel
+                log('El Canal de señalización no está listo. Conectando...');
+                // conectar con canal de señalización
                 initRTCMultiSession(function() {
-                    log('Signaling channel is connected. Joining the session again...');
+                    log('El Canal de señalización está conectado. Unirse a la sesión de nuevo...');
                     setTimeout(function() {
                         joinSession(session, joinAs);
                     }, 1000);
@@ -259,7 +258,7 @@ connection.rtcConfiguration
                     session = connection.sessionDescriptions[session];
                 } else
                     return setTimeout(function() {
-                        log('Session-Descriptions not found. Rechecking..');
+                        log('Session-descripciones no encontrados. Siguiente verificación..');
                         joinSession(session, joinAs);
                     }, 1000);
             }
@@ -275,7 +274,7 @@ connection.rtcConfiguration
             if (!session || !session.userid || !session.sessionid) {
                 error('missing arguments', arguments);
 
-                var error = 'Invalid data passed over "connection.join" method.';
+                var error = 'Datos invalidos al pasar por el metodo "connection.join".';
                 connection.onstatechange({
                     userid: 'browser',
                     extra: {},
@@ -292,9 +291,9 @@ connection.rtcConfiguration
 
             var extra = connection.extra || session.extra || {};
 
-            // todo: need to verify that if-block statement works as expected.
-            // expectations: if it is oneway streaming; or if it is data-only connection
-            // then, it shouldn't capture user-media on participant's side.
+            // todo: es necesario verificar que la declaracion if-block funciona como se espera.
+            // expectativas: si se trata de la transmisión data-only; o si se trata sólo de datos de conexión
+            // entonces, no debería capturar fácil de los medios de comunicación por parte de los participantes.
             if (session.oneway || isData(session)) {
                 rtcMultiSession.joinSession(session, extra);
             } else {
@@ -306,10 +305,10 @@ connection.rtcConfiguration
 
         var isFirstSession = true;
 
-        // www.RTCMultiConnection.org/docs/captureUserMedia/
+        // RTCMultiConnection.org/docs/captureUserMedia/
 
         function captureUserMedia(callback, _session, dontCheckChromExtension) {
-            // capture user's media resources
+            // captura los recursos de medios del usuario
             var session = _session || connection.session;
 
             if (isEmpty(session)) {
@@ -317,15 +316,15 @@ connection.rtcConfiguration
                 return;
             }
 
-            // you can force to skip media capturing!
+            // puede forzar a saltar la captura de los medios de comunicación!
             if (connection.dontCaptureUserMedia) {
                 return callback();
             }
 
-            // if it is data-only connection
-            // if it is one-way connection and current user is participant
+            // si se trata solo de data-only.
+            // Si se trata de la conexión de un solo sentido "one-way" y el usuario actual es participante.
             if (isData(session) || (!connection.isInitiator && session.oneway)) {
-                // www.RTCMultiConnection.org/docs/attachStreams/
+                // RTCMultiConnection.org/docs/attachStreams/
                 connection.attachStreams = [];
                 return callback();
             }
@@ -340,7 +339,7 @@ connection.rtcConfiguration
                 video: !!session.video
             };
 
-            // if custom audio device is selected
+            // si se selecciona el dispositivo de audio personalizado
             if (connection._mediaSources.audio) {
                 constraints.audio.optional.push({
                     sourceId: connection._mediaSources.audio
@@ -356,7 +355,7 @@ connection.rtcConfiguration
                 };
             }
 
-            // for connection.session = {};
+            // para connection.session = {};
             if (!session.screen && !constraints.audio && !constraints.video) {
                 return callback();
             }
@@ -384,9 +383,9 @@ connection.rtcConfiguration
                     mediaSource: 'window' // 'screen' || 'window'
                 });
 
-                // Firefox is supporting audio+screen from single getUserMedia request
-                // audio+video+screen will become audio+screen for Firefox
-                // because Firefox isn't supporting multi-streams feature
+                // Firefox soporta audio+screen desde una unica solicitud getUserMedia
+                // audio+video+screen se convertira como audio+screen para Firefox
+                // porque Firefox no esta soportando caracteristicas multi-streams 
                 if (constraints.audio /* && !session.video */ ) {
                     screen_constraints.audio = true;
                     constraints = {};
@@ -395,7 +394,7 @@ connection.rtcConfiguration
                 delete screen_constraints.video.chromeMediaSource;
             }
 
-            // if screen is prompted
+            // si se solicita pantalla
             if (session.screen) {
                 if (isChrome && DetectRTC.screen.extensionid != ReservedExtensionID) {
                     useCustomChromeExtensionForScreenCapturing = true;
@@ -416,7 +415,7 @@ connection.rtcConfiguration
 
                             if (sourceId == 'PermissionDeniedError') {
                                 var mediaStreamError = {
-                                    message: location.protocol == 'https:' ? 'User denied to share content of his screen.' : SCREEN_COMMON_FAILURE,
+                                    message: location.protocol == 'https:' ? 'El Usuario negó compartir el contenido de su pantalla.' : SCREEN_COMMON_FAILURE,
                                     name: 'PermissionDeniedError',
                                     constraintName: screen_constraints,
                                     session: session
@@ -430,7 +429,7 @@ connection.rtcConfiguration
                         }
 
                         if (event.data && event.data.chromeExtensionStatus) {
-                            warn('Screen capturing extension status is:', event.data.chromeExtensionStatus);
+                            warn('El Estado de la extension de la captura de pantalla es:', event.data.chromeExtensionStatus);
                             DetectRTC.screen.chromeMediaSource = 'screen';
                             captureUserMedia(callback, _session, true);
                         }
@@ -444,20 +443,20 @@ connection.rtcConfiguration
                     return;
                 }
 
-                // check if screen capturing extension is installed.
+                // comprobar si se ha instalado la extensión de captura de pantalla.
                 if (isChrome && useCustomChromeExtensionForScreenCapturing && !dontCheckChromExtension && DetectRTC.screen.chromeMediaSource == 'screen' && DetectRTC.screen.extensionid) {
                     if (DetectRTC.screen.extensionid == ReservedExtensionID && document.domain.indexOf('webrtc-experiment.com') == -1) {
                         return captureUserMedia(callback, _session, true);
                     }
 
-                    log('checking if chrome extension is installed.');
+                    log('comprobar si se ha instalado la extensión de Chrome.');
                     DetectRTC.screen.getChromeExtensionStatus(function(status) {
                         if (status == 'installed-enabled') {
                             DetectRTC.screen.chromeMediaSource = 'desktop';
                         }
 
                         captureUserMedia(callback, _session, true);
-                        log('chrome extension is installed?', DetectRTC.screen.chromeMediaSource == 'desktop');
+                        log('esta instalado la extension de Chrome?', DetectRTC.screen.chromeMediaSource == 'desktop');
                     });
                     return;
                 }
@@ -466,7 +465,7 @@ connection.rtcConfiguration
                     DetectRTC.screen.getSourceId(function(sourceId) {
                         if (sourceId == 'PermissionDeniedError') {
                             var mediaStreamError = {
-                                message: 'User denied to share content of his screen.',
+                                message: 'Usuario negó compartir el contenido de su pantalla.',
                                 name: 'PermissionDeniedError',
                                 constraintName: screen_constraints,
                                 session: session
@@ -477,7 +476,7 @@ connection.rtcConfiguration
                         }
 
                         if (sourceId == 'No-Response') {
-                            error('Chrome extension seems not available. Make sure that manifest.json#L16 has valid content-script matches pointing to your URL.');
+                            error('Extensión de Chrome no parece disponible. Asegurese de que manifest.json#L16 tiene validez y los content-script de los partidos apuntan a su URL.');
                             DetectRTC.screen.chromeMediaSource = 'screen';
                             return captureUserMedia(callback, _session, true);
                         }
@@ -506,12 +505,12 @@ connection.rtcConfiguration
                     userid: 'browser',
                     extra: {},
                     name: 'fetching-usermedia',
-                    reason: 'About to capture user-media with constraints: ' + toStr(forcedConstraints)
+                    reason: 'Acerca de capturar user-media con limitaciones: ' + toStr(forcedConstraints)
                 });
 
 
                 if (connection.preventSSLAutoAllowed && !dontPreventSSLAutoAllowed && isChrome) {
-                    // if navigator.customGetUserMediaBar.js is missing
+                    // si navigator.customGetUserMediaBar.js esta perdido
                     if (!navigator.customGetUserMediaBar) {
                         loadScript(connection.resources.customGetUserMediaBar, function() {
                             _captureUserMedia(forcedConstraints, forcedCallback, isRemoveVideoTracks, dontPreventSSLAutoAllowed);
@@ -524,7 +523,7 @@ connection.rtcConfiguration
                     }, function() {
                         connection.onMediaError({
                             name: 'PermissionDeniedError',
-                            message: 'User denied permission.',
+                            message: 'Permiso denegado por el usuario.',
                             constraintName: forcedConstraints,
                             session: session
                         });
@@ -574,10 +573,10 @@ connection.rtcConfiguration
                         // when any of the requested media is either denied or absent
                         if (e.name && (e.name == 'PermissionDeniedError' || e.name == 'DevicesNotFoundError')) {
                             var mediaStreamError = 'Either: ';
-                            mediaStreamError += '\n Media resolutions are not permitted.';
-                            mediaStreamError += '\n Another application is using same media device.';
-                            mediaStreamError += '\n Media device is not attached or drivers not installed.';
-                            mediaStreamError += '\n You denied access once and it is still denied.';
+                            mediaStreamError += '\n La resolucion d elos medios no es permitida.';
+                            mediaStreamError += '\n Otra aplicación está utilizando mismo dispositivo de medios de comunicación.';
+                            mediaStreamError += '\n Dispositivo de medios no está conectado o instalado en el equipo.';
+                            mediaStreamError += '\n Usted ha negado el acceso una vez y todavia es negado.';
 
                             if (e.message && e.message.length) {
                                 mediaStreamError += '\n ' + e.message;
@@ -593,27 +592,27 @@ connection.rtcConfiguration
                             connection.onMediaError(mediaStreamError);
 
                             if (isChrome && (session.audio || session.video)) {
-                                // todo: this snippet fails if user has two or more 
-                                // microphone/webcam attached.
+                                // todo: este fragmento falla si el usuario tiene dos o más
+                                // microfono/camara web conectada.
                                 DetectRTC.load(function() {
-                                    // it is possible to check presence of the microphone before using it!
+                                    // es posible comprobar la presencia del micrófono antes de usarlo!
                                     if (session.audio && !DetectRTC.hasMicrophone) {
-                                        warn('It seems that you have no microphone attached to your device/system.');
+                                        warn('Parece que no tiene micrófono conectado a su equipo/sistema.');
                                         session.audio = session.audio = false;
 
                                         if (!session.video) {
-                                            alert('It seems that you are capturing microphone and there is no device available or access is denied. Reloading...');
+                                            alert('Parece que está capturando el micrófono y no hay ningún dispositivo disponible o se deniega el acceso. Recargando...');
                                             location.reload();
                                         }
                                     }
 
-                                    // it is possible to check presence of the webcam before using it!
+                                    // es posible comprobar la presencia de la cámara web antes de usarlo!
                                     if (session.video && !DetectRTC.hasWebcam) {
-                                        warn('It seems that you have no webcam attached to your device/system.');
+                                        warn('Parece que no tienes cámara web conectada al su equipo/sistema.');
                                         session.video = session.video = false;
 
                                         if (!session.audio) {
-                                            alert('It seems that you are capturing webcam and there is no device available or access is denied. Reloading...');
+                                            alert('Parece que está capturando la cámara web y no hay ningún dispositivo disponible o se deniega el acceso. Recargando...');
                                             location.reload();
                                         }
                                     }
@@ -622,7 +621,7 @@ connection.rtcConfiguration
                                         alert('It seems that either both microphone/webcam are not available or access is denied. Reloading...');
                                         location.reload();
                                     } else if (!connection.getUserMediaPromptedOnce) {
-                                        // make maximum two tries!
+                                        // realizar un máximo de dos intentos!
                                         connection.getUserMediaPromptedOnce = true;
                                         captureUserMedia(callback, session);
                                     }
@@ -632,8 +631,8 @@ connection.rtcConfiguration
 
                         if (e.name && e.name == 'ConstraintNotSatisfiedError') {
                             var mediaStreamError = 'Either: ';
-                            mediaStreamError += '\n You are prompting unknown media resolutions.';
-                            mediaStreamError += '\n You are using invalid media constraints.';
+                            mediaStreamError += '\n Usted esta probando con resoluciones de medios desconocidas.';
+                            mediaStreamError += '\n Está utilizando restricciones a los medios de comunicación no válidos.';
 
                             if (e.message && e.message.length) {
                                 mediaStreamError += '\n ' + e.message;
@@ -654,16 +653,16 @@ connection.rtcConfiguration
                                 error(Firefox_Screen_Capturing_Warning);
                             } else if (location.protocol !== 'https:') {
                                 if (!isNodeWebkit && (location.protocol == 'file:' || location.protocol == 'http:')) {
-                                    error('You cannot use HTTP or file protocol for screen capturing. You must either use HTTPs or chrome extension page or Node-Webkit page.');
+                                    error('No se puede utilizar el protocolo HTTP o archivo para la captura de pantalla. Usted debe utilizar HTTPS o la extensión de Chrome o página en Node-Webkit.');
                                 }
                             } else {
-                                error('Unable to detect actual issue. Maybe "deprecated" screen capturing flag was not set using command line or maybe you clicked "No" button or maybe chrome extension returned invalid "sourceId". Please install chrome-extension: http://bit.ly/webrtc-screen-extension');
+                                error('No se ha podido detectar que se ha expedido. Tal vez sea "obsoleto" la captura de pantalla no se ha establecido en el uso de línea de comandos o tal vez usted hace clic "No" botón o tal extensión de Chrome regresaron inválida "sourceId". Por favor instale la extension de Chrome: http://bit.ly/webrtc-screen-extension');
                             }
                         }
 
                         currentUserMediaRequest.mutex = false;
 
-                        // to make sure same stream can be captured again!
+                        // para asegurarse misma corriente puede ser capturado de nuevo!
                         var idInstance = JSON.stringify(constraintUsed);
                         if (currentUserMediaRequest.streams[idInstance]) {
                             delete currentUserMediaRequest.streams[idInstance];
@@ -685,7 +684,7 @@ connection.rtcConfiguration
                 userid: 'browser',
                 extra: {},
                 name: 'usermedia-fetched',
-                reason: 'Captured user media using constraints: ' + toStr(forcedConstraints)
+                reason: 'Los medios de comunicacion de los usuarios capturados estan usando restricciones: ' + toStr(forcedConstraints)
             });
 
             if (isRemoveVideoTracks) {
@@ -698,7 +697,7 @@ connection.rtcConfiguration
                     streamedObject.mediaElement = document.getElementById(stream.streamid);
                 }
 
-                // when a stream is stopped; it must be removed from "attachStreams" array
+                // cuando una corriente se detiene; debe de ser movido desde el arreglo "attachStreams" 
                 connection.attachStreams.forEach(function(_stream, index) {
                     if (_stream == stream) {
                         delete connection.attachStreams[index];
@@ -712,7 +711,7 @@ connection.rtcConfiguration
                     connection.removeStream(streamid);
                 }
 
-                // if user clicks "stop" button to close screen sharing
+                // si el usuario hace clic el botón "stop" para cerrar la pantalla compartida
                 var _stream = connection.streams[streamid];
                 if (_stream && _stream.sockets.length) {
                     _stream.sockets.forEach(function(socket) {
@@ -724,12 +723,12 @@ connection.rtcConfiguration
                 }
 
                 currentUserMediaRequest.mutex = false;
-                // to make sure same stream can be captured again!
+                // para asegurarse que la misma corriente este siendo capturada de nuevo!
                 if (currentUserMediaRequest.streams[idInstance]) {
                     delete currentUserMediaRequest.streams[idInstance];
                 }
 
-                // to allow re-capturing of the screen
+                // para permitir la re-capturing de la pantalla
                 DetectRTC.screen.sourceId = null;
             };
 
@@ -739,7 +738,7 @@ connection.rtcConfiguration
                 stream.isVideo = forcedConstraints == constraints && !!constraints.video;
                 stream.isAudio = forcedConstraints == constraints && !!constraints.audio && !constraints.video;
 
-                // if muted stream is negotiated
+                // si la corriente se negocia en "muted"
                 stream.preMuted = {
                     audio: stream.getAudioTracks().length && !stream.getAudioTracks()[0].enabled,
                     video: stream.getVideoTracks().length && !stream.getVideoTracks()[0].enabled
@@ -791,10 +790,10 @@ connection.rtcConfiguration
             }
         }
 
-        // www.RTCMultiConnection.org/docs/captureUserMedia/
+        // RTCMultiConnection.org/docs/captureUserMedia/
         connection.captureUserMedia = captureUserMedia;
 
-        // www.RTCMultiConnection.org/docs/leave/
+        // RTCMultiConnection.org/docs/leave/
         connection.leave = function(userid) {
             if (!rtcMultiSession) return;
 
@@ -808,28 +807,28 @@ connection.rtcConfiguration
             rtcMultiSession.leave();
         };
 
-        // www.RTCMultiConnection.org/docs/eject/
+        // RTCMultiConnection.org/docs/eject/
         connection.eject = function(userid) {
-            if (!connection.isInitiator) throw 'Only session-initiator can eject a user.';
-            if (!connection.peers[userid]) throw 'You ejected invalid user.';
+            if (!connection.isInitiator) throw 'Solo el iniciador de la session "session-initiator" puede expulsar a un usuario.';
+            if (!connection.peers[userid]) throw 'Usted ha expulsado a un usuario no válido.';
             connection.peers[userid].sendCustomMessage({
                 ejected: true
             });
         };
 
-        // www.RTCMultiConnection.org/docs/close/
+        // RTCMultiConnection.org/docs/close/
         connection.close = function() {
             // close entire session
             connection.autoCloseEntireSession = true;
             connection.leave();
         };
 
-        // www.RTCMultiConnection.org/docs/renegotiate/
+        // RTCMultiConnection.org/docs/renegotiate/
         connection.renegotiate = function(stream, session) {
             if (connection.numberOfConnectedUsers <= 0) {
-                // no connections
+                // sin conecciones
                 setTimeout(function() {
-                    // try again
+                    // intentando de nuevo
                     connection.renegotiate(stream, session);
                 }, 1000);
                 return;
@@ -861,20 +860,20 @@ connection.rtcConfiguration
             onStreamSuccessCallback(stream, false, '', null, forcedConstraints, false, false, screen_constraints, constraints, constraints);
         };
 
-        // www.RTCMultiConnection.org/docs/addStream/
+        // RTCMultiConnection.org/docs/addStream/
         connection.addStream = function(session, socket) {
-            // www.RTCMultiConnection.org/docs/renegotiation/
+            // RTCMultiConnection.org/docs/renegotiation/
 
             if (connection.numberOfConnectedUsers <= 0) {
-                // no connections
+                // sin conecciones
                 setTimeout(function() {
-                    // try again
+                    // intentando de nuevo
                     connection.addStream(session, socket);
                 }, 1000);
                 return;
             }
 
-            // renegotiate new media stream
+            // renegociando la nueva secuencia de medios "stream"
             if (session) {
                 var isOneWayStreamFromParticipant;
                 if (!connection.isInitiator && session.oneway) {
@@ -899,12 +898,12 @@ connection.rtcConfiguration
             }
         };
 
-        // www.RTCMultiConnection.org/docs/removeStream/
+        // RTCMultiConnection.org/docs/removeStream/
         connection.removeStream = function(streamid, dontRenegotiate) {
             if (connection.numberOfConnectedUsers <= 0) {
-                // no connections
+                // sin coneciones
                 setTimeout(function() {
-                    // try again
+                    // intentando de nuevo
                     connection.removeStream(streamid, dontRenegotiate);
                 }, 1000);
                 return;
@@ -974,15 +973,15 @@ connection.rtcConfiguration
             var stream = connection.streams[streamid];
 
             // detach pre-attached streams
-            if (!stream) return warn('No such stream exists. Stream-id:', streamid);
+            if (!stream) return warn('No existe tal corriente. Stream-id:', streamid);
 
-            // www.RTCMultiConnection.org/docs/detachStreams/
+            // RTCMultiConnection.org/docs/detachStreams/
             connection.detachStreams.push(stream.streamid);
 
             log('removing stream', stream.streamid);
             onStreamEndedHandler(stream, connection);
 
-            // todo: how to allow "stop" function?
+            // todo: como permitir la funcion "stop"?
             // connection.stopMediaStream(stream.stream)
 
             if (!dontRenegotiate) {
@@ -992,9 +991,9 @@ connection.rtcConfiguration
 
         connection.switchStream = function(session) {
             if (connection.numberOfConnectedUsers <= 0) {
-                // no connections
+                // sin conexiones
                 setTimeout(function() {
-                    // try again
+                    // intentando de nuevo
                     connection.switchStream(session);
                 }, 1000);
                 return;
@@ -1004,7 +1003,7 @@ connection.rtcConfiguration
             connection.addStream(session);
         };
 
-        // www.RTCMultiConnection.org/docs/sendCustomMessage/
+        // RTCMultiConnection.org/docs/sendCustomMessage/
         connection.sendCustomMessage = function(message) {
             if (!rtcMultiSession || !rtcMultiSession.defaultSocket) {
                 return setTimeout(function() {
@@ -1081,7 +1080,7 @@ connection.rtcConfiguration
                         session.session[f] = forceSession[f];
                     }
 
-                    // keeping previous state
+                    // manteniendo el estado anterior
                     var isDontCaptureUserMedia = connection.dontCaptureUserMedia;
 
                     connection.dontCaptureUserMedia = false;
@@ -1089,7 +1088,7 @@ connection.rtcConfiguration
                         connection.dontCaptureUserMedia = true;
                         connection.join(session);
 
-                        // returning back previous state
+                        // regresando al estado anterior
                         connection.dontCaptureUserMedia = isDontCaptureUserMedia;
                     }, forceSession);
                 };
@@ -1105,8 +1104,8 @@ connection.rtcConfiguration
             for (var i = 0; i < connection.localStreamids.length; i++) {
                 var streamid = connection.localStreamids[i];
                 if (connection.streams[streamid]) {
-                    // using "sockets" array to keep references of all sockets using 
-                    // this media stream; so we can fire "onStreamEndedHandler" among all users.
+                    // usando array "sockets" para mantener las referencias de todos los sockets utilizados
+                    // este flujo d emedios; por lo que podemos disparar "onStreamEndedHandler" entre todos los usuarios.
                     connection.streams[streamid].sockets.push(socket);
                 }
             }
@@ -1157,8 +1156,8 @@ connection.rtcConfiguration
             var peerConfig = {
                 onopen: onChannelOpened,
                 onicecandidate: function(candidate) {
-                    if (!connection.candidates) throw 'ICE candidates are mandatory.';
-                    if (!connection.iceProtocols) throw 'At least one must be true; UDP or TCP.';
+                    if (!connection.candidates) throw 'Candidatos ICE son obligatorios.';
+                    if (!connection.iceProtocols) throw 'Por lo menos uno debe ser true; UDP o TCP.';
 
                     var iceCandidates = connection.candidates;
 
@@ -1196,7 +1195,7 @@ connection.rtcConfiguration
                         onDataChannelMessage(abToStr);
                     } else if (data instanceof ArrayBuffer || data instanceof DataView) {
                         if (!connection.enableFileSharing) {
-                            throw 'It seems that receiving data is either "Blob" or "File" but file sharing is disabled.';
+                            throw 'Parece que la recepción de datos puede ser "Blob" o "file", pero el intercambio de archivos está deshabilitado.';
                         }
 
                         if (!rtcMultiSession.fileBufferReader) {
@@ -1212,7 +1211,7 @@ connection.rtcConfiguration
 
                         fileBufferReader.convertToObject(data, function(chunk) {
                             if (chunk.maxChunks || chunk.readyForNextChunk) {
-                                // if target peer requested next chunk
+                                // si los compañeros de destino solicitó siguiente trozo
                                 if (chunk.readyForNextChunk) {
                                     fileBufferReader.getNextChunk(chunk.uuid, function(nextChunk, isLastChunk, extra) {
                                         rtcMultiSession.send(nextChunk);
@@ -1220,9 +1219,9 @@ connection.rtcConfiguration
                                     return;
                                 }
 
-                                // if chunk is received
+                                // si se recibe el trozo
                                 fileBufferReader.addChunk(chunk, function(promptNextChunk) {
-                                    // request next chunk
+                                    // solicitar siguiente trozo
                                     rtcMultiSession.send(promptNextChunk);
                                 });
                                 return;
@@ -1240,7 +1239,7 @@ connection.rtcConfiguration
                 onaddstream: function(stream, session) {
                     session = session || _config.renegotiate || connection.session;
 
-                    // if it is Firefox; then return.
+                    // si se trata de Firefox; luego regresar.
                     if (isData(session)) return;
 
                     if (session.screen && (session.audio || session.video)) {
@@ -1249,7 +1248,7 @@ connection.rtcConfiguration
                             _config.gotAudioOrVideo = true;
                             session.screen = false;
                         } else {
-                            // screen stream is always fired later
+                            // screen stream siempre se dispara despues
                             session.audio = false;
                             session.video = false;
                         }
@@ -1349,7 +1348,7 @@ connection.rtcConfiguration
                             userid: _config.userid,
                             extra: _config.extra,
                             name: 'connected-with-initiator',
-                            reason: 'ICE connection state seems connected; gathering state is completed; and signaling state is stable.'
+                            reason: 'Estado de conexion ICE parece conectado; se completa la recopilación de Estado; y señalización de estado es estable..'
                         });
                     }
 
@@ -1386,12 +1385,12 @@ connection.rtcConfiguration
 
                         if (connection.peers[_config.userid].peer.connection.iceConnectionState == 'disconnected' && !_config.redialing) {
                             _config.redialing = true;
-                            warn('Peer connection is closed.', toStr(connection.peers[_config.userid].peer.connection), 'ReDialing..');
+                            warn('La conexion Peer esta cerrada.', toStr(connection.peers[_config.userid].peer.connection), 'ReDialing..');
                             connection.peers[_config.userid].socket.send({
                                 redial: true
                             });
 
-                            // to make sure all old "remote" streams are also removed!
+                            // para asegurarse de que también se eliminan todas las viejas corrientes "remote"!
                             connection.streams.remove({
                                 remote: true,
                                 userid: _config.userid
@@ -1435,7 +1434,7 @@ connection.rtcConfiguration
             };
 
             function waitUntilRemoteStreamStartsFlowing(args) {
-                // chrome for android may have some features missing
+                // chrome para Android puede tener algunas características que faltan
                 if (isMobileDevice || isPluginRTC || (isNull(connection.waitUntilRemoteStreamStartsFlowing) || !connection.waitUntilRemoteStreamStartsFlowing)) {
                     return afterRemoteStreamStartedFlowing(args);
                 }
@@ -1447,7 +1446,7 @@ connection.rtcConfiguration
                     return afterRemoteStreamStartedFlowing(args);
                 }
 
-                if (args.numberOfTimes >= 60) { // wait 60 seconds while video is delivered!
+                if (args.numberOfTimes >= 60) { // esperar 60 segundos mientras que el video es entregado!
                     return socket.send({
                         failedToReceiveRemoteVideo: true,
                         streamid: args.stream.streamid
@@ -1455,7 +1454,7 @@ connection.rtcConfiguration
                 }
 
                 setTimeout(function() {
-                    log('Waiting for incoming remote stream to be started flowing: ' + args.numberOfTimes + ' seconds.');
+                    log('A la espera del flujo remoto entrente comensando a fluir: ' + args.numberOfTimes + ' segundos.');
                     waitUntilRemoteStreamStartsFlowing(args);
                 }, 900);
             }
@@ -1463,7 +1462,7 @@ connection.rtcConfiguration
             function initFakeChannel() {
                 if (!connection.fakeDataChannels || connection.channels[_config.userid]) return;
 
-                // for non-data connections; allow fake data sender!
+                // para las conexiones que no son de datos; permitir falso remitente de datos!
                 if (!connection.session.data) {
                     var fakeChannel = {
                         send: function(data) {
@@ -1564,7 +1563,7 @@ connection.rtcConfiguration
                     channel: channel
                 });
 
-                // fetch files from file-queue
+                // se ha podido recuperar archivos desde archivo en cola
                 for (var q in connection.fileQueue) {
                     connection.send(connection.fileQueue[q], channel);
                 }
@@ -1599,7 +1598,7 @@ connection.rtcConfiguration
                     },
                     removeStream: function(streamid) {
                         if (!connection.streams[streamid])
-                            return warn('No such stream exists. Stream-id:', streamid);
+                            return warn('No existe tal corriente. Stream-id:', streamid);
 
                         this.peer.connection.removeStream(connection.streams[streamid].stream);
                         this.renegotiate();
@@ -1612,13 +1611,13 @@ connection.rtcConfiguration
                     changeBandwidth: function(bandwidth) {
                         // connection.peers['user-id'].changeBandwidth();
 
-                        if (!bandwidth) throw 'You MUST pass bandwidth object.';
-                        if (isString(bandwidth)) throw 'Pass object for bandwidth instead of string; e.g. {audio:10, video:20}';
+                        if (!bandwidth) throw 'Debe pasar el objeto de ancho de banda.';
+                        if (isString(bandwidth)) throw 'Pasar objeto de ancho de banda en lugar de string; e.g. {audio:10, video:20}';
 
-                        // set bandwidth for self
+                        // ancho de banda para auto
                         this.peer.bandwidth = bandwidth;
 
-                        // ask remote user to synchronize bandwidth
+                        // preguntar al usuario remoto para sincronizar el ancho de banda
                         this.socket.send({
                             changeBandwidth: true,
                             bandwidth: bandwidth
@@ -1633,7 +1632,7 @@ connection.rtcConfiguration
                         });
                     },
                     onCustomMessage: function(message) {
-                        log('Received "private" message from', this.userid,
+                        log('Mensaje "privado" recibido de', this.userid,
                             isString(message) ? message : toStr(message));
                     },
                     drop: function(dontSendMessage) {
@@ -1709,7 +1708,7 @@ connection.rtcConfiguration
                         });
                     },
                     fireHoldUnHoldEvents: function(e) {
-                        // this method is for inner usages only!
+                        // este metodo es solo para usos internos!
 
                         var isHold = e.isHold;
                         var kind = e.kind;
@@ -1724,13 +1723,13 @@ connection.rtcConfiguration
                                 stream = connection.streams[stream];
 
                                 if (stream.userid == userid) {
-                                    // www.RTCMultiConnection.org/docs/onhold/
+                                    // RTCMultiConnection.org/docs/onhold/
                                     if (isHold)
                                         connection.onhold(merge({
                                             kind: kind
                                         }, stream));
 
-                                    // www.RTCMultiConnection.org/docs/onunhold/
+                                    // RTCMultiConnection.org/docs/onunhold/
                                     if (!isHold)
                                         connection.onunhold(merge({
                                             kind: kind
@@ -1742,7 +1741,7 @@ connection.rtcConfiguration
                     redial: function() {
                         // connection.peers['user-id'].redial();
 
-                        // 1st of all; remove all relevant remote media streams
+                        // 1st of all; eliminar todos los flujos de medios remotos relevantes
                         for (var stream in connection.streams) {
                             if (connection._skip.indexOf(stream) == -1) {
                                 stream = connection.streams[stream];
@@ -1753,7 +1752,7 @@ connection.rtcConfiguration
                             }
                         }
 
-                        log('ReDialing...');
+                        log('Volver a marcar...');
 
                         socket.send({
                             recreatePeer: true
@@ -1763,7 +1762,7 @@ connection.rtcConfiguration
                         peer.create('offer', peerConfig);
                     },
                     sharePartOfScreen: function(args) {
-                        // www.RTCMultiConnection.org/docs/onpartofscreen/
+                        // RTCMultiConnection.org/docs/onpartofscreen/
                         var that = this;
                         var lastScreenshot = '';
 
@@ -1792,10 +1791,10 @@ connection.rtcConfiguration
                                 connection: connection,
                                 callback: function(screenshot) {
                                     if (!connection.channels[that.userid]) {
-                                        throw 'No such data channel exists.';
+                                        throw 'No existe tal canal de datos.';
                                     }
 
-                                    // don't share repeated content
+                                    // no comparta contenido repetido
                                     if (screenshot != lastScreenshot) {
                                         lastScreenshot = screenshot;
                                         connection.channels[that.userid].send({
@@ -1804,7 +1803,7 @@ connection.rtcConfiguration
                                         });
                                     }
 
-                                    // "once" can be used to share single screenshot
+                                    // "once" se puede utilizar para compartir una sola pantalla
                                     !args.once && setTimeout(partOfScreenCapturer, args.interval || 200);
                                 }
                             });
@@ -1835,7 +1834,7 @@ connection.rtcConfiguration
             }
 
             function onSessionOpened() {
-                // original conferencing infrastructure!
+                // infraestructura de conferencias original!
                 if (connection.isInitiator && getLength(participants) && getLength(participants) <= connection.maxParticipantsAllowed) {
                     if (!connection.session.oneway && !connection.session.broadcast) {
                         defaultSocket.send({
@@ -1849,12 +1848,12 @@ connection.rtcConfiguration
                     }
                 }
 
-                // 1st: renegotiation is supported only on chrome
-                // 2nd: must not renegotiate same media multiple times
-                // 3rd: todo: make sure that target-user has no such "renegotiated" media.
+                // 1st: renegotiation solo es soportado por chrome
+                // 2nd: no debe de renegociar los mismos medios múltiples veces
+                // 3rd: todo: asegurarse de que el objetivo por el usuario no tiene tal "renegotiated" edio.
                 if (_config.userinfo.browser == 'chrome' && !_config.renegotiatedOnce) {
                     // this code snippet is added to make sure that "previously-renegotiated" streams are also 
-                    // renegotiated to this new user
+                    // renegotiated a este nuevo usuario
                     for (var rSession in connection.renegotiatedSessions) {
                         _config.renegotiatedOnce = true;
 
@@ -1882,12 +1881,12 @@ connection.rtcConfiguration
                     var sdp = JSON.parse(response.sdp);
 
                     if (sdp.type == 'offer') {
-                        // to synchronize SCTP or RTP
+                        // para sincronizar SCTP or RTP
                         peerConfig.preferSCTP = !!response.preferSCTP;
                         connection.fakeDataChannels = !!response.fakeDataChannels;
                     }
 
-                    // initializing fake channel
+                    // inicializando un canal falso
                     initFakeChannel();
 
                     sdpInvoker(sdp, response.labels);
@@ -1914,7 +1913,7 @@ connection.rtcConfiguration
                                 userid: response.userid,
                                 extra: response.extra,
                                 name: 'mute-request-denied',
-                                reason: response.userid + ' tried to mute your stream; however "privileges.canMuteRemoteStream" is "false".'
+                                reason: response.userid + ' intentando silenciar el flujo; sin embargo "privileges.canMuteRemoteStream" es "false".'
                             });
                             return;
                         }
@@ -1947,7 +1946,7 @@ connection.rtcConfiguration
                 }
 
                 if (response.isVolumeChanged) {
-                    log('Volume of stream: ' + response.streamid + ' has changed to: ' + response.volume);
+                    log('Volumen del stream: ' + response.streamid + ' ha cambiado: ' + response.volume);
                     if (connection.streams[response.streamid]) {
                         var mediaElement = connection.streams[response.streamid].mediaElement;
                         if (mediaElement) mediaElement.volume = response.volume;
@@ -1968,19 +1967,19 @@ connection.rtcConfiguration
                             userid: response.userid,
                             extra: response.extra,
                             name: 'stop-request-denied',
-                            reason: response.userid + ' tried to stop your stream; however "privileges.canStopRemoteStream" is "false".'
+                            reason: response.userid + ' tratando de detener el flujo; sin embargo "privileges.canStopRemoteStream" es "false".'
                         });
                         return;
                     }
-                    warn('Remote stream has been manually stopped!');
+                    warn('Corriente remoto se ha detenido manualmente!');
                     if (connection.streams[response.streamid]) {
                         connection.streams[response.streamid].stop();
                     }
                 }
 
                 if (response.left) {
-                    // firefox is unable to stop remote streams
-                    // firefox doesn't auto stop streams when peer.close() is called.
+                    // firefox es incapaz de detener los flujos remotos
+                    // firefox no se detiene automaticamente cuando peer.close() es llamado.
                     if (isFirefox) {
                         var userLeft = response.userid;
                         for (var stream in connection.streams) {
@@ -2017,10 +2016,10 @@ connection.rtcConfiguration
                     }, connection);
                 }
 
-                // keeping session active even if initiator leaves
+                //manteniendo sesión activa incluso si las hojas del iniciador
                 if (response.playRoleOfBroadcaster) {
                     if (response.extra) {
-                        // clone extra-data from initial moderator
+                        // clonar extra-data del moderados inicial
                         connection.extra = merge(connection.extra, response.extra);
                     }
                     if (response.participants) {
@@ -2045,22 +2044,22 @@ connection.rtcConfiguration
                 }
 
                 if (response.changeBandwidth) {
-                    if (!connection.peers[response.userid]) throw 'No such peer exists.';
+                    if (!connection.peers[response.userid]) throw 'No existe tal usuario.';
 
-                    // synchronize bandwidth
+                    // sincronizar el ancho de banda
                     connection.peers[response.userid].peer.bandwidth = response.bandwidth;
 
-                    // renegotiate to apply bandwidth
+                    // renegociaando el ancho de banda a aplicar
                     connection.peers[response.userid].renegotiate();
                 }
 
                 if (response.customMessage) {
-                    if (!connection.peers[response.userid]) throw 'No such peer exists.';
+                    if (!connection.peers[response.userid]) throw 'No existe tal usuario.';
                     if (response.message.ejected) {
                         if (connection.sessionDescriptions[connection.sessionid].userid != response.userid) {
                             throw 'only initiator can eject a user.';
                         }
-                        // initiator ejected this user
+                        // inicializados de la expulcion de este usuario
                         connection.leave();
 
                         connection.onSessionClosed({
@@ -2072,7 +2071,7 @@ connection.rtcConfiguration
                 }
 
                 if (response.drop) {
-                    if (!connection.peers[response.userid]) throw 'No such peer exists.';
+                    if (!connection.peers[response.userid]) throw 'No existe tal usuario.';
                     connection.peers[response.userid].drop(true);
                     connection.peers[response.userid].renegotiate();
 
@@ -2080,7 +2079,7 @@ connection.rtcConfiguration
                 }
 
                 if (response.hold || response.unhold) {
-                    if (!connection.peers[response.userid]) throw 'No such peer exists.';
+                    if (!connection.peers[response.userid]) throw 'No existe tal usuario.';
 
                     if (response.takeAction) {
                         connection.peers[response.userid][!!response.hold ? 'hold' : 'unhold'](response.holdMLine);
@@ -2105,13 +2104,13 @@ connection.rtcConfiguration
                     connection.peers[response.userid].renegotiate(null, connection.peers[response.userid].peer.session);
                 }
 
-                // fake data channels!
+                // canales de datos falsos!
                 if (response.fakeData) {
                     peerConfig.onmessage(response.fakeData);
                 }
 
-                // sometimes we don't need to renegotiate e.g. when peers are disconnected
-                // or if it is firefox
+                // A veces no es necesario volver a negociar, por ejemplo, cuando están desconectados compañeros
+                // o si es Firefox
                 if (response.recreatePeer) {
                     peer = new PeerConnection();
                 }
@@ -2119,7 +2118,7 @@ connection.rtcConfiguration
                 // remote video failed either out of ICE gathering process or ICE connectivity check-up
                 // or IceAgent was unable to locate valid candidates/ports.
                 if (response.failedToReceiveRemoteVideo) {
-                    log('Remote peer hasn\'t received stream: ' + response.streamid + '. Renegotiating...');
+                    log('Remote peer hasn\'t received stream: ' + response.streamid + '. Renegociando...');
                     if (connection.peers[response.userid]) {
                         connection.peers[response.userid].renegotiate();
                     }
@@ -2134,7 +2133,7 @@ connection.rtcConfiguration
                         if (connection.peers[response.userid].peer.connection.iceConnectionState == 'disconnected' && !_config.redialing) {
                             _config.redialing = true;
 
-                            warn('Peer connection is closed.', toStr(connection.peers[response.userid].peer.connection), 'ReDialing..');
+                            warn('La conexion Peer esta cerrada.', toStr(connection.peers[response.userid].peer.connection), 'Volver a marcar..');
                             connection.peers[response.userid].redial();
                         }
                     }
@@ -2187,7 +2186,7 @@ connection.rtcConfiguration
                 }
 
                 var session = _config.renegotiate;
-                // detach streams
+                // separar corrientes
                 detachMediaStream(labels, peer.connection);
 
                 if (session.oneway || isData(session)) {
@@ -2218,8 +2217,8 @@ connection.rtcConfiguration
                 }
 
                 function createAnswer() {
-                    // because Firefox has no support of renegotiation yet;
-                    // so both chrome and firefox should redial instead of renegotiate!
+                    // Porque Firefox no tiene apoyo de renegociación todavía;
+                    // Por lo tanto Chrome y Firefox deben volver a marcar en vez de renegociar!
                     if (isFirefox || _config.userinfo.browser == 'firefox') {
                         if (connection.peers[_config.userid]) {
                             connection.peers[_config.userid].redial();
@@ -2267,7 +2266,7 @@ connection.rtcConfiguration
             });
         }
 
-        // sharing new user with existing participants
+        // compartiendo nuevo usuario con los participantes existentes
 
         function onNewParticipant(response) {
             var channel = response.newParticipant;
@@ -2289,7 +2288,7 @@ connection.rtcConfiguration
             });
         }
 
-        // if a user leaves
+        // si el usuario leaves
 
         function clearSession() {
             connection.numberOfConnectedUsers--;
@@ -2302,11 +2301,11 @@ connection.rtcConfiguration
             };
 
             if (connection.isInitiator) {
-                // if initiator wants to close entire session
+                // si iniciador quiere cerrar toda la sesión
                 if (connection.autoCloseEntireSession) {
                     alertMessage.closeEntireSession = true;
                 } else if (sockets[0]) {
-                    // shift initiation control to another user
+                    // cambiar el control de iniciación a otro usuario
                     sockets[0].send({
                         playRoleOfBroadcaster: true,
                         userid: connection.userid,
@@ -2331,14 +2330,14 @@ connection.rtcConfiguration
             connection.refresh();
 
             webAudioMediaStreamSources.forEach(function(mediaStreamSource) {
-                // if source is connected; then chrome will crash on unload.
+                // si la fuente está conectada; entonces Chrome se colgará en la descarga.
                 mediaStreamSource.disconnect();
             });
 
             webAudioMediaStreamSources = [];
         }
 
-        // www.RTCMultiConnection.org/docs/remove/
+        // RTCMultiConnection.org/docs/remove/
         connection.remove = function(userid) {
             if (rtcMultiSession.requestsFrom && rtcMultiSession.requestsFrom[userid]) delete rtcMultiSession.requestsFrom[userid];
 
@@ -2368,9 +2367,9 @@ connection.rtcConfiguration
             }
         };
 
-        // www.RTCMultiConnection.org/docs/refresh/
+        // RTCMultiConnection.org/docs/refresh/
         connection.refresh = function() {
-            // if firebase; remove data from firebase servers
+            // si firebase; elimina los datos de los servidores de firebase
             if (connection.isInitiator && !!connection.socket && !!connection.socket.remove) {
                 connection.socket.remove();
             }
@@ -2415,7 +2414,7 @@ connection.rtcConfiguration
                 }
             }
 
-            // to make sure remote streams are also removed!
+            // para asegurarse de que también se eliminan las corrientes remotas!
             for (var stream in connection.streams) {
                 if (connection._skip.indexOf(stream) == -1) {
                     onStreamEndedHandler(connection.streams[stream], connection);
@@ -2428,14 +2427,14 @@ connection.rtcConfiguration
             participants = {};
         };
 
-        // www.RTCMultiConnection.org/docs/reject/
+        // RTCMultiConnection.org/docs/reject/
         connection.reject = function(userid) {
             if (!isString(userid)) userid = userid.userid;
             defaultSocket.send({
                 rejectedRequestOf: userid
             });
 
-            // remove relevant data to allow him join again
+            // eliminar los datos pertinentes para permitir que él se unen de nuevo
             connection.remove(userid);
         };
 
@@ -2479,8 +2478,8 @@ connection.rtcConfiguration
             setTimeout(callbackForSignalingReady, 1000);
 
             if (!connection.isInitiator) {
-                // as soon as signaling gateway is connected;
-                // user should check existing rooms!
+                // tan pronto como la puerta de enlace de señalización está conectado;
+                // Usuario debe comprobar las habitaciones existentes!
                 defaultSocket && defaultSocket.send({
                     searchingForRooms: true
                 });
@@ -2506,7 +2505,7 @@ connection.rtcConfiguration
                     // RMS == RTCMultiSession
                     if (isRMSDeleted) return;
 
-                    // if message is sent by same user
+                    // si el mensaje es enviado por un mismo usuario
                     if (response.userid == connection.userid) return;
 
                     if (response.sessionid && response.userid) {
@@ -2552,7 +2551,7 @@ connection.rtcConfiguration
                             userid: response.userid,
                             extra: response.extra,
                             name: 'request-accepted',
-                            reason: response.userid + ' accepted your participation request.'
+                            reason: response.userid + ' aceptado su solicitud de participación.'
                         });
                     }
 
@@ -2561,7 +2560,7 @@ connection.rtcConfiguration
                             userid: response.userid,
                             extra: response.extra,
                             name: 'request-rejected',
-                            reason: response.userid + ' rejected your participation request.'
+                            reason: response.userid + ' rechazó su solicitud de participación.'
                         });
                     }
 
@@ -2611,12 +2610,12 @@ connection.rtcConfiguration
                         });
                     }
 
-                    // participants are shared with single user
+                    // los participantes se comparten con un solo usuario
                     if (response.shareWith == connection.userid && response.dontShareWith != connection.userid && response.joinUsers) {
                         joinParticipants(response.joinUsers);
                     }
 
-                    // participants are shared with all users
+                    // los participantes se comparten con todos los usuarios
                     if (!response.shareWith && response.joinUsers) {
                         if (response.dontShareWith) {
                             if (connection.userid != response.dontShareWith) {
@@ -2632,7 +2631,7 @@ connection.rtcConfiguration
                                 presenceState: 'available',
                                 _config: response._config
                             });
-                            log('participant asked for availability');
+                            log('participante preguntó disponibilidad');
                         }
 
                         if (response.presenceState == 'available') {
@@ -2642,7 +2641,7 @@ connection.rtcConfiguration
                                 userid: 'browser',
                                 extra: {},
                                 name: 'room-available',
-                                reason: 'Initiator is available and room is active.'
+                                reason: 'El Iniciador está disponible y la sala está activa.'
                             });
 
                             joinSession(response._config);
@@ -2650,12 +2649,12 @@ connection.rtcConfiguration
                     }
 
                     if (response.donotJoin && response.messageFor == connection.userid) {
-                        log(response.userid, 'is not joining your room.');
+                        log(response.userid, 'No se une a su habitación.');
                     }
 
-                    // if initiator disconnects sockets, participants should also disconnect
+                    // si iniciador desconecta sockets, los participantes también deben desconectar
                     if (response.isDisconnectSockets) {
-                        log('Disconnecting your sockets because initiator also disconnected his sockets.');
+                        log('Desconectando sus sockets debido a que el iniciador tambien desconecto sus sockets.');
                         connection.disconnect();
                     }
                 },
@@ -2681,8 +2680,8 @@ connection.rtcConfiguration
             });
         }
 
-        // default-socket is a common socket shared among all users in a specific channel;
-        // to share participation requests; room descriptions; and other stuff.
+        // default-socket es un zócalo común compartida entre todos los usuarios en un canal específico;
+        // Para compartir solicitudes de participación; descripción de las habitaciones; y otras cosas.
         var defaultSocket = getDefaultSocketRef();
 
         rtcMultiSession.defaultSocket = defaultSocket;
@@ -2715,7 +2714,7 @@ connection.rtcConfiguration
         function setDirections() {
             var userMaxParticipantsAllowed = 0;
 
-            // if user has set a custom max participant setting, remember it
+            // si el usuario ha creado una configuracion de participantes maximos, recordarlo
             if (connection.maxParticipantsAllowed != 256) {
                 userMaxParticipantsAllowed = connection.maxParticipantsAllowed;
             }
@@ -2729,13 +2728,13 @@ connection.rtcConfiguration
                 }
             }
 
-            // if user has set a custom max participant setting, set it back
+            // si el usuario ha creado una configuracion de participantes maximo, ajuste de nuevo
             if (userMaxParticipantsAllowed && connection.maxParticipantsAllowed != 1) {
                 connection.maxParticipantsAllowed = userMaxParticipantsAllowed;
             }
         }
 
-        // open new session
+        // abrir una nueva sesion
         this.initSession = function(args) {
             rtcMultiSession.isOwnerLeaving = false;
 
@@ -2773,11 +2772,11 @@ connection.rtcConfiguration
                 connection.session = _config.session || {};
             }
 
-            // make sure that inappropriate users shouldn't receive onNewSession event
+            // asegurarse de que los usuarios no deben de recibir inapropiado el evento onNewSession
             rtcMultiSession.broadcasterid = _config.userid;
 
             if (_config.sessionid) {
-                // used later to prevent external rooms messages to be used by this user!
+                // utilizado más tarde para evitar que los mensajes habitaciones exteriores, que serán utilizados por este usuario!
                 connection.sessionid = _config.sessionid;
             }
 
@@ -2803,13 +2802,13 @@ connection.rtcConfiguration
 
             if (!isEmpty(offers)) {
                 log(toStr(offers));
-            } else log('Seems data-only connection.');
+            } else log('Parece que solo hay una conexion de datos.');
 
             connection.onstatechange({
                 userid: _config.userid,
                 extra: {},
                 name: 'connecting-with-initiator',
-                reason: 'Checking presence of the initiator; and the room.'
+                reason: 'Comprobando la presencia del iniciador; y la sala de.'
             });
 
             defaultSocket.send({
@@ -2831,7 +2830,7 @@ connection.rtcConfiguration
         this.joinSession = function(_config) {
             if (!defaultSocket)
                 return setTimeout(function() {
-                    warn('Default-Socket is not yet initialized.');
+                    warn('Default-Socket aún no se ha inicializado.');
                     rtcMultiSession.joinSession(_config);
                 }, 1000);
 
@@ -2844,7 +2843,7 @@ connection.rtcConfiguration
                 userid: _config.userid,
                 extra: _config.extra || {},
                 name: 'detecting-room-presence',
-                reason: 'Checking presence of the room.'
+                reason: 'Comprobación de presencia de la habitación.'
             });
 
             function contactInitiator() {
@@ -2863,7 +2862,7 @@ connection.rtcConfiguration
 
             function checker() {
                 if (rtcMultiSession.presenceState == 'checking') {
-                    warn('Unable to reach initiator. Trying again...');
+                    warn('Incapaz de llegar al iniciador. tratando de nuevo...');
                     contactInitiator();
                     setTimeout(function() {
                         if (rtcMultiSession.presenceState == 'checking') {
@@ -2871,7 +2870,7 @@ connection.rtcConfiguration
                                 userid: _config.userid,
                                 extra: _config.extra || {},
                                 name: 'room-not-available',
-                                reason: 'Initiator seems absent. Waiting for someone to open the room.'
+                                reason: 'El Iniciador parece ausente. Esperando a que alguien abra la habitación.'
                             });
 
                             connection.isAcceptNewSession = true;
@@ -2931,7 +2930,7 @@ connection.rtcConfiguration
             clearSession();
         };
 
-        // renegotiate new stream
+        // renegociar nueva corriente
         this.addStream = function(e) {
             var session = e.renegotiate;
 
@@ -3005,7 +3004,7 @@ connection.rtcConfiguration
             }
         };
 
-        // www.RTCMultiConnection.org/docs/request/
+        // RTCMultiConnection.org/docs/request/
         connection.request = function(userid, extra) {
             connection.captureUserMedia(function() {
                 // open private socket that will be used to receive offer-sdp
@@ -3015,7 +3014,7 @@ connection.rtcConfiguration
                     userid: userid
                 });
 
-                // ask other user to create offer-sdp
+                // pedir a otro usuario crear offer-sdp
                 defaultSocket.send({
                     participant: true,
                     targetUser: userid
@@ -3034,16 +3033,16 @@ connection.rtcConfiguration
                 session: response.session || connection.session
             };
 
-            // check how participant is willing to join
+            // comprobar si un participante está dispuesto a unirse a
             if (response.offers) {
                 if (response.offers.audio && response.offers.video) {
-                    log('target user has both audio/video streams.');
+                    log('usuario de destino tiene dos flujos de audio/vídeo.');
                 } else if (response.offers.audio && !response.offers.video) {
-                    log('target user has only audio stream.');
+                    log('usuario de destino sólo tiene flujo de audio.');
                 } else if (!response.offers.audio && response.offers.video) {
-                    log('target user has only video stream.');
+                    log('usuario de destino sólo tiene flujo de video.');
                 } else {
-                    log('target user has no stream; it seems one-way streaming or data-only connection.');
+                    log('usuario de destino no tiene corriente; parece ser una vía streaming o una conexion de solo datos.');
                 }
 
                 var mandatory = connection.sdpConstraints.mandatory;
@@ -3059,7 +3058,7 @@ connection.rtcConfiguration
 
             rtcMultiSession.requestsFrom[response.userid] = obj;
 
-            // www.RTCMultiConnection.org/docs/onRequest/
+            // RTCMultiConnection.org/docs/onRequest/
             if (connection.onRequest && connection.isInitiator) {
                 connection.onRequest(obj);
             } else _accept(obj);
@@ -3076,7 +3075,7 @@ connection.rtcConfiguration
                 return;
             }
 
-            log('accepting request from', e.userid);
+            log('aceptar la petición de', e.userid);
             participants[e.userid] = e.userid;
             newPrivateSocket({
                 isofferer: true,
@@ -3087,9 +3086,9 @@ connection.rtcConfiguration
             });
         }
 
-        // www.RTCMultiConnection.org/docs/accept/
+        // RTCMultiConnection.org/docs/accept/
         connection.accept = function(e) {
-            // for backward compatibility
+            // para la compatibilidad con versiones anteriores
             if (arguments.length > 1 && isString(arguments[0])) {
                 e = {};
                 if (arguments[0]) e.userid = arguments[0];
@@ -3137,7 +3136,7 @@ connection.rtcConfiguration
                 isSocketsDisconnected: true
             });
 
-            // if there is any peer still opened; close it.
+            // si hay algun par todavía abierto; lo cierra.
             connection.close();
 
             window.removeEventListener('beforeunload', rtcMultiSession.leaveHandler);
@@ -3146,7 +3145,7 @@ connection.rtcConfiguration
             // it will not work, though :)
             delete this;
 
-            log('Disconnected your sockets, peers, streams and everything except RTCMultiConnection object.');
+            log('Desconectado su sockets, peers, streams and everything except RTCMultiConnection object.');
         };
     }
 
@@ -3387,19 +3386,19 @@ connection.rtcConfiguration
 
                 if (this.session.screen) {
                     if (!bandwidth.screen) {
-                        warn('It seems that you are not using bandwidth for screen. Screen sharing is expected to fail.');
+                        warn('Parece que no está utilizando el ancho de banda para la pantalla. Se espera que la pantalla compartida falle.');
                     } else if (bandwidth.screen < 300) {
-                        warn('It seems that you are using wrong bandwidth value for screen. Screen sharing is expected to fail.');
+                        warn('Parece que está utilizando el valor de ancho de banda mal para la pantalla. Se espera que la pantalla compartida falle.');
                     }
                 }
 
-                // if screen; must use at least 300kbs
+                // si es pantalla; se debe de utilizar al menos 300kbs
                 if (bandwidth.screen && this.session.screen) {
                     sdp = sdp.replace(/b=AS([^\r\n]+\r\n)/g, '');
                     sdp = sdp.replace(/a=mid:video\r\n/g, 'a=mid:video\r\nb=AS:' + bandwidth.screen + '\r\n');
                 }
 
-                // remove existing bandwidth lines
+                // eliminar las líneas de ancho de banda existentes
                 if (bandwidth.audio || bandwidth.video || bandwidth.data) {
                     sdp = sdp.replace(/b=AS([^\r\n]+\r\n)/g, '');
                 }
@@ -3478,7 +3477,7 @@ connection.rtcConfiguration
                 var message = toStr(e);
 
                 if (message && message.indexOf('RTP/SAVPF Expects at least 4 fields') != -1) {
-                    message = 'It seems that you are trying to interop RTP-datachannels with SCTP. It is not supported!';
+                    message = 'Parece que usted está tratando de operar RTP-datachannels con SCTP. No es soportado!';
                 }
                 error('onSdpError:', message);
             },
@@ -3489,7 +3488,7 @@ connection.rtcConfiguration
                 error(toStr(err));
             },
             setRemoteDescription: function(sessionDescription, onSdpSuccess) {
-                if (!sessionDescription) throw 'Remote session description should NOT be NULL.';
+                if (!sessionDescription) throw 'Descripción de sesión remoto no debe de ser NULL.';
 
                 if (!this.connection) return;
 
@@ -3588,15 +3587,15 @@ connection.rtcConfiguration
                             return setTimeout(function() {
                                 if (numberOfTimes < 20) {
                                     channel.send(data);
-                                } else throw 'Number of times exceeded to wait for WebRTC data connection to be opened.';
+                                } else throw 'Ha superado el numero de veces esperando a que la conexión de datos WebRTC se abra.';
                             }, 1000);
                         }
                         try {
                             channel.push(data);
                         } catch (e) {
                             numberOfTimes++;
-                            warn('Data transmission failed. Re-transmitting..', numberOfTimes, toStr(e));
-                            if (numberOfTimes >= 20) throw 'Number of times exceeded to resend data packets over WebRTC data channels.';
+                            warn('Falló la transmisión de datos. Re-transmitiendo..', numberOfTimes, toStr(e));
+                            if (numberOfTimes >= 20) throw 'Ha superado el numero de veces que puede enviar paquetes de datos a traves de los canales de datos WebRTC.';
                             setTimeout(function() {
                                 channel.send(data);
                             }, 100);
@@ -3817,15 +3816,15 @@ connection.rtcConfiguration
 
                 if (allowed.indexOf(mandatory.minWidth + ':' + mandatory.minHeight) == -1 ||
                     allowed.indexOf(mandatory.maxWidth + ':' + mandatory.maxHeight) == -1) {
-                    error('The min/max width/height constraints you passed "seems" NOT supported.', toStr(mandatory));
+                    error('El min/max ancho/largo constraints you passed "seems" No soportadas.', toStr(mandatory));
                 }
 
                 if (mandatory.minWidth > mandatory.maxWidth || mandatory.minHeight > mandatory.maxHeight) {
-                    error('Minimum value must not exceed maximum value.', toStr(mandatory));
+                    error('Valor mínimo no debe superar el valor máximo.', toStr(mandatory));
                 }
 
                 if (mandatory.minWidth >= 1280 && mandatory.minHeight >= 720) {
-                    warn('Enjoy HD video! min/' + mandatory.minWidth + ':' + mandatory.minHeight + ', max/' + mandatory.maxWidth + ':' + mandatory.maxHeight);
+                    warn('Disfruta de vídeo HD! min/' + mandatory.minWidth + ':' + mandatory.minHeight + ', max/' + mandatory.maxWidth + ':' + mandatory.maxHeight);
                 }
             }
 
@@ -3881,7 +3880,7 @@ connection.rtcConfiguration
         }
 
         if (isMobileDevice) {
-            // Android fails for some constraints
+            // Android tiene algunas limitaciones
             // so need to force {audio:true,video:true}
             hints = {
                 audio: !!hints.audio,
@@ -3889,12 +3888,12 @@ connection.rtcConfiguration
             };
         }
 
-        // connection.mediaConstraints always overrides constraints
+        // connection.mediaConstraints siempre anula las restricciones
         // passed from "captureUserMedia" function.
-        // todo: need to verify all possible situations
-        log('invoked getUserMedia with constraints:', toStr(hints));
+        // todo: hay que verificar todas las situaciones posibles
+        log('invocar getUserMedia con constantes:', toStr(hints));
 
-        // easy way to match 
+        // manera facil
         var idInstance = JSON.stringify(hints);
 
         function streaming(stream, returnBack, streamid) {
@@ -3971,7 +3970,7 @@ connection.rtcConfiguration
                 initialText = JSON.stringify(initialText);
             }
 
-            // uuid is used to uniquely identify sending instance
+            // uuid se utiliza para identificar de forma única instancia de enviar
             var uuid = getRandomString();
             var sendingTime = new Date().getTime();
 
@@ -4023,7 +4022,7 @@ connection.rtcConfiguration
                 var message = content[uuid].join('');
                 if (data.isobject) message = JSON.parse(message);
 
-                // latency detection
+                // detencion de la latencia
                 var receivingTime = new Date().getTime();
                 var latency = receivingTime - data.sendingTime;
 
@@ -4088,7 +4087,7 @@ connection.rtcConfiguration
 
     var isMobileDevice = !!navigator.userAgent.match(/Android|iPhone|iPad|iPod|BlackBerry|IEMobile/i);
 
-    // detect node-webkit
+    // detectar node-webkit
     var isNodeWebkit = !!(window.process && (typeof window.process == 'object') && window.process.versions && window.process.versions['node-webkit']);
 
     window.MediaStream = window.MediaStream || window.webkitMediaStream;
@@ -4297,8 +4296,8 @@ connection.rtcConfiguration
     }
 
     function invokeMediaCaptured(connection) {
-        // to let user know that media resource has been captured
-        // now, he can share "sessionDescription" using sockets
+        // para que el usuario sepa que los recursos de los medios ha sido capturado
+        // ahora, el puede compartir "sessionDescription" usando sockets
         if (connection.onMediaCaptured) {
             connection.onMediaCaptured();
             delete connection.onMediaCaptured;
@@ -4339,11 +4338,11 @@ connection.rtcConfiguration
             element = document.querySelector(element);
             if (!element) element = document.getElementById(element);
         }
-        if (!element) throw 'HTML DOM Element is not accessible!';
+        if (!element) throw 'Elementos del DOM de HTML no son accesibles!';
 
         // todo: store DOM element somewhere to minimize DOM querying issues
 
-        // html2canvas.js is used to take screenshots
+        // html2canvas.js se utiliza para tomar capturas de pantalla
         html2canvas(element, {
             onrendered: function(canvas) {
                 args.callback(canvas.toDataURL());
@@ -4395,7 +4394,7 @@ connection.rtcConfiguration
         var iframe = document.createElement('iframe');
         iframe.onload = function() {
             iframe.isLoaded = true;
-            log('Screen Capturing frame is loaded.');
+            log('Capturando el marco de la pantalla.');
         };
         iframe.src = 'https://www.webrtc-experiment.com/getSourceId/';
         iframe.style.display = 'none';
@@ -4432,7 +4431,7 @@ connection.rtcConfiguration
                 if (!event.data || !event.data.iceServers) return;
                 callback(event.data.iceServers);
 
-                // this event listener is no more needed
+                // este evento listener no se necesita mas
                 window.removeEventListener('message', iFrameLoaderCallback);
             }
 
@@ -4471,7 +4470,7 @@ connection.rtcConfiguration
 
         log(enabled ? 'Muting' : 'UnMuting', 'session', toStr(session));
 
-        // enable/disable audio/video tracks
+        // habilitar/deshabilitar audio/video 
 
         if (root.type == 'local' && session.audio && !!stream.getAudioTracks) {
             var audioTracks = stream.getAudioTracks()[0];
@@ -4519,7 +4518,7 @@ connection.rtcConfiguration
         fakeObject.isScreen = !!fakeObject.session.screen;
 
         if (!!enabled) {
-            // if muted stream is negotiated
+            //si la corriente silencio se negocia
             stream.preMuted = {
                 audio: stream.getAudioTracks().length && !stream.getAudioTracks()[0].enabled,
                 video: stream.getVideoTracks().length && !stream.getVideoTracks()[0].enabled
@@ -4537,7 +4536,7 @@ connection.rtcConfiguration
     var SCREEN_COMMON_FAILURE = 'HTTPs i.e. SSL-based URI is mandatory to use screen capturing.';
     var ReservedExtensionID = 'ajhifddimkapgcifgcodmmfdlknahffk';
 
-    // if application-developer deployed his own extension on Google App Store
+    // si la aplicación-desarrollador desplegó su propia extensión en Google App Store
     var useCustomChromeExtensionForScreenCapturing = document.domain.indexOf('webrtc-experiment.com') != -1;
 
     var MediaStreamTrack = window.MediaStreamTrack;
@@ -4556,9 +4555,9 @@ connection.rtcConfiguration
         // http://goo.gl/UVQRKk
         // todo: switch to enumerateDevices when landed in canary.
         function CheckDeviceSupport(callback) {
-            // This method is useful only for Chrome!
+            // Este método es útil sólo para Chrome!
 
-            // Firefox seems having no support of enumerateDevices feature yet.
+            // Firefox parece no tener soporte para enumerateDevices todavia.
             if (isPluginRTC || isFirefox) {
                 callback && callback();
                 return;
@@ -4630,7 +4629,7 @@ connection.rtcConfiguration
         DetectRTC.isSctpDataChannelsSupported = !!navigator.mozGetUserMedia || (isChrome && chromeVersion >= 25);
         DetectRTC.isRtpDataChannelsSupported = isChrome && chromeVersion >= 31;
 
-        // check for microphone/camera support!
+        // comprobar si hay soporte de micrófono/cámara!
         CheckDeviceSupport();
         DetectRTC.load = CheckDeviceSupport;
 
@@ -4642,7 +4641,7 @@ connection.rtcConfiguration
             getSourceId: function(callback) {
                 if (!callback) throw '"callback" parameter is mandatory.';
 
-                // make sure that chrome extension is installed.
+                // asegúrese de que la extensión de Chromo está instalado.
                 if (!!DetectRTC.screen.status) {
                     onstatus(DetectRTC.screen.status);
                 } else DetectRTC.screen.getChromeExtensionStatus(onstatus);
@@ -4655,7 +4654,7 @@ connection.rtcConfiguration
                     }
 
                     DetectRTC.screen.chromeMediaSource = 'screen';
-                    callback('No-Response'); // chrome extension isn't available
+                    callback('No-Response'); // extension de Chrome no esta disponibles
                 }
             },
             onMessageCallback: function(data) {
@@ -4670,13 +4669,13 @@ connection.rtcConfiguration
                     else throw new Error('PermissionDeniedError');
                 }
 
-                // extension notified his presence
+                // extensión notificó su presencia
                 if (data == 'rtcmulticonnection-extension-loaded') {
                     DetectRTC.screen.chromeMediaSource = 'desktop';
                     if (DetectRTC.screen.onScreenCapturingExtensionAvailable) {
                         DetectRTC.screen.onScreenCapturingExtensionAvailable();
 
-                        // make sure that this event isn't fired multiple times
+                        // asegúrese de que este evento no se dispara varias veces
                         DetectRTC.screen.onScreenCapturingExtensionAvailable = null;
                     }
                 }
@@ -4708,7 +4707,7 @@ connection.rtcConfiguration
                     setTimeout(function() {
                         if (DetectRTC.screen.chromeMediaSource == 'screen') {
                             _callback(
-                                DetectRTC.screen.chromeMediaSource == 'desktop' ? 'installed-enabled' : 'installed-disabled' /* if chrome extension isn't permitted for current domain, then it will be installed-disabled all the time even if extension is enabled. */
+                                DetectRTC.screen.chromeMediaSource == 'desktop' ? 'installed-enabled' : 'installed-disabled' /* si no se permite la extensión de chromo en el dominio actual, entonces le será desactivado instalado todo el tiempo, incluso si la extensión está habilitada. */
                             );
                         } else _callback('installed-enabled');
                     }, 2000);
@@ -4790,37 +4789,37 @@ connection.rtcConfiguration
         RTCIceCandidate = Plugin.RTCIceCandidate;
         RTCSessionDescription = Plugin.RTCSessionDescription;
 
-        log(isPluginRTC ? 'Java-Applet' : 'ActiveX', 'plugin has been loaded.');
+        log(isPluginRTC ? 'Java-Applet' : 'ActiveX', 'plugin se ha cargado.');
     };
     if (!isEmpty(Plugin)) window.onPluginRTCInitialized(Plugin);
 
-    // if IE or Safari
+    // si es Internet Explorer o Safari
     if (isPluginRTC) {
         loadScript('https://cdn.webrtc-experiment.com/Plugin.EveryWhere.js');
         // loadScript('https://cdn.webrtc-experiment.com/Plugin.Temasys.js');
     }
 
     function setDefaults(connection) {
-        // www.RTCMultiConnection.org/docs/userid/
+        // RTCMultiConnection.org/docs/userid/
         connection.userid = getRandomString();
 
-        // www.RTCMultiConnection.org/docs/session/
+        // RTCMultiConnection.org/docs/session/
         connection.session = {
             audio: true,
             video: true
         };
 
-        // www.RTCMultiConnection.org/docs/maxParticipantsAllowed/
+        // RTCMultiConnection.org/docs/maxParticipantsAllowed/
         connection.maxParticipantsAllowed = 256;
 
-        // www.RTCMultiConnection.org/docs/direction/
+        // RTCMultiConnection.org/docs/direction/
         // 'many-to-many' / 'one-to-many' / 'one-to-one' / 'one-way'
         connection.direction = 'many-to-many';
 
-        // www.RTCMultiConnection.org/docs/mediaConstraints/
+        // RTCMultiConnection.org/docs/mediaConstraints/
         connection.mediaConstraints = {
-            mandatory: {}, // kept for backward compatibility
-            optional: [], // kept for backward compatibility
+            mandatory: {}, // mantenido la compatibilidad con versiones anteriores
+            optional: [], // mantenido la compatibilidad con versiones anteriores
             audio: {
                 mandatory: {},
                 optional: []
@@ -4831,7 +4830,7 @@ connection.rtcConfiguration
             }
         };
 
-        // www.RTCMultiConnection.org/docs/candidates/
+        // RTCMultiConnection.org/docs/candidates/
         connection.candidates = {
             host: true,
             stun: true,
@@ -4848,8 +4847,8 @@ connection.rtcConfiguration
         };
 
         connection.privileges = {
-            canStopRemoteStream: false, // user can stop remote streams
-            canMuteRemoteStream: false // user can mute remote streams
+            canStopRemoteStream: false, // usuario puede detener corrientes remotas
+            canMuteRemoteStream: false // usuario puede silenciar corrientes remotas
         };
 
         connection.iceProtocols = {
@@ -4857,12 +4856,12 @@ connection.rtcConfiguration
             udp: true
         };
 
-        // www.RTCMultiConnection.org/docs/preferSCTP/
+        // RTCMultiConnection.org/docs/preferSCTP/
         connection.preferSCTP = isFirefox || chromeVersion >= 32 ? true : false;
         connection.chunkInterval = isFirefox || chromeVersion >= 32 ? 100 : 500; // 500ms for RTP and 100ms for SCTP
         connection.chunkSize = isFirefox || chromeVersion >= 32 ? 13 * 1000 : 1000; // 1000 chars for RTP and 13000 chars for SCTP
 
-        // www.RTCMultiConnection.org/docs/fakeDataChannels/
+        // RTCMultiConnection.org/docs/fakeDataChannels/
         connection.fakeDataChannels = false;
 
         connection.waitUntilRemoteStreamStartsFlowing = null; // NULL == true
@@ -4873,7 +4872,7 @@ connection.rtcConfiguration
         // get ICE-servers from XirSys
         connection.getExternalIceServers = isChrome;
 
-        // www.RTCMultiConnection.org/docs/UA/
+        // RTCMultiConnection.org/docs/UA/
         connection.UA = {
             isFirefox: isFirefox,
             isChrome: isChrome,
@@ -4893,53 +4892,53 @@ connection.rtcConfiguration
         // this array is aimed to store all renegotiated streams' session-types
         connection.renegotiatedSessions = {};
 
-        // www.RTCMultiConnection.org/docs/channels/
+        // RTCMultiConnection.org/docs/channels/
         connection.channels = {};
 
-        // www.RTCMultiConnection.org/docs/extra/
+        // RTCMultiConnection.org/docs/extra/
         connection.extra = {};
 
-        // www.RTCMultiConnection.org/docs/bandwidth/
+        // RTCMultiConnection.org/docs/bandwidth/
         connection.bandwidth = {
             screen: 300 // 300kbps (dirty workaround)
         };
 
-        // www.RTCMultiConnection.org/docs/caniuse/
+        // RTCMultiConnection.org/docs/caniuse/
         connection.caniuse = {
             RTCPeerConnection: DetectRTC.isWebRTCSupported,
             getUserMedia: !!navigator.webkitGetUserMedia || !!navigator.mozGetUserMedia,
             AudioContext: DetectRTC.isAudioContextSupported,
 
-            // there is no way to check whether "getUserMedia" flag is enabled or not!
+            // no hay forma de comprobar si "getUserMedia" está habilitado o no!
             ScreenSharing: DetectRTC.isScreenCapturingSupported,
             RtpDataChannels: DetectRTC.isRtpDataChannelsSupported,
             SctpDataChannels: DetectRTC.isSctpDataChannelsSupported
         };
 
-        // www.RTCMultiConnection.org/docs/snapshots/
+        // RTCMultiConnection.org/docs/snapshots/
         connection.snapshots = {};
 
-        // www.WebRTC-Experiment.com/demos/MediaStreamTrack.getSources.html
+        // WebRTC-Experiment.com/demos/MediaStreamTrack.getSources.html
         connection._mediaSources = {};
 
-        // www.RTCMultiConnection.org/docs/devices/
+        // RTCMultiConnection.org/docs/devices/
         connection.devices = {};
 
-        // www.RTCMultiConnection.org/docs/language/ (to see list of all supported languages)
+        // RTCMultiConnection.org/docs/language/ (para ver la lista de todos los idiomas soportados)
         connection.language = 'en';
 
-        // www.RTCMultiConnection.org/docs/autoTranslateText/
+        // RTCMultiConnection.org/docs/autoTranslateText/
         connection.autoTranslateText = false;
 
-        // please use your own Google Translate API key
-        // Google Translate is a paid service.
+        // por favor utilice su propia clave de API de Google Translate
+        // Google Translate es un servicio de pago.
         connection.googKey = 'AIzaSyDG4e8ZBfBhBLcYMAnoOCIgjkuOMibH-hw';
 
         connection.localStreamids = [];
         connection.localStreams = {};
 
-        // this object stores pre-recorded media streaming uids
-        // multiple pre-recorded media files can be streamed concurrently.
+        // los medios de comunicación este objeto tiendas pregrabados que fluyen líquidos
+        // Varios archivos multimedia pregrabados pueden ser escuchados al mismo tiempo.
         connection.preRecordedMedias = {};
 
         // www.RTCMultiConnection.org/docs/attachStreams/
@@ -4961,21 +4960,21 @@ connection.rtcConfiguration
 
         connection.dataChannelDict = {};
 
-        // www.RTCMultiConnection.org/docs/dontAttachStream/
+        // RTCMultiConnection.org/docs/dontAttachStream/
         connection.dontAttachStream = false;
 
-        // www.RTCMultiConnection.org/docs/dontCaptureUserMedia/
+        // RTCMultiConnection.org/docs/dontCaptureUserMedia/
         connection.dontCaptureUserMedia = false;
 
-        // this feature added to keep users privacy and 
-        // make sure HTTPs pages NEVER auto capture users media
+        // esta característica es añadida para mantener la privacidad y usuarios
+        // asegurarse de que las páginas HTTPS NUNCA los usuarios captura automática de medios de comunicación
         // isChrome && location.protocol == 'https:'
         connection.preventSSLAutoAllowed = false;
 
         connection.autoReDialOnFailure = true;
         connection.isInitiator = false;
 
-        // access DetectRTC.js features directly!
+        // acceso a  caracteristicas DetectRTC.js directamente!
         connection.DetectRTC = DetectRTC;
 
         // you can falsify it to merge all ICE in SDP and share only SDP!
@@ -4991,7 +4990,7 @@ connection.rtcConfiguration
         // it is set as soon as "open" method is invoked.
         connection.sessionDescription = null;
 
-        // resources used in RTCMultiConnection
+        // recursos utilizados en RTCMultiConnection
         connection.resources = {
             RecordRTC: 'https://cdn.webrtc-experiment.com/RecordRTC.js',
             PreRecordedMediaStreamer: 'https://cdn.webrtc-experiment.com/PreRecordedMediaStreamer.js',
@@ -5005,13 +5004,13 @@ connection.rtcConfiguration
             FileBufferReader: 'https://cdn.webrtc-experiment.com/FileBufferReader.js'
         };
 
-        // www.RTCMultiConnection.org/docs/body/
+        // RTCMultiConnection.org/docs/body/
         connection.body = document.body || document.documentElement;
 
-        // www.RTCMultiConnection.org/docs/peers/
+        // RTCMultiConnection.org/docs/peers/
         connection.peers = {};
 
-        // www.RTCMultiConnection.org/docs/firebase/
+        // RTCMultiConnection.org/docs/firebase/
         connection.firebase = 'chat';
 
         connection.numberOfSessions = 0;
@@ -5030,27 +5029,27 @@ connection.rtcConfiguration
             return sdp;
         };
 
-        // www.RTCMultiConnection.org/docs/onmessage/
+        // RTCMultiConnection.org/docs/onmessage/
         connection.onmessage = function(e) {
             log('onmessage', toStr(e));
         };
 
-        // www.RTCMultiConnection.org/docs/onopen/
+        // RTCMultiConnection.org/docs/onopen/
         connection.onopen = function(e) {
-            log('Data connection is opened between you and', e.userid);
+            log('La Conexión de datos se ha establecido entre usted y', e.userid);
         };
 
-        // www.RTCMultiConnection.org/docs/onerror/
+        // RTCMultiConnection.org/docs/onerror/
         connection.onerror = function(e) {
             error(onerror, toStr(e));
         };
 
-        // www.RTCMultiConnection.org/docs/onclose/
+        // RTCMultiConnection.org/docs/onclose/
         connection.onclose = function(e) {
             warn('onclose', toStr(e));
 
             // todo: should we use "stop" or "remove"?
-            // BTW, it is remote user!
+            // BTW, es usuario remoto!
             connection.streams.remove({
                 userid: e.userid
             });
@@ -5058,7 +5057,7 @@ connection.rtcConfiguration
 
         var progressHelper = {};
 
-        // www.RTCMultiConnection.org/docs/onFileStart/
+        // RTCMultiConnection.org/docs/onFileStart/
         connection.onFileStart = function(file) {
             var div = document.createElement('div');
             div.title = file.name;
@@ -5072,7 +5071,7 @@ connection.rtcConfiguration
             progressHelper[file.uuid].progress.max = file.maxChunks;
         };
 
-        // www.RTCMultiConnection.org/docs/onFileProgress/
+        // RTCMultiConnection.org/docs/onFileProgress/
         connection.onFileProgress = function(chunk) {
             var helper = progressHelper[chunk.uuid];
             if (!helper) return;
@@ -5080,11 +5079,11 @@ connection.rtcConfiguration
             updateLabel(helper.progress, helper.label);
         };
 
-        // www.RTCMultiConnection.org/docs/onFileEnd/
+        // RTCMultiConnection.org/docs/onFileEnd/
         connection.onFileEnd = function(file) {
             if (progressHelper[file.uuid]) progressHelper[file.uuid].div.innerHTML = '<a href="' + file.url + '" target="_blank" download="' + file.name + '">' + file.name + '</a>';
 
-            // for backward compatibility
+            // para la compatibilidad con versiones anteriores
             if (connection.onFileSent || connection.onFileReceived) {
                 if (connection.onFileSent) connection.onFileSent(file, file.uuid);
                 if (connection.onFileReceived) connection.onFileReceived(file.name, file);
@@ -5097,41 +5096,41 @@ connection.rtcConfiguration
             label.innerHTML = position + '%';
         }
 
-        // www.RTCMultiConnection.org/docs/onstream/
+        // RTCMultiConnection.org/docs/onstream/
         connection.onstream = function(e) {
             connection.body.insertBefore(e.mediaElement, connection.body.firstChild);
         };
 
-        // www.RTCMultiConnection.org/docs/onStreamEndedHandler/
+        // RTCMultiConnection.org/docs/onStreamEndedHandler/
         connection.onstreamended = function(e) {
             log('onStreamEndedHandler:', e);
 
             if (!e.mediaElement) {
-                return warn('Event.mediaElement is undefined', e);
+                return warn('Event.mediaElement esta detenido', e);
             }
             if (!e.mediaElement.parentNode) {
                 e.mediaElement = document.getElementById(e.streamid);
 
                 if (!e.mediaElement) {
-                    return warn('Event.mediaElement is undefined', e);
+                    return warn('Event.mediaElement no esta definida', e);
                 }
 
                 if (!e.mediaElement.parentNode) {
-                    return warn('Event.mediElement.parentNode is null.', e);
+                    return warn('Event.mediElement.parentNode es null.', e);
                 }
             }
 
             e.mediaElement.parentNode.removeChild(e.mediaElement);
         };
 
-        // todo: need to write documentation link
+        // todo: que escribir enlace de documentación
         connection.onSessionClosed = function(session) {
             if (session.isEjected) {
-                warn(session.userid, 'ejected you.');
-            } else warn('Session has been closed.', session);
+                warn(session.userid, 'usted ha sido expulsado.');
+            } else warn('La sesion se ha cerrado.', session);
         };
 
-        // www.RTCMultiConnection.org/docs/onmute/
+        // RTCMultiConnection.org/docs/onmute/
         connection.onmute = function(e) {
             if (e.isVideo && e.mediaElement) {
                 e.mediaElement.pause();
@@ -5142,7 +5141,7 @@ connection.rtcConfiguration
             }
         };
 
-        // www.RTCMultiConnection.org/docs/onunmute/
+        // RTCMultiConnection.org/docs/onunmute/
         connection.onunmute = function(e) {
             if (e.isVideo && e.mediaElement) {
                 e.mediaElement.play();
@@ -5153,7 +5152,7 @@ connection.rtcConfiguration
             }
         };
 
-        // www.RTCMultiConnection.org/docs/onleave/
+        // RTCMultiConnection.org/docs/onleave/
         connection.onleave = function(e) {
             log('onleave', toStr(e));
         };
@@ -5174,7 +5173,7 @@ connection.rtcConfiguration
 
         connection._skip = ['stop', 'mute', 'unmute', '_private', '_selectStreams', 'selectFirst', 'selectAll', 'remove'];
 
-        // www.RTCMultiConnection.org/docs/streams/
+        // RTCMultiConnection.org/docs/streams/
         connection.streams = {
             mute: function(session) {
                 this._private(session, true);
@@ -5312,7 +5311,7 @@ connection.rtcConfiguration
             _selectStreams: function(args, all) {
                 if (!args || isString(args) || isEmpty(args)) throw 'Invalid arguments.';
 
-                // if userid is used then both local/remote shouldn't be auto-set
+                // si el ID de usuario se utiliza tanto local/remoto shouldn't be auto-set
                 if (isNull(args.local) && isNull(args.remote) && isNull(args.userid)) {
                     args.local = args.remote = true;
                 }
@@ -5372,7 +5371,7 @@ connection.rtcConfiguration
             peerIdentity: false
         };
 
-        // www.RTCMultiConnection.org/docs/media/
+        // RTCMultiConnection.org/docs/media/
         connection.media = {
             min: function(width, height) {
                 if (!connection.mediaConstraints.video) return;
@@ -5485,12 +5484,12 @@ connection.rtcConfiguration
                     });
                 }
 
-                log('started recording session', session);
+                log('ha iniciado sesión de grabación', session);
 
                 self.videoRecorder = self.audioRecorder = null;
 
                 if (isFirefox) {
-                    // firefox supports both audio/video recording in single webm file
+                    // Firefox es compatible con grabación de audio/vídeo solo en el archivo WebM
                     if (session.video) {
                         self.videoRecorder = RecordRTC(self.stream, {
                             type: 'video'
@@ -5501,7 +5500,7 @@ connection.rtcConfiguration
                         });
                     }
                 } else if (isChrome) {
-                    // chrome supports recording in two separate files: WAV and WebM
+                    // chrome soporta la grabación en dos archivos separados: WAV and WebM
                     if (session.video) {
                         self.videoRecorder = RecordRTC(self.stream, {
                             type: 'video'
@@ -5537,7 +5536,7 @@ connection.rtcConfiguration
                     };
                 }
 
-                log('stopped recording session', session);
+                log('ha parado la sesion de grabacion', session);
 
                 var self = this;
 
@@ -5572,7 +5571,7 @@ connection.rtcConfiguration
                 });
             };
 
-            // redundant: kept only for backward compatibility
+            // redundant: mantiene sólo por compatibilidad con versiones anteriores
             resultingObject.streamObject = resultingObject;
 
             return resultingObject;
@@ -5586,7 +5585,7 @@ connection.rtcConfiguration
             return this;
         };
 
-        // www.RTCMultiConnection.org/docs/onMediaError/
+        // RTCMultiConnection.org/docs/onMediaError/
         connection.onMediaError = function(event) {
             error('name', event.name);
             error('constraintName', toStr(event.constraintName));
@@ -5594,7 +5593,7 @@ connection.rtcConfiguration
             error('original session', event.session);
         };
 
-        // www.RTCMultiConnection.org/docs/takeSnapshot/
+        // RTCMultiConnection.org/docs/takeSnapshot/
         connection.takeSnapshot = function(userid, callback) {
             takeSnapshot({
                 userid: userid,
@@ -5608,7 +5607,7 @@ connection.rtcConfiguration
             else FileSaver.SaveToDisk(blob, fileName);
         };
 
-        // www.RTCMultiConnection.org/docs/selectDevices/
+        // RTCMultiConnection.org/docs/selectDevices/
         connection.selectDevices = function(device1, device2) {
             if (device1) select(this.devices[device1]);
             if (device2) select(this.devices[device2]);
@@ -5619,7 +5618,7 @@ connection.rtcConfiguration
             }
         };
 
-        // www.RTCMultiConnection.org/docs/getDevices/
+        // RTCMultiConnection.org/docs/getDevices/
         connection.getDevices = function(callback) {
             // if, not yet fetched.
             if (!DetectRTC.MediaDevices.length) {
@@ -5628,7 +5627,7 @@ connection.rtcConfiguration
                 }, 1000);
             }
 
-            // loop over all audio/video input/output devices
+            // loop sobre todos los dispositivos de entrada/salida audio/video 
             DetectRTC.MediaDevices.forEach(function(device) {
                 connection.devices[device.deviceId] = device;
             });
@@ -5643,22 +5642,22 @@ connection.rtcConfiguration
             });
         };
 
-        // www.RTCMultiConnection.org/docs/onCustomMessage/
+        // RTCMultiConnection.org/docs/onCustomMessage/
         connection.onCustomMessage = function(message) {
-            log('Custom message', message);
+            log('mensaje personalizado', message);
         };
 
-        // www.RTCMultiConnection.org/docs/ondrop/
+        // RTCMultiConnection.org/docs/ondrop/
         connection.ondrop = function(droppedBy) {
-            log('Media connection is dropped by ' + droppedBy);
+            log('Conexion de los medios de comunicacion se cayerone en ' + droppedBy);
         };
 
-        // www.RTCMultiConnection.org/docs/drop/
+        // RTCMultiConnection.org/docs/drop/
         connection.drop = function(config) {
             config = config || {};
             connection.attachStreams = [];
 
-            // "drop" should detach all local streams
+            // "drop" deben de separar todos los local streams
             for (var stream in connection.streams) {
                 if (connection._skip.indexOf(stream) == -1) {
                     stream = connection.streams[stream];
@@ -5669,14 +5668,14 @@ connection.rtcConfiguration
                 }
             }
 
-            // www.RTCMultiConnection.org/docs/sendCustomMessage/
+            // RTCMultiConnection.org/docs/sendCustomMessage/
             connection.sendCustomMessage({
                 drop: true,
                 dontRenegotiate: isNull(config.renegotiate) ? true : config.renegotiate
             });
         };
 
-        // www.RTCMultiConnection.org/docs/Translator/
+        // RTCMultiConnection.org/docs/Translator/
         connection.Translator = {
             TranslateText: function(text, callback) {
                 // if(location.protocol === 'https:') return callback(text);
@@ -5692,10 +5691,10 @@ connection.rtcConfiguration
                         callback(response.data.translations[0].translatedText);
                     }
 
-                    if (response.error && response.error.message == 'Daily Limit Exceeded') {
-                        warn('Text translation failed. Error message: "Daily Limit Exceeded."');
+                    if (response.error && response.error.message == 'Límite diario excedido') {
+                        warn('La traducción del texto falló. Mensaje de error: "Límite diario excedido."');
 
-                        // returning original text
+                        // regresar texto original
                         callback(text);
                     }
                 };
@@ -5706,7 +5705,7 @@ connection.rtcConfiguration
             }
         };
 
-        // you can easily override it by setting it NULL!
+        // facilmente puede ser anulada la configuracion estableciendo NULL!
         connection.setDefaultEventsForMediaElement = function(mediaElement, streamid) {
             mediaElement.onpause = function() {
                 if (connection.streams[streamid] && !connection.streams[streamid].muted) {
@@ -5740,14 +5739,14 @@ connection.rtcConfiguration
             };
         };
 
-        // www.RTCMultiConnection.org/docs/onMediaFile/
+        // RTCMultiConnection.org/docs/onMediaFile/
         connection.onMediaFile = function(e) {
             log('onMediaFile', e);
             connection.body.appendChild(e.mediaElement);
         };
 
-        // www.RTCMultiConnection.org/docs/shareMediaFile/
-        // this method handles pre-recorded media streaming
+        // RTCMultiConnection.org/docs/shareMediaFile/
+        // este método se encarga de la transmisión de medios pregrabados
         connection.shareMediaFile = function(file, video, streamerid) {
             streamerid = streamerid || connection.token();
 
@@ -5766,7 +5765,7 @@ connection.rtcConfiguration
             });
         };
 
-        // www.RTCMultiConnection.org/docs/onpartofscreen/
+        // RTCMultiConnection.org/docs/onpartofscreen/
         connection.onpartofscreen = function(e) {
             var image = document.createElement('img');
             image.src = e.screenshot;
@@ -5777,14 +5776,14 @@ connection.rtcConfiguration
             log = error = warn = function() {};
         };
 
-        // www.RTCMultiConnection.org/docs/hold/
+        // RTCMultiConnection.org/docs/hold/
         connection.hold = function(mLine) {
             for (var peer in connection.peers) {
                 connection.peers[peer].hold(mLine);
             }
         };
 
-        // www.RTCMultiConnection.org/docs/onhold/
+        // RTCMultiConnection.org/docs/onhold/
         connection.onhold = function(track) {
             log('onhold', track);
 
@@ -5797,14 +5796,14 @@ connection.rtcConfiguration
             }
         };
 
-        // www.RTCMultiConnection.org/docs/unhold/
+        // RTCMultiConnection.org/docs/unhold/
         connection.unhold = function(mLine) {
             for (var peer in connection.peers) {
                 connection.peers[peer].unhold(mLine);
             }
         };
 
-        // www.RTCMultiConnection.org/docs/onunhold/
+        // RTCMultiConnection.org/docs/onunhold/
         connection.onunhold = function(track) {
             log('onunhold', track);
 
@@ -5821,7 +5820,7 @@ connection.rtcConfiguration
             var lastScreenshot = '';
 
             function partOfScreenCapturer() {
-                // if stopped
+                // se detiene
                 if (connection.partOfScreen && !connection.partOfScreen.sharing) {
                     return;
                 }
@@ -5830,7 +5829,7 @@ connection.rtcConfiguration
                     element: args.element,
                     connection: connection,
                     callback: function(screenshot) {
-                        // don't share repeated content
+                        // no se comparte el contenido repetido
                         if (screenshot != lastScreenshot) {
                             lastScreenshot = screenshot;
 
@@ -5842,7 +5841,7 @@ connection.rtcConfiguration
                             }
                         }
 
-                        // "once" can be used to share single screenshot
+                        // una sola vez se puede utilizar para compartir una sola pantalla
                         !args.once && setTimeout(partOfScreenCapturer, args.interval || 200);
                     }
                 });
@@ -5886,7 +5885,7 @@ connection.rtcConfiguration
         };
 
         connection.takeScreenshot = function(element, callback) {
-            if (!element || !callback) throw 'Invalid number of arguments.';
+            if (!element || !callback) throw 'Número no válido de argumentos.';
 
             if (!window.html2canvas) {
                 return loadScript(connection.resources.html2canvas, function() {
@@ -5898,9 +5897,9 @@ connection.rtcConfiguration
                 element = document.querySelector(element);
                 if (!element) element = document.getElementById(element);
             }
-            if (!element) throw 'HTML Element is inaccessible!';
+            if (!element) throw 'Elemento HTML es inaccesible!';
 
-            // html2canvas.js is used to take screenshots
+            // html2canvas.js se utiliza para tomar capturas de pantalla
             html2canvas(element, {
                 onrendered: function(canvas) {
                     callback(canvas.toDataURL());
@@ -5908,10 +5907,10 @@ connection.rtcConfiguration
             });
         };
 
-        // this event is fired when RTCMultiConnection detects that chrome extension
-        // for screen capturing is installed and available
+        // Este evento se activa cuando detecta que RTCMultiConnection extensión de Chrome
+         // Para la captura de pantalla está instalado y disponible
         connection.onScreenCapturingExtensionAvailable = function() {
-            log('It seems that screen capturing extension is installed and available on your system!');
+            log('Parece que la extensión de captura de pantalla está instalado y disponible en el sistema!');
         };
 
         if (!isPluginRTC && DetectRTC.screen.onScreenCapturingExtensionAvailable) {
@@ -5939,10 +5938,10 @@ connection.rtcConfiguration
             event.peer.numOfRetries++;
 
             if (isFirefox || event.targetuser.browser == 'firefox') {
-                error('ICE connectivity check is failed. Re-establishing peer connection.');
+                error('La comprobacion de la conexion ICE ha fallado. Vuelva a establecer la conexion entre pares.');
                 event.peer.numOfRetries < 2 && event.peer.redial();
             } else {
-                error('ICE connectivity check is failed. Renegotiating peer connection.');
+                error('La comprobacion de la conexion ICE ha fallado. Renegociando la conexion entre pares.');
                 event.peer.numOfRetries < 2 && event.peer.renegotiate();
             }
 
@@ -5951,21 +5950,21 @@ connection.rtcConfiguration
 
         connection.onconnected = function(event) {
             // event.peer.addStream || event.peer.getConnectionStats
-            log('Peer connection has been established between you and', event.userid);
+            log('La conexion se ha establecido entre y usted y', event.userid);
         };
 
         connection.ondisconnected = function(event) {
-            error('Peer connection seems has been disconnected between you and', event.userid);
+            error('Al parecer se ha desconectado usted y ', event.userid);
 
             if (isEmpty(connection.channels)) return;
             if (!connection.channels[event.userid]) return;
 
-            // use WebRTC data channels to detect user's presence
+            // utilizar canales de datos WebRTC para detectar la presencia del usuario
             connection.channels[event.userid].send({
                 checkingPresence: true
             });
 
-            // wait 5 seconds, if target peer didn't response, simply disconnect
+            // espere 5 segundos, si los compañeros de destino no hizo respuesta, simplemente desconecte
             setTimeout(function() {
                 // iceConnectionState == 'disconnected' occurred out of low-bandwidth
                 // or internet connectivity issues
@@ -5974,7 +5973,7 @@ connection.rtcConfiguration
                     return;
                 }
 
-                // to make sure this user's all remote streams are removed.
+                // para asegurarse de que se eliminan todas las corrientes remotas de este usuario.
                 connection.streams.remove({
                     remote: true,
                     userid: event.userid
@@ -6004,11 +6003,11 @@ connection.rtcConfiguration
             }
 
             if (isFirefox) {
-                // Firefox don't yet support onended for any stream (remote/local)
+                // Firefox aún no admiten onended para cualquier corriente (remote/local)
                 if (mediaStream.onended) mediaStream.onended();
             }
 
-            // Latest firefox does support mediaStream.getAudioTrack but doesn't support stop on MediaStreamTrack
+            // Ultima version de Firefox soporta mediaStream.getAudioTrack pero no soporta aun MediaStreamTrack
             var checkForMediaStreamTrackStop = Boolean(
                 (mediaStream.getAudioTracks || mediaStream.getVideoTracks) && (
                     (mediaStream.getAudioTracks()[0] && !mediaStream.getAudioTracks()[0].stop) ||
@@ -6048,7 +6047,7 @@ connection.rtcConfiguration
             connection.renegotiate();
         };
 
-        // www.RTCMultiConnection.org/docs/openSignalingChannel/
+        // RTCMultiConnection.org/docs/openSignalingChannel/
         // http://goo.gl/uvoIcZ
         connection.openSignalingChannel = function(config) {
             // make sure firebase.js is loaded
@@ -6061,7 +6060,7 @@ connection.rtcConfiguration
             var channel = config.channel || connection.channel;
 
             if (connection.firebase) {
-                // for custom firebase instances
+                // para las instancias personalizadas de firebase
                 connection.resources.firebaseio = connection.resources.firebaseio.replace('//chat.', '//' + connection.firebase + '.');
             }
 
