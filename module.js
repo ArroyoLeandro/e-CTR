@@ -321,6 +321,11 @@
             message: 'La conexión de datos se ha establecido entre usted y <strong>' + e.extra.username + '</strong>.'
         });
 
+        // refrescamos la lista de usuarios online
+        var listUsers = document.getElementById("usuariosOnline");
+        while (listUsers.hasChildNodes()) {
+            listUsers.removeChild(listUsers.firstChild);
+        }
         // console.info('Arreglo de todos los usuarios conectados: ', arrayOfAllConnectedUsers);
         // establezco el bucle que pasa a traves de los items en el arreglo
         console.log('Numero de usuarios conectados: ', connection.numberOfConnectedUsers + 1);
@@ -334,6 +339,7 @@
             // creamos <li> para cada uno
             var listItem = document.createElement('li');
             listItem.className = "list-group-item list-group-li";
+            listItem.setAttribute("id", arrayOfAllConnectedUsers[i])
             var imgPerfil = document.createElement('img');
             imgPerfil.className = "imgchat img-circle";
             var perfilUsuario = document.createElement('a');
@@ -356,7 +362,8 @@
             spanLabel.innerHTML = 'online';
             imgPerfil.setAttribute('src', 'pix/foto-perfil.jpg');
             // al conectarse ocultar mensaje
-            document.getElementById('listWarning').setAttribute('hidden','')
+            // document.getElementById('listWarning').setAttribute('hidden','')
+            numbersOfUsers.innerHTML = 1;
             // numero de usuarios conectados
             numbersOfUsers.innerHTML = parseInt(numbersOfUsers.innerHTML) + 1;
 
@@ -387,8 +394,8 @@
        // $('.comment').emoticonize();
         document.title = e.data;
         // Conocer la latencia de los datos que fluyen entre las conexiones
-        //console.debug(e.extra.username,'(', e.userid,') publico:', e.data);
-        //console.log('Su latencia:', e.latency, 'ms');
+        console.debug(e.extra.username,'(', e.userid,') publico:', e.data);
+        console.log('Su latencia:', e.latency, 'ms');
 
     };
     // RTCMultiConnection.org/docs/onNewSession/
@@ -622,6 +629,13 @@
             horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
             message: event.extra.username + ' ha abandonado el chat!'
         });
+
+        /**
+         * Elimina el <li> del <ul> correspondiente al id del usuario que se desconecto
+         */
+         var item = document.getElementById(event.userid);
+         item.parentNode.removeChild(item);
+    
     };
     // RTCMultiConnection.org/docs/onclose/
     // Evento solo se activa cuando la conexion de datos WebRTC se ha cerrado

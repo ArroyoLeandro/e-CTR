@@ -301,7 +301,7 @@ echo '
       <span class="fa fa-users"></span> Usuarios Conectados <span class="badge numbers-of-users" id="badge">0</span> <span title="Opciones" class="fa fa-chevron-down" style="float: right; font-size: 18px; cursor: pointer;"></span>
     </div>
     <ul class="list-group user-list" id="usuariosOnline">
-      <li class="list-group-item list-group-item-warning"><small id="listWarning">No hay ningun usuario conectado en este momento! :(</small></li>
+      <span class="list-group-item list-group-item-warning"><small id="listWarning">No hay ningun usuario conectado en este momento! :(</small></span>
 
     </ul>
 </div> 
