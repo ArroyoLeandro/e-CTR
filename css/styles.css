@@ -29,7 +29,7 @@
     margin-right: 5px;
 }
 
-.panel-body {
+.panel-body-content {
     overflow-y: scroll;
     height: 400px;
 }
@@ -249,17 +249,6 @@ input[type=text][disabled] {
     cursor:not-allowed;
 }
 
-#continue {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    background-repeat: no-repeat;
-    background-position: center right;
-    background-image: url('../pix/action-needed.png');
-    padding-right: 47px;
-    padding-top: 1px;
-    padding-bottom: 4px;
-}
-
 a {
     color: #2844FA;
     text-decoration: none;
@@ -273,53 +262,19 @@ a:active {
     color: #000;
 }
 
-input {
-    border-radius: 1px;
-    border: 1px solid #d9d9d9;
-    font-size: 15px;
-    height: 32px;
-    width: 200px;
-    margin-top: .5em;
-    padding: 0 8px;
-    -moz-user-select: initial;
-    -o-user-select: initial;
-    -webkit-user-select: initial;
-    -ms-user-select: initial;
-    user-select: initial;
-}
-
-input[type=checkbox] {
-    width: 30px;
-    height: 30px;
-    margin: 0;
-    vertical-align: middle;
-}
-
 .numbers-of-users {
     font-size: 1.5em;
 
 }
 
-.self-url {
-    position: absolute;
-    top: 5px;
-    left: 251px;
-    height: 25px;
-    overflow: hidden;
-}
-
 #save-settings {
-    background-repeat: no-repeat;
-    background-position: center right;
-    background-image: url('../pix/accepted.png');
-    padding-right: 53px;
-    border-color: rgb(133, 21, 21);
+    float: right;
 }
 
 .settings-panel {
     margin: 0 0 13px 0;
     height: auto;
-    border: 1px solid black;
+    border: 1px solid #337ab7;
     overflow: hidden;
     overflow-x: auto;
     padding: .4em .8em;
@@ -327,15 +282,8 @@ input[type=checkbox] {
     display: none;
 } 
 
-tr, td, th {
-    vertical-align: top;
-    padding: .7em 1.4em;
-    border-top: 1px dotted #BBA9A9;
-    border-right: 1px dotted #BBA9A9;
-}
-
 table {
-    width: 100%;
+    margin-top: 6px;
 }
 
 select {
@@ -348,4 +296,8 @@ select {
 label.adjust-width {
     display: inline-block;
     width: 30%;
+}
+
+.media-container {
+    border: 1px solid #337ab7;
 }

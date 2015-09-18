@@ -61,7 +61,6 @@
     connection.preventSSLAutoAllowed = false;
     connection.autoReDialOnFailure = true;
     connection.setDefaultEventsForMediaElement = false;
-    connection.autoTranslateText = false;
     //var userMaxParticipantsAllowed = 8;
     //var maxParticipantsAllowed = 8;
     //var direction = 'many-to-many';
@@ -109,15 +108,45 @@
         $("#panel-body").animate({scrollTop : $("#panel-body")[0].scrollHeight},650);
 
     }
+    // usando websockets para la señalizacion
+    // https://github.com/manueltato11/e-CTR-server
+    var signalingserver = 'wss://e-ctr-server-websocket-over-nodejs-manueltato11.c9.io/';
+    // use "channel" como sessionid para usar sessionid personalizado!
+    var roomid = connection.channel;
+    var channel = location.href.replace(/\/|:|#|%|\.|\[|\]/g, '');
+    var websocket = new WebSocket(signalingserver);
 
-/* ui.users-list*/
+    websocket.onmessage = function (event) {
+        var URLactual = window.location;
+        var data = JSON.parse(event.data);
 
-    var numbersOfUsers = getElement('.numbers-of-users');
-
-    numbersOfUsers.innerHTML = 0;
-
-
-/* ui.peer-connection */
+        if (data.isChannelPresent == false) {
+            connection.open(); // Abre la nueva sala
+            console.log('Se ha abierto una nueva sala: ', connection.channel);
+            addNewMessage({
+                header: 'e-Chat UNAD',
+                userinfo: '<img src="pix/default.png" alt="Admin Default" title="Admin Default" class="imgchat img-rounded chat-img pull-left">',
+                horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
+                message: 'Eres el primero en llegar al chat del grupo <span class="badge">' + connection.extra.grupo + '</span> <br />Comparte e invita a tus compañeros de grupo copiando el enlace permanente o añádalo a tus marcadores para volver cuando quieras :) <span class="badge">' + URLactual + '</span>'
+            });
+        } else {
+            connection.join(roomid); // Se une a sala existente
+            console.log('Se ha unido a la sala existente: ', connection.channel);
+            addNewMessage({
+                header: connection.extra.username,
+                userinfo: connection.extra.imgPerfil,
+                horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
+                message: 'Hay usuarios conectados al chat. Uniéndose al chat del grupo <span class="badge">' + connection.extra.grupo + '</span>'
+            });
+        }
+    };
+    
+    websocket.onopen = function () {
+        websocket.send(JSON.stringify({
+            checkPresence: true,
+            channel: roomid
+        }));
+    };
 
     function getUserinfo(blobURL, imageURL) {
         return blobURL ? '<video src="' + blobURL + '" autoplay controls></video>' : '<img src="' + imageURL + '">';
@@ -125,7 +154,7 @@
 
     var isShiftKeyPressed = false;
 
-    getElement('#chat-input').onkeydown = function(e) {
+    getElement('.input-wrapper input').onkeydown = function(e) {
         // jQuery-CSSEmoticons
         $('.comment').emoticonize();
         if (e.keyCode == 16) {
@@ -134,7 +163,7 @@
     };
 
     var numberOfKeys = 0;
-    getElement('#chat-input').onkeyup = function(e) {
+    getElement('.input-wrapper input').onkeyup = function(e) {
         numberOfKeys++;
         if (numberOfKeys > 3) numberOfKeys = 0;
 
@@ -235,19 +264,20 @@
         return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
     }
 
+/* ui.peer-connection */
+
     // usamos websockets para la señalizacion
     // https://github.com/manueltato11/e-CTR-server
-    var signalingserver = 'wss://e-ctr-server-websocket-over-nodejs-manueltato11.c9.io/';
-
+    // var signalingserver = 'wss://e-ctr-server-websocket-over-nodejs-manueltato11.c9.io/';
     connection.openSignalingChannel = function(config) {
-        channel = location.href.replace(/\/|:|#|%|\.|\[|\]/g, '');
+        config.channel = config.channel || this.channel;
         var websocket = new WebSocket(signalingserver);
-        websocket.channel = channel;
+        websocket.channel = config.channel;
 
         websocket.onopen = function() {
             websocket.push(JSON.stringify({
                 open: true,
-                channel: channel
+                channel: config.channel
             }));
             if (config.callback)
                 config.callback(websocket);
@@ -261,53 +291,19 @@
             if (websocket.readyState != 1) {
                         return setTimeout(function() {
                             websocket.send(data);
-                        }, 300); // up 1000
+                        }, 1000); // up 1000
             }
                     
             websocket.push(JSON.stringify({
                 data: data,
-                channel: channel
+                channel: config.channel
             }));
         };
     };
-    // use "channel" como sessionid para usar sessionid personalizado!
-    var roomid = connection.channel;
-    var channel = location.href.replace(/\/|:|#|%|\.|\[|\]/g, '');
-    var websocket = new WebSocket(signalingserver);
-
-    websocket.onmessage = function (event) {
-        var URLactual = window.location;
-        var data = JSON.parse(event.data);
-
-        if (data.isChannelPresent == false) {
-            connection.open(); // Abre la nueva sala
-            console.log('Se ha abierto una nueva sala: ', connection.channel);
-            addNewMessage({
-                header: 'e-Chat UNAD',
-                userinfo: '<img src="pix/default.png" alt="Admin Default" title="Admin Default" class="imgchat img-rounded chat-img pull-left">',
-                horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
-                message: 'Eres el primero en llegar al chat del grupo <span class="badge">' + connection.extra.grupo + '</span> <br />Comparte e invita a tus compañeros de grupo copiando el enlace permanente o añádalo a tus marcadores para volver cuando quieras :) <span class="badge">' + URLactual + '</span>'
-            });
-        } else {
-            connection.join(roomid); // Se une a sala existente
-            console.log('Se ha unido a la sala existente: ', connection.channel);
-            addNewMessage({
-                header: connection.extra.username,
-                userinfo: connection.extra.imgPerfil,
-                horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
-                message: 'Hay usuarios conectados al chat. Uniéndose al chat del grupo <span class="badge">' + connection.extra.grupo + '</span>'
-            });
-        }
-    };
-    
-    websocket.onopen = function () {
-        websocket.send(JSON.stringify({
-            checkPresence: true,
-            channel: roomid
-        }));
-    };
 
     connection.customStreams = { };
+    // Auto traducir, falso
+    connection.autoTranslateText = false;
     // RTCMultiConnection.org/docs/onopen/
     // cuando se habre la conexion
     connection.onopen = function(e) {
@@ -325,6 +321,11 @@
             message: 'La conexión de datos se ha establecido entre usted y <strong>' + e.extra.username + '</strong>.'
         });
 
+        // refrescamos la lista de usuarios online
+        var listUsers = document.getElementById("usuariosOnline");
+        while (listUsers.hasChildNodes()) {
+            listUsers.removeChild(listUsers.firstChild);
+        }
         // console.info('Arreglo de todos los usuarios conectados: ', arrayOfAllConnectedUsers);
         // establezco el bucle que pasa a traves de los items en el arreglo
         console.log('Numero de usuarios conectados: ', connection.numberOfConnectedUsers + 1);
@@ -332,13 +333,13 @@
         for (var userid in connection.peers) {
             console.debug(userid, 'esta conectado.');
             arrayOfAllConnectedUsers.push(userid);
-
         }
         var numberOfListItems = arrayOfAllConnectedUsers.length;
         for (var i = 0; i < numberOfListItems; ++i) {
             // creamos <li> para cada uno
             var listItem = document.createElement('li');
             listItem.className = "list-group-item list-group-li";
+            listItem.setAttribute("id", arrayOfAllConnectedUsers[i])
             var imgPerfil = document.createElement('img');
             imgPerfil.className = "imgchat img-circle";
             var perfilUsuario = document.createElement('a');
@@ -361,7 +362,8 @@
             spanLabel.innerHTML = 'online';
             imgPerfil.setAttribute('src', 'pix/foto-perfil.jpg');
             // al conectarse ocultar mensaje
-            document.getElementById('listWarning').setAttribute('hidden','')
+            // document.getElementById('listWarning').setAttribute('hidden','')
+            numbersOfUsers.innerHTML = 1;
             // numero de usuarios conectados
             numbersOfUsers.innerHTML = parseInt(numbersOfUsers.innerHTML) + 1;
 
@@ -386,10 +388,10 @@
             header: e.extra.username,
             userinfo: e.extra.imgPerfil,
             horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
-            message: (connection.autoTranslateText ? linkify(e.data) + ' (' + linkify(e.original) + ')' : linkify(e.data))
+            message: (connection.autoTranslateText ? linkify(e.data) + '<span style="font-style: oblique; color: #BDBDBD"> (' + linkify(e.original) + ')</span>' : linkify(e.data))
         });
         // jQuery-CSSEmoticons
-        $('.comment').emoticonize();
+       // $('.comment').emoticonize();
         document.title = e.data;
         // Conocer la latencia de los datos que fluyen entre las conexiones
         console.debug(e.extra.username,'(', e.userid,') publico:', e.data);
@@ -627,6 +629,13 @@
             horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
             message: event.extra.username + ' ha abandonado el chat!'
         });
+
+        /**
+         * Elimina el <li> del <ul> correspondiente al id del usuario que se desconecto
+         */
+         var item = document.getElementById(event.userid);
+         item.parentNode.removeChild(item);
+    
     };
     // RTCMultiConnection.org/docs/onclose/
     // Evento solo se activa cuando la conexion de datos WebRTC se ha cerrado
@@ -724,10 +733,15 @@
         var position = +progress.position.toFixed(2).split('.')[1] || 100;
         label.innerHTML = position + '%';
     }
+/* ui.users-list*/
+
+    var numbersOfUsers = getElement('.numbers-of-users');
+
+    numbersOfUsers.innerHTML = 0;
 
 /* ui.settings*/
     var settingsPanel = getElement('.settings-panel');
-        getElement('#settings').onclick = function() {
+    getElement('#settings').onclick = function() {
         settingsPanel.style.display = 'block';
     };
 
@@ -761,7 +775,7 @@
         connection.chunkSize = +getElement('#chunk-size').value;
         connection.chunkInterval = +getElement('#chunk-interval').value;
 
-        window.skipconnectionLogs = !!getElement('#skip-connection-Logs').checked;
+        window.skipRTCMultiConnectionLogs = !!getElement('#skip-connection-Logs').checked;
 
         //connection.selectDevices(getElement('#audio-devices').value, getElement('#video-devices').value);
         connection.maxParticipantsAllowed = getElement('#max-participants-allowed').value;
@@ -774,7 +788,7 @@
         connection.dataChannelDict = eval('(' + getElement('#dataChannelDict').value + ')');
 
         if (!!getElement('#fake-pee-connection').checked) {
-            // http://www.connection.org/docs/fakeDataChannels/
+            // RTCMultiConnection.org/docs/fakeDataChannels/
             connection.fakeDataChannels = true;
             connection.session = { };
         }
@@ -790,8 +804,7 @@
             appendDevice(device);
         }
     });
-    
-    // emite el sonido en cualquier interaccion del chat
+
     function appendDevice(device) {
         var option = document.createElement('option');
         option.value = device.id;
