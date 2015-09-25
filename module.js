@@ -312,7 +312,7 @@
         getElement('#share-files').disabled = false;
         getElement('#allow-screen').disabled = false;
         getElement('#chat-input').disabled = false;
-        //getElement('.file').disabled = false;
+        getElement('#ayuda-comentarios').disabled = false;
 
         addNewMessage({
             header: e.extra.username,
