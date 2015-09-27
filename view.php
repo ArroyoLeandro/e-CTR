@@ -119,17 +119,17 @@ $url_actual = "http://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
 // echo $role->roleid.'<br />'; // muestro el rol
 // echo $role->name.'<br />'; // muestro el nombre del rol del usuario
 // Realizo la condicion de acuerdo al rol al cual pertenece
-// 1 = Admin, 2 = Director del curso, 3 = Tutor.
-    if ($role->roleid == 1 || $role->roleid == 2 || $role->roleid == 3) { 
+// 1 = Admin, 2 = Director del curso, 3 = Tutor, 4 = Tutor sin edicion.
+    if ($role->roleid == 1 || $role->roleid == 2 || $role->roleid == 3 || $role->roleid == 4) { 
         // Puede elegir que chat de Grupo Abrir
-        echo '<span class="col-sm-12 col-md-12">'. $role->name.'. ';
+        echo '<span class="col-sm-12 col-md-12">'. $role->name.', acceder por ';
         groups_print_activity_menu($cm, $CFG->wwwroot . "/mod/ectr/view.php?id=$cm->id");
         echo '</span>';
     }
     // Si ya esta en la URL del chat del grupo
     elseif ($url_actual == $CFG->wwwroot."/mod/ectr/view.php?id=$cm->id".'&group='.$currentgroup) {
     }
-    // 4 = Tutor sin edicion, 5 = Estudiante, 6 = Invitado, 7= Usuario autenticado
+    // 5 = Estudiante, 6 = Invitado, 7= Usuario autenticado
     else {
         /* Carga la URL del chat de su grupo */
         $url = $CFG->wwwroot."/mod/ectr/view.php?id=$cm->id".'&group='.$currentgroup;
@@ -345,7 +345,7 @@ echo '
               <button id="allow-mic" class="fa fa-phone fa-3x" disabled title="Iniciar una llamada de voz"></button>
               <button id="allow-screen" class="fa fa-desktop fa-3x" disabled title="Compartir el escritorio"></button>
               <!-- <button id="share-files" class="fa fa-paperclip fa-3x" disabled title="Compartir archivos .PDF, .DOC, Videos, etc."></button> -->
-              <a href="'.$url = $CFG->wwwroot.'/mod/ectr/help.php?id='.$cm->id.'" target="_blank"><button id="ayuda-comentarios" class="fa fa-question-circle fa-2x" disabled title="Ayuda y Comentarios"></button></a>
+              <a href="'.$url = $CFG->wwwroot.'/mod/ectr/help.php?id='.$cm->id.'" target="_blank"><button id="ayuda-comentarios" class="fa fa-question-circle fa-2x" disabled title="Ayuda y Comentarios" style="color: #E7B200;"></button></a>
             </div>
             <div class="collapse" id="collapseEmoticon" style="padding-top: 10px; margin-bottom: -15px;">
               <div class="well" style="padding: 5px;">
