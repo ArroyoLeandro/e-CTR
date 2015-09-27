@@ -345,7 +345,7 @@ echo '
               <button id="allow-mic" class="fa fa-phone fa-3x" disabled title="Iniciar una llamada de voz"></button>
               <button id="allow-screen" class="fa fa-desktop fa-3x" disabled title="Compartir el escritorio"></button>
               <!-- <button id="share-files" class="fa fa-paperclip fa-3x" disabled title="Compartir archivos .PDF, .DOC, Videos, etc."></button> -->
-              <a href="'.$url = $CFG->wwwroot.'/mod/ectr/help.php?id='.$cm->id.'"><button id="ayuda-comentarios" class="fa fa-question-circle fa-2x" disabled title="Ayuda y Comentarios"></button></a>
+              <a href="'.$url = $CFG->wwwroot.'/mod/ectr/help.php?id='.$cm->id.'" target="_blank"><button id="ayuda-comentarios" class="fa fa-question-circle fa-2x" disabled title="Ayuda y Comentarios"></button></a>
             </div>
             <div class="collapse" id="collapseEmoticon" style="padding-top: 10px; margin-bottom: -15px;">
               <div class="well" style="padding: 5px;">
@@ -367,7 +367,7 @@ echo '
                     <div class="user-activity">                        
                         <p class="message">
                             e-Chat UNAD es la mejor experiencia de comunicación e interacción en tiempo real por medio de <span style="color:#337ab7;italic;font-weight:bold;">mensajes de texto, videollamadas y llamadas de voz</span> entre los estudiantes UNADISTAS.<br /><br />
-                            Hemos diseñado un espacio dedicado a explicarte cómo funciona <span style="color:#337ab7;italic;font-weight:bold;">e-Chat UNAD</span>, puedas identificar todas las funcionalidades y el potencial que tiene para la comunicación en tiempo real en donde podrás enviar mensajes de texto, iniciar videollamadas y llamadas de voz, compartir imágenes, archivos, emoticones, realizar conversaciones con traducción en tiempo real a tu lenguaje nativo y mucho más. <a href="'.$url = $CFG->wwwroot.'/mod/ectr/help.php?id='.$cm->id.'"><span role="button" class="fa fa-question-circle fa-1x btn btn-primary btn-sm" id="como-funciona" title="Enseñame Cómo funciona!"> Ayuda y comentarios</span></a>
+                            Hemos diseñado un espacio dedicado a explicarte cómo funciona <span style="color:#337ab7;italic;font-weight:bold;">e-Chat UNAD</span>, puedas identificar todas las funcionalidades y el potencial que tiene para la comunicación en tiempo real en donde podrás enviar mensajes de texto, iniciar videollamadas y llamadas de voz, compartir imágenes, archivos, emoticones, realizar conversaciones con traducción en tiempo real a tu lenguaje nativo y mucho más. <a href="'.$url = $CFG->wwwroot.'/mod/ectr/help.php?id='.$cm->id.'" target="_blank"><span role="button" class="fa fa-question-circle fa-1x btn btn-primary btn-sm" id="como-funciona" title="Enseñame cómo funciona!"> Ayuda y comentarios</span></a>
                         </p>
                     </div>
                 </div> <!-- END panel-body-->
