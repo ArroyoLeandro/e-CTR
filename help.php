@@ -126,9 +126,10 @@ echo '
                     </div>
                     <div id="collapse1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="help1">
                       <div class="panel-body">
-                        <strong>e-Chat UNAD</strong> es un módulo integrado a Moodle que permite que todos los usuarios  se puedan comunicar en tiempo real. e-Chat UNAD nace como propuesta de opción de grado del estudiante <strong><a href="https://www.facebook.com/ManuelFernandoMarula#e-chat-UNAD"><span class="fa fa-facebook" style="color: #3b5998;"></span> Manuel Fernando Marulanda Aguirre </a><a href="https://twitter.com/manueltato11#e-chat-UNAD"><span class="fa fa-twitter" style="color: #55acee;"></span>@manueltato11</a></strong> y busca proporcionar nuevos espacios de interacción entre los usuarios del Campus Virtual para realizar llamadas de voz, videollamadas, enviar mensajes de texto, compartir archivos y hasta realizar conversaciones con traducción en tiempo real a tu lenguaje nativo.<br /><br />
+                        <strong>e-Chat UNAD</strong> es un módulo integrado a Moodle que permite que todos los usuarios  se puedan comunicar en tiempo real. e-Chat UNAD nace como propuesta de opción de grado del estudiante <strong><a href="https://www.facebook.com/ManuelFernandoMarula#e-chat-UNAD" target="_blank"><span class="fa fa-facebook-official" style="color: #3b5998;"></span> Manuel Fernando Marulanda Aguirre </a><a href="https://twitter.com/manueltato11#e-chat-UNAD" target="_blank"><span class="fa fa-twitter" style="color: #55acee;"></span>@manueltato11</a></strong> y busca proporcionar nuevos espacios de interacción entre los usuarios del Campus Virtual para realizar llamadas de voz, videollamadas, enviar mensajes de texto, compartir archivos y hasta realizar conversaciones con traducción en tiempo real a tu lenguaje nativo.<br /><br />
                         e-Chat UNAD es muy fácil de usar y se adapta a tus necesidades, puedes utilizarlo desde tu teléfono móvil Android, equipo de escritorio o hasta desde tu TV sin tener que descargar ninguna aplicación o complementos de terceros, todo esto es posible gracias a que e-Chat UNAD utiliza las nuevas tecnologías que enmarcan la comunicación en tiempo real directamente desde el navegador.<br /><br />
-                        Comienza hoy mismo a interactuar con tus compañeros en tiempo real directamente desde el Campus Virtual, no olvides compartirnos tus opiniones, comentarios, sugerencias sobre tu experiencia en la App, todo esto nos ayudara a mejorar las funcionalidades y proporcionar a todos los usuarios <strong>"la mejor experiencia de comunicación e interacción en tiempo real de la web"</strong>.
+                        Comienza hoy mismo a interactuar con tus compañeros en tiempo real directamente desde el Campus Virtual, no olvides compartirnos tus opiniones, comentarios, sugerencias sobre tu experiencia en la App, todo esto nos ayudara a mejorar las funcionalidades y proporcionar a todos los usuarios <strong>"la mejor experiencia de comunicación e interacción en tiempo real de la web"</strong>.<br/><br/>
+                        <strong>¡Revisamos todos los comentarios!</strong>
                       </div>
                     </div>
                   </div>
@@ -148,8 +149,8 @@ echo '
                           <li><strong>Realizar llamadas de voz: </strong> Podrás realizar llamadas de voz a todos los integrantes del grupo <strong>totalmente gratis</strong> directamente desde cada curso sin importar la ubicación geográfica o distancia que los separe.</li>
                           <li><strong>Compartir fotos: </strong>Puedes compartir fotos sin importar el tamaño o formato, hay un límite de 1GB por archivo, ¿Podrás tener una foto de este tamaño, no lo creo?</li>
                           <li><strong>Compartir archivos PDF, documentos o presentaciones: </strong>Puedes compartir archivos PDF o presentaciones, hay un límite de 1GB por archivo, ¿Podrás tener una presentación de este tamaño, no lo creo?</li>
-                          <li><strong>Compartir Videos y Audios: </strong>Puedes compartir videos con tus compañeros o audios en los formaos más comunes, la App identificara su formato y automáticamente iniciara su reproducción en tiempo real entre los participantes. ¡Genial!, No hay límites de transferencia!</li>
-                          <li><strong>Compartir pantalla: </strong>Podrás compartir la pantalla con tus compañeros, actualmente esta funcionalidad está disponible para los roles de Director de curso, Tutor y Auditor de servicio. Para el rol de estudiante, ¡Vendrán cosas geniales!</li>
+                          <li><strong>Compartir Videos y Audios: </strong>Puedes compartir videos con tus compañeros o audios en los formaos más comunes, la App identificara su formato y automáticamente iniciara su reproducción en tiempo real entre los participantes. <strong>¡Genial!, No hay límites de transferencia!</strong></li>
+                          <li><strong>Compartir pantalla: </strong>Podrás compartir la pantalla con tus compañeros, actualmente esta funcionalidad está disponible para los roles de Director de curso, Tutor y Auditor de servicio. Para el rol de estudiante, <strong>¡Vendrán cosas geniales!</strong></li>
                           <li><strong>Enviar emoticones: </strong>Dale vida a tus conversaciones con nuevos emoticones y emoji, expresa tus sentimientos y estados con una simple carita feliz. <br /><img src="pix/emoticones.png" class="center-block img-rounded" /></li>
                           <li><strong>Traduccion en tiempo real: </strong>Hoy en día la comunicaciones hacen de la vida más llevadera, por eso hemos trabajado en una funcionalidad que nos permite realizar conversaciones en tiempo real en varios idiomas, podrás conversar con un compañero de otro país y ambos entenderán lo que escriben, ya que la aplicación podrá traducir en tiempo real la conversación teniendo en cuenta el idioma nativo que se ha configurado.</li>
                         </ul>
@@ -172,7 +173,7 @@ echo '
                             <li>Tener instalada y configurada la cámara web para realizar las videollamadas.</li>
                             <li>Tener altavoces o diademas para escuchar a sus compañeros en las llamadas de voz y videollamadas.</li>
                             <li>Tener una conexión estable a internet no menor a 1MB (preferiblemente banda ancha).</li>
-                            <li>Para una mejor experiencia de usuario, le recomendamos utilizar un navegador moderno como <strong><a href="https://www.google.es/chrome/browser/desktop/index.html" title="Descargar la versión mas reciente de Google Chrome">Google Chrome</a>, <a href="https://www.mozilla.org/es-ES/firefox/new/" title="Descargar la versión mas reciente de Mozilla Firefox">Mozilla Firefox</a> u <a href="http://www.opera.com/es-419" title="Descargar la versión mas reciente de Opera">Opera</a></strong> y permitir que <strong>e-Chat UNAD</strong> acceda al micrófono y a la cámara de la computadora para poder iniciar una videollamada.</li>
+                            <li>Para una mejor experiencia de usuario, le recomendamos utilizar la versión mas reciente de un navegador moderno como <strong><a href="https://www.google.es/chrome/browser/desktop/index.html" title="Descargar la versión mas reciente de Google Chrome">Google Chrome</a>, <a href="https://www.mozilla.org/es-ES/firefox/new/" title="Descargar la versión mas reciente de Mozilla Firefox">Mozilla Firefox</a> u <a href="http://www.opera.com/es-419" title="Descargar la versión mas reciente de Opera">Opera</a></strong> y permitir que <strong>e-Chat UNAD</strong> acceda al micrófono y a la cámara de la computadora para poder iniciar una videollamada.</li>
                         </ul>
                       </div>
                     </div>
@@ -188,7 +189,7 @@ echo '
                     <div id="collapse4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="help4">
                       <div class="panel-body">
                         Para utilizar e-Chat UNAD solo basta con iniciar sesión en el Campus Virtual e ir al curso correspondiente, en la parte superior encontrara el icono de acceso al servicio de mensajería instantánea <img src="pix/help/icono-echat-unad.png" class="center-block img-rounded" /><br/><br/>
-                        Al ingresar a este, inicializara automáticamente el chat correspondiente a su grupo, en la parte superior izquierda podrá ver los usuarios que están conectados. Al lado derecho el sistema le indicara el grupo al cual está conectado y le recomendara un enlace permanente el cual podrá añadirlo a sus marcadores o favoritos para volver cuando quiera.<br/><br/>
+                        Al ingresar a este, inicializara automáticamente el chat correspondiente a su grupo, en la parte superior izquierda podrá ver los usuarios que están conectados. Al lado derecho el sistema le indicara el grupo al cual está conectado y le recomendara un <strong>enlace permanente</strong> el cual podrá añadirlo a sus <strong>marcadores o favoritos</strong> para volver cuando quiera.<br/><br/>
                         <img src="pix/help/intrerfaz-echat-unad.png" class="center-block img-rounded"/>
                       </div>
                     </div>
@@ -309,10 +310,99 @@ echo '
                     </div>
                     <div id="collapse12" class="panel-collapse collapse" role="tabpanel" aria-labelledby="help12">
                       <div class="panel-body">
-                        
+                        Para compartir fotos e imágenes, debes de ingresar al <strong>e-Chat UNAD</strong> del respectivo grupo del curso deseado, si hay más de un usuario conectado, podrás compartir archivos, fotos e imágenes con él.
+                        <ol>
+                            <li>Haz clic en el botón de <strong>"Compartir imagen"</strong> <span class="fa fa-picture-o add-picture"></span> para seleccionar una foto e imagen desde tu computadora, la opción esta ubicada al lado derecho del campo de texto <strong>"Escriba su mensaje"</strong>. <img src="pix/help/escriba-su-mensaje.png" class="center-block img-rounded" /></li>
+                            <li>Todos los participantes de la conversación recibirán la misma foto e imagen con vista previa al interior de la conversación, adicionalmente tendrán habilitado una opción para descargar <span class="fa fa-download"></span> la imagen a sus computadores. <img src="pix/help/vista-previa-imagen.png" class="center-block img-rounded" /></li>
+                        </ol>
+                        <div class="alert alert-warning" role="alert"><span class="fa fa-exclamation-triangle fa-2x"></span> Es muy importante recordar, al ser un chat grupal, todos recibirán la misma información y no hay ningún tipo de respaldo sobre las conversaciones o archivos que allí se comparten, una vez cerrada la conversación, se elimina el historial y se cierra el chat de cada grupo.</div>
                       </div>
                     </div>
                     </div> <!-- END panel-default help12-->
+                    <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="help13">
+                      <h4 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse13" aria-expanded="false" aria-controls="collapse13">
+                          <i class="fa fa-question-circle"></i> ¿Cómo envió archivos, documentos o presentaciones?
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapse13" class="panel-collapse collapse" role="tabpanel" aria-labelledby="help13">
+                      <div class="panel-body">
+                        Para compartir archivos, documentos o presentaciones, debes de ingresar al <strong>e-Chat UNAD</strong> del respectivo grupo del curso deseado, si hay más de un usuario conectado, podrás compartir archivos, documentos o presentaciones con él.
+                        <ol>
+                            <li>Haz clic en el botón de <strong>"Compartir archivos y documentos"</strong> <span class="fa fa-paperclip add-file"></span> para seleccionar el archivo o presentacion desde tu computadora, la opción esta ubicada al lado derecho del campo de texto <strong>"Escriba su mensaje"</strong>. <img src="pix/help/escriba-su-mensaje.png" class="center-block img-rounded" /></li>
+                            <li>Todos los participantes de la conversación recibirán el mismo archivo, documento o presentacion la cual automaticamente mostrara la vista previa al interior de la conversación, <strong>¡esta posibilidad es genial!</strong>, ya que sin necesidad de descargar el documento o presentación, podemos verla inmediatamente al interior de la conversación y si es necesario descargarla a nuestro computador, se tendrá habilitada la opción para descargar <span class="fa fa-download"></span> dicho archivo o presentación a nuestros computadores. <img src="pix/help/vista-previa-documentos.png" class="center-block img-rounded" /><br/>También podrá compartir videos o audios, estos se reproducirán automáticamente al interior de la conversación, <strong>¡esta posibilidad es estupenda!</strong> ya que no se necesita descargar el video para verlo, de igual manera tendrán habilitado la opción para descargar <span class="fa fa-download"></span> los videos o audios a sus computadores. <img src="pix/help/vista-previa-videos.png" class="center-block img-rounded" /></li>
+                        </ol>
+                        <div class="alert alert-warning" role="alert"><span class="fa fa-exclamation-triangle fa-2x"></span> Es muy importante recordar, al ser un chat grupal, todos recibirán la misma información y no hay ningún tipo de respaldo sobre las conversaciones o archivos que allí se comparten, una vez cerrada la conversación, se elimina el historial y se cierra el chat de cada grupo.</div>
+                      </div>
+                    </div>
+                    </div> <!-- END panel-default help13-->
+                    <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="help14">
+                      <h4 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse14" aria-expanded="false" aria-controls="collapse14">
+                          <i class="fa fa-question-circle"></i> ¿Cómo gestiono mis Chats de grupo?
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapse14" class="panel-collapse collapse" role="tabpanel" aria-labelledby="help14">
+                      <div class="panel-body">
+                        Con <strong>e-Chat UNAD</strong>, puedes iniciar sesión en todos los chat grupales de los cursos que estás viendo, lo único que debes de tener en cuenta es dejar una pestaña abierta con cada uno de los chats para que cuando algún compañero se conecte, <strong>e-Chat UNAD</strong> te notificara por medio de una alerta visual y sonora.<br/><br/>
+                        De igual manera, <strong>e-Chat UNAD</strong> le recomendara un <strong>enlace permanente</strong> el cual podrá añadirlo a sus <strong>marcadores o favoritos</strong> para volver cuando quiera, este enlace es único por cada grupo y solo es permitido el ingreso de los usuarios correspondientes a dicho grupo. <img src="pix/help/intrerfaz-conversacion-echat-unad.png" class="center-block img-rounded" /><br/>
+                        Puedes invitar a tus compañeros a iniciar una conversación en tiempo real o videollamada solo con publicar la URL en los foros o mensajería interna, al ingresar al link, les cargara el chat de su grupo.
+                      </div>
+                    </div>
+                    </div> <!-- END panel-default help14-->
+                    <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="help15">
+                      <h4 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse15" aria-expanded="false" aria-controls="collapse15">
+                          <i class="fa fa-question-circle"></i> ¿Puedo compartir mi pantalla?
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapse15" class="panel-collapse collapse" role="tabpanel" aria-labelledby="help15">
+                      <div class="panel-body">
+                        Podrás compartir la pantalla con tus compañeros directamente desde el navegador, actualmente esta funcionalidad solo está disponible para los roles de Director de curso, Tutor y Auditor de servicio. Para el rol de estudiante, <strong>¡Vendrán cosas geniales!</strong>, por eso, déjanos tu comentario al respecto y si te gustaría que esta funcionalidad ente activa para el rol de estudiante.<br/><br/>
+                        <strong>¡Revisamos todos los comentarios!</strong><br/>
+                        <a href="https://docs.google.com/forms/d/16kSrwCEc9om9yvqgfgoZMYXwhLDk7KnqeTFoPASi1f0/viewform" target="_blank" title="Envíanos tus comentarios"><button type="button" class="btn btn-success">Déjanos tu opinión</button></a>
+                      </div>
+                    </div>
+                    </div> <!-- END panel-default help15-->
+                    <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="help16">
+                      <h4 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse16" aria-expanded="false" aria-controls="collapse16">
+                          <i class="fa fa-question-circle"></i> ¿Qué sucede si estoy en una videollamada o llamada de voz y se cae mi conexión a internet?
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapse16" class="panel-collapse collapse" role="tabpanel" aria-labelledby="help16">
+                      <div class="panel-body">
+                        Hemos hecho nuestro mayor esfuerzo para optimizar de <strong>e-Chat UNAD</strong> la posibilidad de reconectar una videollamada o llamada de voz en curso, es muy importante que tengas en cuenta <strong>los requisitos para que e-Chat UNAD funcione óptimamente</strong>, de igual manera nos puedes dejar tu comentario si presentas continuos problemas de conexión al realizar videollamadas, todo esto nos ayuda a optimizar mejor nuestro sistema de señalización o servidor.<br/><br/>
+                        <strong>¡Revisamos todos los comentarios!</strong><br/>
+                        <a href="https://docs.google.com/forms/d/16kSrwCEc9om9yvqgfgoZMYXwhLDk7KnqeTFoPASi1f0/viewform" target="_blank" title="Envíanos tus comentarios"><button type="button" class="btn btn-success">Déjanos tu opinión</button></a>
+                      </div>
+                    </div>
+                    </div> <!-- END panel-default help16-->
+                    <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="help17">
+                      <h4 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse17" aria-expanded="false" aria-controls="collapse17">
+                          <i class="fa fa-question-circle"></i> ¿Dónde puedo dejar mis opiniones, comentarios, sugerencias e ideas de mejora?
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapse17" class="panel-collapse collapse" role="tabpanel" aria-labelledby="help17">
+                      <div class="panel-body">
+                        Continuamente estaremos realizando mejoras y adaptaciones para lograr de <strong>e-Chat UNAD “la mejor experiencia de comunicación e interacción en tiempo real de la web”</strong>, este ha sido un trabajo arduo basado en experiencias de mejora que potencializaran la interacción de los <strong>estudiantes UNADISTAS</strong> al interior del Campus Virtual, <strong>¡un sistema en continuo desarrollo!</strong>.<br/><br/>
+                        <strong>¡Revisamos todos los comentarios!</strong><br/>
+                        <a href="https://docs.google.com/forms/d/16kSrwCEc9om9yvqgfgoZMYXwhLDk7KnqeTFoPASi1f0/viewform" target="_blank" title="Envíanos tus comentarios"><button type="button" class="btn btn-success">Déjanos tu opinión</button></a><br/><br/>
+                        De igual forma, si lo que quieres comunicarse directamente con su autor, <strong>Manuel Fernando Marulanda Aguirre</strong>, puedes ubicarlo en las redes sociales como <strong><a href="https://www.facebook.com/ManuelFernandoMarula#e-chat-UNAD" target="_blank"><span class="fa fa-facebook-official" style="color: #3b5998;"></span> Facebook </a><a href="https://twitter.com/manueltato11#e-chat-UNAD" target="_blank"><span class="fa fa-twitter" style="color: #55acee;"></span>Twitter</a></strong> o al email <a href="mailto:mfmarulandaa@unadvirtual.edu.co?subject=Feedback e-Chat UNAD">mfmarulandaa@unadvirtual.edu.co</a>
+                      </div>
+                    </div>
+                    </div> <!-- END panel-default help17-->
                 </div> <!-- END panel-default accordion-->
             </div> <!-- END panel-body-->
         </div> <!-- END panel panel-primary-->

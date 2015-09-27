@@ -680,7 +680,7 @@
             header: file.extra.username,
             userinfo: file.extra.imgPerfil,
             horaPublicacion: addZero(modHora(new Date().getHours())) + ':' + addZero(new Date().getMinutes()) + ' ' + H,
-            message: '<strong>' + file.name + '</strong> ( ' + bytesToSize(file.size) + ' )',
+            message: '<strong>' + file.name + '</strong> (' + bytesToSize(file.size) + ')',
             callback: function(div) {
                 var innerDiv = document.createElement('div');
                 innerDiv.title = file.name;
@@ -712,9 +712,9 @@
 
         var div = helper.div;
         if (file.type.indexOf('image') != -1) {
-            div.innerHTML = '<a class="content" href="' + file.url + '" download="' + file.name + '">Descargar <strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> </a><br /><img src="' + file.url + '" title="' + file.name + '" style="max-width: 100%; padding-top: 5px;" class="img-rounded"> <!-- END hat-body clearfix-->';
+            div.innerHTML = '<a class="content" href="' + file.url + '" download="' + file.name + '"><span class="fa fa-download"></span> <strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> </a><br /><img src="' + file.url + '" title="Descargar ' + file.name + '" style="max-width: 100%; padding-top: 5px;" class="img-rounded"> <!-- END hat-body clearfix-->';
         } else {
-            div.innerHTML = '<a class="content" href="' + file.url + '" download="' + file.name + '">Descargar <strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> </a><br /><iframe src="' + file.url + '" title="' + file.name + '" style="width: 100%;border: 0;height: inherit;margin-top:1em;" class="img-rounded"></iframe> <!-- END hat-body clearfix-->';
+            div.innerHTML = '<a class="content" href="' + file.url + '" download="' + file.name + '"><span class="fa fa-download"></span> <strong style="color:#337ab7;" class="primary-font">' + file.name + '</strong> </a><br /><iframe src="' + file.url + '" title="Descargar ' + file.name + '" style="width: 100%;border: 0;height: inherit;margin-top:1em;" class="img-rounded"></iframe> <!-- END hat-body clearfix-->';
         }
         // para la compatibilidad con versiones anteriores
         if (connection.onFileSent || connection.onFileReceived) {

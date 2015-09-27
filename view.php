@@ -298,7 +298,7 @@ echo '
   <div class="col-sm-12 col-md-5 sidebar-offcanvas">
   <div class="panel panel-primary">
     <div class="panel-heading">
-      <span class="fa fa-users"></span> Usuarios Conectados <span class="badge numbers-of-users" id="badge">0</span> <span title="Opciones" class="fa fa-chevron-down" style="float: right; font-size: 18px; cursor: pointer;"></span>
+      <span class="fa fa-users"></span> Usuarios Conectados <span class="badge numbers-of-users" id="badge">0</span> <span title="Opciones de usuarios" class="fa fa-chevron-down" style="float: right; font-size: 18px; cursor: pointer;"></span>
     </div>
     <ul class="list-group user-list" id="usuariosOnline">
       <span class="list-group-item list-group-item-warning"><small id="listWarning">No hay ningun usuario conectado en este momento! :(</small></span>
@@ -330,12 +330,12 @@ echo '
                 <div class="input-wrapper">
                 <input id="chat-input" type="text" value="" placeholder="Escriba su mensaje..." disabled autofocus />
                 <label for="share-files">
-                  <span role="button" class="fa fa-picture-o add-picture"></span>
-                  <span role="button" class="fa fa-paperclip add-file"></span>
+                  <span role="button" class="fa fa-picture-o add-picture" title="Compartir fotos e imágenes"></span>
+                  <span role="button" class="fa fa-paperclip add-file" title="Compartir archivos y documentos"></span>
                 </label>
                 <input id="share-files" type="file" style="display: none;" disabled />
                 <a role="button" data-toggle="collapse" href="#collapseEmoticon" aria-expanded="false" aria-controls="collapseEmoticon">
-                  <span class="fa fa-smile-o add-emoticon"></span>
+                  <span class="fa fa-smile-o add-emoticon" title="Compartir y ver emoticones"></span>
                 </a>
               </div>
             </div>
