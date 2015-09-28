@@ -119,17 +119,17 @@ $url_actual = "http://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
 // echo $role->roleid.'<br />'; // muestro el rol
 // echo $role->name.'<br />'; // muestro el nombre del rol del usuario
 // Realizo la condicion de acuerdo al rol al cual pertenece
-// 1 = Admin, 2 = Director del curso, 3 = Tutor.
-    if ($role->roleid == 1 || $role->roleid == 2 || $role->roleid == 3) { 
+// 1 = Admin, 2 = Director del curso, 3 = Tutor, 4 = Tutor sin edicion.
+    if ($role->roleid == 1 || $role->roleid == 2 || $role->roleid == 3 || $role->roleid == 4) { 
         // Puede elegir que chat de Grupo Abrir
-        echo '<span class="col-sm-12 col-md-12">'. $role->name.'. ';
+        echo '<span class="col-sm-12 col-md-12">'. $role->name.', acceder por ';
         groups_print_activity_menu($cm, $CFG->wwwroot . "/mod/ectr/view.php?id=$cm->id");
         echo '</span>';
     }
     // Si ya esta en la URL del chat del grupo
     elseif ($url_actual == $CFG->wwwroot."/mod/ectr/view.php?id=$cm->id".'&group='.$currentgroup) {
     }
-    // 4 = Tutor sin edicion, 5 = Estudiante, 6 = Invitado, 7= Usuario autenticado
+    // 5 = Estudiante, 6 = Invitado, 7= Usuario autenticado
     else {
         /* Carga la URL del chat de su grupo */
         $url = $CFG->wwwroot."/mod/ectr/view.php?id=$cm->id".'&group='.$currentgroup;
@@ -298,7 +298,7 @@ echo '
   <div class="col-sm-12 col-md-5 sidebar-offcanvas">
   <div class="panel panel-primary">
     <div class="panel-heading">
-      <span class="fa fa-users"></span> Usuarios Conectados <span class="badge numbers-of-users" id="badge">0</span> <span title="Opciones" class="fa fa-chevron-down" style="float: right; font-size: 18px; cursor: pointer;"></span>
+      <span class="fa fa-users"></span> Usuarios Conectados <span class="badge numbers-of-users" id="badge">0</span> <span title="Opciones de usuarios" class="fa fa-chevron-down" style="float: right; font-size: 18px; cursor: pointer;"></span>
     </div>
     <ul class="list-group user-list" id="usuariosOnline">
       <span class="list-group-item list-group-item-warning"><small id="listWarning">No hay ningun usuario conectado en este momento! :(</small></span>
@@ -330,12 +330,12 @@ echo '
                 <div class="input-wrapper">
                 <input id="chat-input" type="text" value="" placeholder="Escriba su mensaje..." disabled autofocus />
                 <label for="share-files">
-                  <span role="button" class="fa fa-picture-o add-picture"></span>
-                  <span role="button" class="fa fa-paperclip add-file"></span>
+                  <span role="button" class="fa fa-picture-o add-picture" title="Compartir fotos e imágenes"></span>
+                  <span role="button" class="fa fa-paperclip add-file" title="Compartir archivos y documentos"></span>
                 </label>
                 <input id="share-files" type="file" style="display: none;" disabled />
                 <a role="button" data-toggle="collapse" href="#collapseEmoticon" aria-expanded="false" aria-controls="collapseEmoticon">
-                  <span class="fa fa-smile-o add-emoticon"></span>
+                  <span class="fa fa-smile-o add-emoticon" title="Compartir y ver emoticones"></span>
                 </a>
               </div>
             </div>
@@ -345,7 +345,7 @@ echo '
               <button id="allow-mic" class="fa fa-phone fa-3x" disabled title="Iniciar una llamada de voz"></button>
               <button id="allow-screen" class="fa fa-desktop fa-3x" disabled title="Compartir el escritorio"></button>
               <!-- <button id="share-files" class="fa fa-paperclip fa-3x" disabled title="Compartir archivos .PDF, .DOC, Videos, etc."></button> -->
-              <button class="fa fa-question-circle fa-2x" disabled title="Ayuda y Comentarios"></button>
+              <a href="'.$url = $CFG->wwwroot.'/mod/ectr/help.php?id='.$cm->id.'" target="_blank"><button id="ayuda-comentarios" class="fa fa-question-circle fa-2x" disabled title="Ayuda y Comentarios" style="color: #E7B200;"></button></a>
             </div>
             <div class="collapse" id="collapseEmoticon" style="padding-top: 10px; margin-bottom: -15px;">
               <div class="well" style="padding: 5px;">
@@ -366,8 +366,8 @@ echo '
                 <div class="panel-body">
                     <div class="user-activity">                        
                         <p class="message">
-                            e-Chat UNAD es la mejor experiencia de comunicación e interacción en tiempo real por medio de <span style="color:#337ab7;italic;font-weight:bold;">mensajes de texto, video llamadas y llamadas de voz</span> entre los estudiantes UNADISTAS.<br /><br />
-                            Hemos diseñado un espacio dedicado a explicarte cómo funciona <span style="color:#337ab7;italic;font-weight:bold;">e-Chat UNAD</span>, puedas identificar todas las funcionalidades y el potencial que tiene para la comunicación en tiempo real en donde podrás compartir mensajes, video, audio, imágenes, archivos, emoticones, realizar conversaciones bilingües y mucho más. <span role="button" class="fa fa-question-circle fa-1x btn btn-primary btn-sm" id="como-funciona" title="Enseñame Cómo funciona!"> Ayuda y comentarios</span>
+                            e-Chat UNAD es la mejor experiencia de comunicación e interacción en tiempo real por medio de <span style="color:#337ab7;italic;font-weight:bold;">mensajes de texto, videollamadas y llamadas de voz</span> entre los estudiantes UNADISTAS.<br /><br />
+                            Hemos diseñado un espacio dedicado a explicarte cómo funciona <span style="color:#337ab7;italic;font-weight:bold;">e-Chat UNAD</span>, puedas identificar todas las funcionalidades y el potencial que tiene para la comunicación en tiempo real en donde podrás enviar mensajes de texto, iniciar videollamadas y llamadas de voz, compartir imágenes, archivos, emoticones, realizar conversaciones con traducción en tiempo real a tu lenguaje nativo y mucho más. <a href="'.$url = $CFG->wwwroot.'/mod/ectr/help.php?id='.$cm->id.'" target="_blank"><span role="button" class="fa fa-question-circle fa-1x btn btn-primary btn-sm" id="como-funciona" title="Enseñame cómo funciona!"> Ayuda y comentarios</span></a>
                         </p>
                     </div>
                 </div> <!-- END panel-body-->
