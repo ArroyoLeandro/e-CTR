@@ -275,7 +275,7 @@ echo '
                     <div class="panel-heading" role="tab" id="help10">
                       <h4 class="panel-title">
                         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse10" aria-expanded="false" aria-controls="collapse10">
-                          <i class="fa fa-question-circle"></i> ¿Puedo ingresar a e-Chat UNAD desde un dispositivo movil? 
+                          <i class="fa fa-question-circle"></i> ¿Puedo ingresar a e-Chat UNAD desde un dispositivo móvil? 
                         </a>
                       </h4>
                     </div>
@@ -399,7 +399,7 @@ echo '
                         Continuamente estaremos realizando mejoras y adaptaciones para lograr de <strong>e-Chat UNAD “la mejor experiencia de comunicación e interacción en tiempo real de la web”</strong>, este ha sido un trabajo arduo basado en experiencias de mejora que potencializaran la interacción de los <strong>estudiantes UNADISTAS</strong> al interior del Campus Virtual, <strong>¡un sistema en continuo desarrollo!</strong>.<br/><br/>
                         <strong>¡Revisamos todos los comentarios!</strong><br/>
                         <a href="https://docs.google.com/forms/d/16kSrwCEc9om9yvqgfgoZMYXwhLDk7KnqeTFoPASi1f0/viewform" target="_blank" title="Envíanos tus comentarios"><button type="button" class="btn btn-success">Déjanos tu opinión</button></a><br/><br/>
-                        De igual forma, si lo que quieres comunicarse directamente con su autor, <strong>Manuel Fernando Marulanda Aguirre</strong>, puedes ubicarlo en las redes sociales como <strong><a href="https://www.facebook.com/ManuelFernandoMarula#e-chat-UNAD" target="_blank"><span class="fa fa-facebook-official" style="color: #3b5998;"></span> Facebook </a><a href="https://twitter.com/manueltato11#e-chat-UNAD" target="_blank"><span class="fa fa-twitter" style="color: #55acee;"></span>Twitter</a></strong> o al email <a href="mailto:mfmarulandaa@unadvirtual.edu.co?subject=Feedback e-Chat UNAD">mfmarulandaa@unadvirtual.edu.co</a>
+                        De igual forma, si lo que quiere es comunicarse directamente con su autor, <strong>Manuel Fernando Marulanda Aguirre</strong>, puedes ubicarlo en las redes sociales como <strong><a href="https://www.facebook.com/ManuelFernandoMarula#e-chat-UNAD" target="_blank"><span class="fa fa-facebook-official" style="color: #3b5998;"></span> Facebook </a><a href="https://twitter.com/manueltato11#e-chat-UNAD" target="_blank"><span class="fa fa-twitter" style="color: #55acee;"></span>Twitter</a></strong> o al email <a href="mailto:mfmarulandaa@unadvirtual.edu.co?subject=Feedback e-Chat UNAD"><strong>mfmarulandaa@unadvirtual.edu.co</strong></a>
                       </div>
                     </div>
                     </div> <!-- END panel-default help17-->
