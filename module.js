@@ -66,6 +66,84 @@
     //var direction = 'many-to-many';
     // connection.direction = 'one-to-many';
 
+/* ui-Detect WebRTC*/
+    var RTCPeerConnection = null;
+    var getUserMedia = null;
+    var attachMediaStream = null;
+    var reattachMediaStream = null;
+    var webrtcDetectedBrowser = null;
+
+    if (navigator.mozGetUserMedia) {
+        console.log("Este navegador parece ser Firefox Mozilla!");
+        webrtcDetectedBrowser = "firefox";
+        // El objeto RTCPeerConnection
+        RTCPeerConnection = mozRTCPeerConnection;
+        // El objeto RTCSessionDescription
+        RTCSessionDescription = mozRTCSessionDescription;
+        // El objeto RTCIceCandidate
+        RTCIceCandidate = mozRTCIceCandidate;
+        // Obtener UserMedia (única diferencia es el prefijo)
+        // Codigo de Adam Barth
+        getUserMedia = navigator.mozGetUserMedia.bind(navigator);
+        // Adjuntar una secuencia de medios a un elemento
+        attachMediaStream = function (element, stream) {
+            console.log("Colocación de flujo de medios");
+            element.mozSrcObject = stream;
+            element.play();
+        };
+        reattachMediaStream = function (to, from) {
+            console.log("Cómo volver a colocar el flujo de medios");
+            to.mozSrcObject = from.mozSrcObject;
+            to.play();
+        };
+        // Fake get{Video,Audio}Tracks
+        MediaStream.prototype.getVideoTracks = function () {
+            return [];
+        };
+
+        MediaStream.prototype.getAudioTracks = function () {
+            return [];
+        };
+    } else if (navigator.webkitGetUserMedia) {
+        console.log("Este navegador parece ser Google Chrome u Opera");
+        webrtcDetectedBrowser = "chrome";
+        // El objeto RTCPeerConnection
+        RTCPeerConnection = webkitRTCPeerConnection;
+
+        // Obtener UserMedia (only difference is the prefix).
+        // Código de Adam Barth
+        getUserMedia = navigator.webkitGetUserMedia.bind(navigator);
+        // Adjunte una secuencia de medios a un elemento.
+        attachMediaStream = function (element, stream) {
+            element.src = webkitURL.createObjectURL(stream);
+        };
+        reattachMediaStream = function (to, from) {
+            to.src = from.src;
+        };
+        // La representación de los tracks (flujo audio) en una corriente se cambia en M26.
+        // Unificarlos para versiones anteriores de Google Chrome en el período de coexistencia.
+        if (!webkitMediaStream.prototype.getVideoTracks) {
+            webkitMediaStream.prototype.getVideoTracks = function () {
+                return this.videoTracks;
+            };
+            webkitMediaStream.prototype.getAudioTracks = function () {
+                return this.audioTracks;
+            };
+        }
+        // Nueva sintaxis de metodo getXXXStreams en M26.
+        if (!webkitRTCPeerConnection.prototype.getLocalStreams) {
+            webkitRTCPeerConnection.prototype.getLocalStreams = function () {
+                return this.localStreams;
+            };
+            webkitRTCPeerConnection.prototype.getRemoteStreams = function () {
+                return this.remoteStreams;
+            };
+        }
+    } else {
+        var detectWebRTC = getElement('.detect-webrtc');
+        detectWebRTC.style.display = 'block';
+        console.log("Este navegador no parece ser un navegador moderno (Google Chrome, Firefox Mozilla u Opera), por lo tanto no es capaz de soportar WebRTC!");
+    }
 /*ui.main*/
     function getElement(selector) {
     return document.querySelector(selector);
@@ -110,7 +188,7 @@
     }
     // usando websockets para la señalizacion
     // https://github.com/manueltato11/e-CTR-server
-    var signalingserver = 'wss://e-ctr-server-websocket-over-nodejs-manueltato11.c9.io/';
+    var signalingserver = 'wss://e-ctr-server-websocket-over-nodejs-manueltato11.c9.io:8080';
     // use "channel" como sessionid para usar sessionid personalizado!
     var roomid = connection.channel;
     var channel = location.href.replace(/\/|:|#|%|\.|\[|\]/g, '');
