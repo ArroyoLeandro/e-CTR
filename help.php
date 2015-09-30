@@ -188,9 +188,9 @@ echo '
                     </div>
                     <div id="collapse4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="help4">
                       <div class="panel-body">
-                        Para utilizar e-Chat UNAD solo basta con iniciar sesión en el Campus Virtual e ir al curso correspondiente, en la parte superior encontrara el icono de acceso al servicio de mensajería instantánea <img src="pix/help/icono-echat-unad.png" class="center-block img-rounded" /><br/><br/>
+                        Para utilizar e-Chat UNAD solo basta con iniciar sesión en el Campus Virtual e ir al curso correspondiente, en la parte superior encontrara el icono de acceso al servicio de mensajería instantánea <img src="pix/icono-echat-unad.png" class="center-block img-rounded" /><br/><br/>
                         Al ingresar a este, inicializara automáticamente el chat correspondiente a su grupo, en la parte superior izquierda podrá ver los usuarios que están conectados. Al lado derecho el sistema le indicara el grupo al cual está conectado y le recomendara un <strong>enlace permanente</strong> el cual podrá añadirlo a sus <strong>marcadores o favoritos</strong> para volver cuando quiera.<br/><br/>
-                        <img src="pix/help/intrerfaz-echat-unad.png" class="center-block img-rounded"/>
+                        <img src="pix/intrerfaz-echat-unad.png" class="center-block img-rounded"/>
                       </div>
                     </div>
                     </div> <!-- END panel-default help4-->
@@ -204,9 +204,9 @@ echo '
                     </div>
                     <div id="collapse5" class="panel-collapse collapse" role="tabpanel" aria-labelledby="help5">
                       <div class="panel-body">
-                        Para iniciar una conversación con sus compañeros, basta con escribir en el campo de texto “Escriba su mensaje” y presionar “enter” para enviarlo. <img src="pix/help/escriba-su-mensaje.png" class="center-block img-rounded" /><br/><br/>
+                        Para iniciar una conversación con sus compañeros, basta con escribir en el campo de texto “Escriba su mensaje” y presionar “enter” para enviarlo. <img src="pix/escriba-su-mensaje.png" class="center-block img-rounded" /><br/><br/>
                         Es importante conocer que la comunicación en <strong>e-Chat UNAD</strong> se realiza en tiempo real, solo podrá enviar mensajes y realizar videollamadas siempre y cuando haya más de un usuario conectado al chat, al ser un chat grupal, todos recibirán la misma información y no hay ningún tipo de respaldo sobre las conversaciones, una vez cerrada la conversación, se elimina el historial y se cierra el chat de cada grupo.<br/><br/>
-                        <img src="pix/help/conversaciones-echat-unad.png" class="center-block img-rounded"/>
+                        <img src="pix/conversaciones-echat-unad.png" class="center-block img-rounded"/>
                       </div>
                     </div>
                     </div> <!-- END panel-default help5-->
@@ -220,7 +220,7 @@ echo '
                     </div>
                     <div id="collapse6" class="panel-collapse collapse" role="tabpanel" aria-labelledby="help6">
                       <div class="panel-body">
-                        Para conocer quiénes de sus compañeros están conectados, debe de ingresar al chat correspondiente a su grupo y al lazo superior izquierdo podrá ver que compañeros están conectados y de esta forma iniciar una conversación o videollamada. <img src="pix/help/usuarios-conectados-echat-unad.png" class="center-block img-rounded" /><br/><br/>
+                        Para conocer quiénes de sus compañeros están conectados, debe de ingresar al chat correspondiente a su grupo y al lazo superior izquierdo podrá ver que compañeros están conectados y de esta forma iniciar una conversación o videollamada. <img src="pix/usuarios-conectados-echat-unad.png" class="center-block img-rounded" /><br/><br/>
                       </div>
                     </div>
                     </div> <!-- END panel-default help6-->
@@ -249,8 +249,8 @@ echo '
                     <div id="collapse8" class="panel-collapse collapse" role="tabpanel" aria-labelledby="help8">
                       <div class="panel-body">
                         Para realizar una llamada de voz, debes de ingresar al <strong>e-Chat UNAD</strong> del respectivo grupo del curso deseado, si hay más de un usuario conectado, podrás iniciar la llamada de voz o videollamada con él.<br><br>
-                        Para iniciar una llamada de voz, todo lo que necesitas es hacer clic en el botón de <strong>“Iniciar llamada de voz”.</strong> <img src="pix/help/iniciar-llamada-voz.png" class="center-block img-rounded" /> <br>
-                        Inmediatamente a los usuarios les llegara una invitación para aceptar la llamada de voz, la cual podrán <strong>"aceptar"</strong> o <strong>"rechazar"</strong> y <strong>"escuchar solo el audio"</strong> o <strong>"compartir su micrófono".</strong> <img src="pix/help/aceptar-llamada-voz.png" class="center-block img-rounded" />
+                        Para iniciar una llamada de voz, todo lo que necesitas es hacer clic en el botón de <strong>“Iniciar llamada de voz”.</strong> <img src="pix/iniciar-llamada-voz.png" class="center-block img-rounded" /> <br>
+                        Inmediatamente a los usuarios les llegara una invitación para aceptar la llamada de voz, la cual podrán <strong>"aceptar"</strong> o <strong>"rechazar"</strong> y <strong>"escuchar solo el audio"</strong> o <strong>"compartir su micrófono".</strong> <img src="pix/aceptar-llamada-voz.png" class="center-block img-rounded" />
                       </div>
                     </div>
                     </div> <!-- END panel-default help8-->
@@ -265,9 +265,9 @@ echo '
                     <div id="collapse9" class="panel-collapse collapse" role="tabpanel" aria-labelledby="help9">
                       <div class="panel-body">
                         Para realizar una videollamada, debes de ingresar al <strong>e-Chat UNAD</strong> del respectivo grupo del curso deseado, si hay más de un usuario conectado, podrás iniciar la videollamada o llamada de voz con él.<br><br>
-                        Para iniciar una videollamada, todo lo que necesitas es hacer clic en el botón de <strong>“Iniciar Videollamada”.</strong> <img src="pix/help/iniciar-videollamada.png" class="center-block img-rounded" /> <br>
-                        Inmediatamente a los usuarios les llegara una invitación para aceptar la videollamada, la cual podrán <strong>"aceptar"</strong> o <strong>"rechazar"</strong> y <strong>"ver vista previa"</strong> o <strong>"compartir mi camara".</strong> <img src="pix/help/aceptar-videollamada.png" class="center-block img-rounded" /> <br>
-                        Una vez iniciada la videollamada, en la parte superior de la conversación, podrá visualizar el video de los integrantes que aceptaron la videollamada.</strong> <img src="pix/help/ver-videollamada.png" class="center-block img-rounded" />
+                        Para iniciar una videollamada, todo lo que necesitas es hacer clic en el botón de <strong>“Iniciar Videollamada”.</strong> <img src="pix/iniciar-videollamada.png" class="center-block img-rounded" /> <br>
+                        Inmediatamente a los usuarios les llegara una invitación para aceptar la videollamada, la cual podrán <strong>"aceptar"</strong> o <strong>"rechazar"</strong> y <strong>"ver vista previa"</strong> o <strong>"compartir mi camara".</strong> <img src="pix/aceptar-videollamada.png" class="center-block img-rounded" /> <br>
+                        Una vez iniciada la videollamada, en la parte superior de la conversación, podrá visualizar el video de los integrantes que aceptaron la videollamada.</strong> <img src="pix/ver-videollamada.png" class="center-block img-rounded" />
                       </div>
                     </div>
                     </div> <!-- END panel-default help9-->
@@ -296,7 +296,7 @@ echo '
                     <div id="collapse11" class="panel-collapse collapse" role="tabpanel" aria-labelledby="help11">
                       <div class="panel-body">
                         Desafortunadamente, la llamada de voz y videollamada no es posible realizarlas desde los navegadores <strong>Safari e Internet Explorer, Chrome en Mac</strong> ya que actualmente estos navegadores no tienen implementado el soporte para protocolo <strong>WebRTC</strong> y por tal motivo no son compatibles. <br><br>
-                        Actualmente <strong>WebRTC</strong> es compatible en las versiones más recientes de los navegadores modernos como <strong><a href="https://www.google.es/chrome/browser/desktop/index.html" title="Descargar la versión más reciente de Google Chrome">Google Chrome</a>, <a href="https://www.mozilla.org/es-ES/firefox/new/" title="Descargar la versión más reciente de Mozilla Firefox">Mozilla Firefox</a> u <a href="http://www.opera.com/es-419" title="Descargar la versión más reciente de Opera">Opera</a></strong> en Windows, Linux y Android. <img src="pix/help/unios-webrtc.png" class="center-block img-rounded" />
+                        Actualmente <strong>WebRTC</strong> es compatible en las versiones más recientes de los navegadores modernos como <strong><a href="https://www.google.es/chrome/browser/desktop/index.html" title="Descargar la versión más reciente de Google Chrome">Google Chrome</a>, <a href="https://www.mozilla.org/es-ES/firefox/new/" title="Descargar la versión más reciente de Mozilla Firefox">Mozilla Firefox</a> u <a href="http://www.opera.com/es-419" title="Descargar la versión más reciente de Opera">Opera</a></strong> en Windows, Linux y Android. <img src="pix/unios-webrtc.png" class="center-block img-rounded" />
                       </div>
                     </div>
                     </div> <!-- END panel-default help11-->
@@ -312,8 +312,8 @@ echo '
                       <div class="panel-body">
                         Para compartir fotos e imágenes, debes de ingresar al <strong>e-Chat UNAD</strong> del respectivo grupo del curso deseado, si hay más de un usuario conectado, podrás compartir archivos, fotos e imágenes con él.
                         <ol>
-                            <li>Haz clic en el botón de <strong>"Compartir imagen"</strong> <span class="fa fa-picture-o add-picture"></span> para seleccionar una foto e imagen desde tu computadora, la opción esta ubicada al lado derecho del campo de texto <strong>"Escriba su mensaje"</strong>. <img src="pix/help/escriba-su-mensaje.png" class="center-block img-rounded" /></li>
-                            <li>Todos los participantes de la conversación recibirán la misma foto e imagen con vista previa al interior de la conversación, adicionalmente tendrán habilitado una opción para descargar <span class="fa fa-download"></span> la imagen a sus computadores. <img src="pix/help/vista-previa-imagen.png" class="center-block img-rounded" /></li>
+                            <li>Haz clic en el botón de <strong>"Compartir imagen"</strong> <span class="fa fa-picture-o add-picture"></span> para seleccionar una foto e imagen desde tu computadora, la opción esta ubicada al lado derecho del campo de texto <strong>"Escriba su mensaje"</strong>. <img src="pix/escriba-su-mensaje.png" class="center-block img-rounded" /></li>
+                            <li>Todos los participantes de la conversación recibirán la misma foto e imagen con vista previa al interior de la conversación, adicionalmente tendrán habilitado una opción para descargar <span class="fa fa-download"></span> la imagen a sus computadores. <img src="pix/vista-previa-imagen.png" class="center-block img-rounded" /></li>
                         </ol>
                         <div class="alert alert-warning" role="alert"><span class="fa fa-exclamation-triangle fa-2x"></span> Es muy importante recordar, al ser un chat grupal, todos recibirán la misma información y no hay ningún tipo de respaldo sobre las conversaciones o archivos que allí se comparten, una vez cerrada la conversación, se elimina el historial y se cierra el chat de cada grupo.</div>
                       </div>
@@ -331,8 +331,8 @@ echo '
                       <div class="panel-body">
                         Para compartir archivos, documentos o presentaciones, debes de ingresar al <strong>e-Chat UNAD</strong> del respectivo grupo del curso deseado, si hay más de un usuario conectado, podrás compartir archivos, documentos o presentaciones con él.
                         <ol>
-                            <li>Haz clic en el botón de <strong>"Compartir archivos y documentos"</strong> <span class="fa fa-paperclip add-file"></span> para seleccionar el archivo o presentacion desde tu computadora, la opción esta ubicada al lado derecho del campo de texto <strong>"Escriba su mensaje"</strong>. <img src="pix/help/escriba-su-mensaje.png" class="center-block img-rounded" /></li>
-                            <li>Todos los participantes de la conversación recibirán el mismo archivo, documento o presentacion la cual automaticamente mostrara la vista previa al interior de la conversación, <strong>¡esta posibilidad es genial!</strong>, ya que sin necesidad de descargar el documento o presentación, podemos verla inmediatamente al interior de la conversación y si es necesario descargarla a nuestro computador, se tendrá habilitada la opción para descargar <span class="fa fa-download"></span> dicho archivo o presentación a nuestros computadores. <img src="pix/help/vista-previa-documentos.png" class="center-block img-rounded" /><br/>También podrá compartir videos o audios, estos se reproducirán automáticamente al interior de la conversación, <strong>¡esta posibilidad es estupenda!</strong> ya que no se necesita descargar el video para verlo, de igual manera tendrán habilitado la opción para descargar <span class="fa fa-download"></span> los videos o audios a sus computadores. <img src="pix/help/vista-previa-videos.png" class="center-block img-rounded" /></li>
+                            <li>Haz clic en el botón de <strong>"Compartir archivos y documentos"</strong> <span class="fa fa-paperclip add-file"></span> para seleccionar el archivo o presentacion desde tu computadora, la opción esta ubicada al lado derecho del campo de texto <strong>"Escriba su mensaje"</strong>. <img src="pix/escriba-su-mensaje.png" class="center-block img-rounded" /></li>
+                            <li>Todos los participantes de la conversación recibirán el mismo archivo, documento o presentacion la cual automaticamente mostrara la vista previa al interior de la conversación, <strong>¡esta posibilidad es genial!</strong>, ya que sin necesidad de descargar el documento o presentación, podemos verla inmediatamente al interior de la conversación y si es necesario descargarla a nuestro computador, se tendrá habilitada la opción para descargar <span class="fa fa-download"></span> dicho archivo o presentación a nuestros computadores. <img src="pix/vista-previa-documentos.png" class="center-block img-rounded" /><br/>También podrá compartir videos o audios, estos se reproducirán automáticamente al interior de la conversación, <strong>¡esta posibilidad es estupenda!</strong> ya que no se necesita descargar el video para verlo, de igual manera tendrán habilitado la opción para descargar <span class="fa fa-download"></span> los videos o audios a sus computadores. <img src="pix/vista-previa-videos.png" class="center-block img-rounded" /></li>
                         </ol>
                         <div class="alert alert-warning" role="alert"><span class="fa fa-exclamation-triangle fa-2x"></span> Es muy importante recordar, al ser un chat grupal, todos recibirán la misma información y no hay ningún tipo de respaldo sobre las conversaciones o archivos que allí se comparten, una vez cerrada la conversación, se elimina el historial y se cierra el chat de cada grupo.</div>
                       </div>
@@ -349,7 +349,7 @@ echo '
                     <div id="collapse14" class="panel-collapse collapse" role="tabpanel" aria-labelledby="help14">
                       <div class="panel-body">
                         Con <strong>e-Chat UNAD</strong>, puedes iniciar sesión en todos los chat grupales de los cursos que estás viendo, lo único que debes de tener en cuenta es dejar una pestaña abierta con cada uno de los chats para que cuando algún compañero se conecte, <strong>e-Chat UNAD</strong> te notificara por medio de una alerta visual y sonora.<br/><br/>
-                        De igual manera, <strong>e-Chat UNAD</strong> le recomendara un <strong>enlace permanente</strong> el cual podrá añadirlo a sus <strong>marcadores o favoritos</strong> para volver cuando quiera, este enlace es único por cada grupo y solo es permitido el ingreso de los usuarios correspondientes a dicho grupo. <img src="pix/help/intrerfaz-conversacion-echat-unad.png" class="center-block img-rounded" /><br/>
+                        De igual manera, <strong>e-Chat UNAD</strong> le recomendara un <strong>enlace permanente</strong> el cual podrá añadirlo a sus <strong>marcadores o favoritos</strong> para volver cuando quiera, este enlace es único por cada grupo y solo es permitido el ingreso de los usuarios correspondientes a dicho grupo. <img src="pix/intrerfaz-conversacion-echat-unad.png" class="center-block img-rounded" /><br/>
                         Puedes invitar a tus compañeros a iniciar una conversación en tiempo real o videollamada solo con publicar la URL en los foros o mensajería interna, al ingresar al link, les cargara el chat de su grupo.
                       </div>
                     </div>
