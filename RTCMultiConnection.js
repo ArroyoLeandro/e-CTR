@@ -244,7 +244,7 @@ connection.rtcConfiguration
                 log('El Canal de señalización no está listo. Conectando...');
                 // conectar con canal de señalización
                 initRTCMultiSession(function() {
-                    log('El Canal de señalización está conectado. Unirse a la sesión de nuevo...');
+                    log('El Canal de señalización está desconectado. Unirse a la sesión de nuevo...');
                     setTimeout(function() {
                         joinSession(session, joinAs);
                     }, 1000);

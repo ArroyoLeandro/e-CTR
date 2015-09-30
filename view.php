@@ -158,6 +158,10 @@ var currentgroupjs = '<?php echo $currentgroup; ?>';
 <?php
 echo '
 <div class="row">
+    <div class="detect-webrtc" class="col-sm-12 col-md-12">
+        <!-- Navegador desactualizado, prueba con un navegador modeno como Google Chrome, Mozilla Firefox u Opera-->
+        <div class="alert alert-danger center-block" role="alert"><i class="fa fa-exclamation-triangle fa-2x"></i> Hemos etectado que su navegador no esta actualizado, prueba con un navegador modeno como <strong><a class="alert-link" href="https://www.google.es/chrome/browser/desktop/index.html" title="Descargar la versión mas reciente de Google Chrome" target="_blank">Google Chrome</a>, <a class="alert-link" href="https://www.mozilla.org/es-ES/firefox/new/" title="Descargar la versión mas reciente de Mozilla Firefox" target="_blank">Mozilla Firefox</a> u <a class="alert-link" href="http://www.opera.com/es-419" title="Descargar la versión mas reciente de Opera" target="_blank">Opera</a></strong> y disfruta de la mejor experiencia de comunicación e interacción en tiempo real de la web.</div>
+    </div>
     <div class="settings-panel col-sm-12 col-md-12 table-responsive">
             <input type="checkbox" id="autoTranslateText">
             <label for="autoTranslateText" title="Activa esta opcion para chatear con usuarios de diferentes lugares! Todos los mensajes de texto entrantes se convertiran automaticamente a su idioma!!">Traducir chat automaticamente a</label>

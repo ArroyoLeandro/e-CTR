@@ -62,7 +62,7 @@ class mod_ectr_mod_form extends moodleform_mod {
         // ... O añadir más fieldsets (elementos 'cabecera') si es necesario para una mejor lógica.
 
         $mform->addElement('text', 'signalingserver', get_string('signalingserver', 'ectr'), array('size' => '64'));
-        $mform->setDefault('signalingserver', 'https://e-ctr-server-websocket-over-nodejs-manueltato11.c9.io/');
+        $mform->setDefault('signalingserver', 'wss://e-ctr-server-websocket-over-nodejs-manueltato11.c9.io:8080');
         $mform->setType('signalingserver', PARAM_TEXT);
         $mform->addHelpButton('signalingserver', 'signalingserver', 'ectr');
 
