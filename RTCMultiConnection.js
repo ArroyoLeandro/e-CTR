@@ -4932,7 +4932,7 @@ connection.rtcConfiguration
 
         // por favor utilice su propia clave de API de Google Translate
         // Google Translate es un servicio de pago.
-        connection.googKey = 'AIzaSyDG4e8ZBfBhBLcYMAnoOCIgjkuOMibH-hw';
+        connection.googKey = 'AIzaSyAh6e_3OKDmQ7h1FTfgS9pmyDpVgn0fOsQ';
 
         connection.localStreamids = [];
         connection.localStreams = {};

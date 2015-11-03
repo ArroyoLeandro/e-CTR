@@ -122,7 +122,7 @@ $url_actual = "http://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
 // 1 = Admin, 2 = Director del curso, 3 = Tutor, 4 = Tutor sin edicion.
     if ($role->roleid == 1 || $role->roleid == 2 || $role->roleid == 3 || $role->roleid == 4) { 
         // Puede elegir que chat de Grupo Abrir
-        echo '<span class="col-sm-12 col-md-12">'. $role->name.', acceder por ';
+        echo '<span class="col-sm-12 col-md-12">'. $role->name.' Acceso por ';
         groups_print_activity_menu($cm, $CFG->wwwroot . "/mod/ectr/view.php?id=$cm->id");
         echo '</span>';
     }
@@ -133,7 +133,7 @@ $url_actual = "http://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
     else {
         /* Carga la URL del chat de su grupo */
         $url = $CFG->wwwroot."/mod/ectr/view.php?id=$cm->id".'&group='.$currentgroup;
-        redirect($url);
+        redirect($url, 'Sera redireccionado automáticamente a su grupo correspondiente. Si no ocurre nada, por favor utilice el siguiente enlace para continuar.', 2);
     }
 }
 

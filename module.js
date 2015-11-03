@@ -188,7 +188,7 @@
     }
     // usando websockets para la señalizacion
     // https://github.com/manueltato11/e-CTR-server
-    var signalingserver = 'wss://e-ctr-server-websocket-over-nodejs-manueltato11.c9.io:8080';
+    var signalingserver = 'ws://e-ctr-server-websocket-over-nodejs-manueltato11.c9.io';
     // use "channel" como sessionid para usar sessionid personalizado!
     var roomid = connection.channel;
     var channel = location.href.replace(/\/|:|#|%|\.|\[|\]/g, '');
